@@ -68,3 +68,5 @@ Chrome / Edge / Safari / Firefox 최신 2개 버전.
 
 사진은 `<picture>` 로 **AVIF → WebP → JPEG** 순으로 고릅니다.
 지원 대상 브라우저는 모두 AVIF 또는 WebP를 지원하므로 JPEG는 사실상 예비용입니다.
+
+
