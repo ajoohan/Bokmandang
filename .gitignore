@@ -1,12 +1,17 @@
+# OS / 편집기
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# 도구
 node_modules/
-.vercel
-.env*
+__pycache__/
+*.pyc
 *.log
 
-# 아티팩트 빌드 중간 산출물 (tools/ 스크립트로 재생성)
-bokmandang-web/build/
-
+# 배포 · 비밀값
 .vercel
 .env*
+
+# 아티팩트 빌드 산출물 — tools/build-artifact.py 로 언제든 재생성
+/build/
