@@ -630,7 +630,9 @@ document.querySelectorAll('.hero .lbl, .rail .lbl, .band .sig').forEach(el=>{
   if(RM||seen){ intro.remove(); document.body.classList.add('loaded'); return; }
   try{ sessionStorage.setItem('bm.intro','1'); }catch(e){}
   // 붓글씨 쓰듯 한 글자씩 왼쪽→오른쪽으로 그어지며 등장
-  const chars=[...intro.querySelectorAll('.ch')];
+  /* 붓글씨 3글자는 획을 긋듯 순차로, ® 는 마지막에 톡 떨어지듯 붙습니다 */
+  const chars=[...intro.querySelectorAll('.ch:not(.ch-r)')];
+  const rmark=intro.querySelector('.ch-r');
   const GAP=230, START=180, DRAW=340, HOLD=520;
   document.body.style.overflow='hidden';
   const run=()=>{
@@ -640,8 +642,13 @@ document.querySelectorAll('.hero .lbl, .rail .lbl, .band .sig').forEach(el=>{
       anim(c,{clipPath:['inset(0 100% 0 0)','inset(0 0 0 0)']},{d:DRAW,delay:d,ease:'cubic-bezier(.22,.95,.3,1)'});
       anim(c,{transform:['translateY(7px) scale(1.07)','none']},{d:DRAW+80,delay:d,ease:'cubic-bezier(.3,1.5,.55,1)'});
     });
+    if(rmark){
+      const rd=START+chars.length*GAP-40;
+      anim(rmark,{opacity:[0,1]},{d:220,delay:rd});
+      anim(rmark,{transform:['translateY(-6px) scale(.72)','none']},{d:460,delay:rd,ease:E.back});
+    }
     setTimeout(()=>{
-      chars.forEach((c,i)=>anim(c,{opacity:[1,0],transform:['none','translateY(-9px)']},{d:420,delay:i*45,ease:E.soft}));
+      [...chars,rmark].filter(Boolean).forEach((c,i)=>anim(c,{opacity:[1,0],transform:['none','translateY(-9px)']},{d:420,delay:i*45,ease:E.soft}));
       const a=anim(intro,{clipPath:['inset(0 0 0 0)','inset(0 0 100% 0)']},{d:900,delay:280,ease:E.inout});
       done(a).then(()=>{ intro.remove(); document.body.style.overflow=''; document.body.classList.add('loaded'); });
     }, START+(chars.length-1)*GAP+DRAW+HOLD);

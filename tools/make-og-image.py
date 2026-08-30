@@ -36,8 +36,9 @@ bg = Image.composite(Image.new('RGB', (W, H), (16, 15, 12)), bg,
                      grad.resize((W, H)))
 
 # 워드마크
-logo = Image.open(os.path.join(IMG, 'logo-white.png')).convert('RGBA')
-lw = 330
+# 정식 로고(® 포함)를 씁니다 — tools/make-logo-r.py 로 생성
+logo = Image.open(os.path.join(IMG, 'logo-white-r.png')).convert('RGBA')
+lw = 352
 logo = logo.resize((lw, round(logo.height * lw / logo.width)), Image.LANCZOS)
 bg.paste(logo, ((W - lw) // 2, 168), logo)
 

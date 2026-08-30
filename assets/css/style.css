@@ -454,7 +454,8 @@ body::after{content:'';position:fixed;inset:0;z-index:500;pointer-events:none;op
 
 /* 인트로 커튼 */
 #intro{position:fixed;inset:0;z-index:900;background:var(--bg);display:flex;align-items:center;justify-content:center}
-#intro .mark{position:relative;height:clamp(110px,16vw,240px);aspect-ratio:1.5847;max-width:70vw}
+/* 720/419 — ® 를 포함한 정식 로고 비율 (tools/make-logo-r.py 산출물 기준) */
+#intro .mark{position:relative;height:clamp(110px,16vw,240px);aspect-ratio:1.7184;max-width:74vw}
 #intro .ch{position:absolute;top:0;height:100%;width:auto;opacity:0;
   clip-path:inset(0 100% 0 0);transform-origin:left center}
 #intro .veil{position:absolute;inset:0;background:var(--bg)}

@@ -31,7 +31,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260830a">
+<link rel="stylesheet" href="assets/css/style.css?v=20260830b">
 <!-- LCP — 히어로 사진. AVIF 미지원 브라우저는 이 preload 를 건너뜁니다. -->
 <link rel="preload" as="image" href="assets/img/hero-gomtang.avif" type="image/avif" fetchpriority="high">
 
@@ -143,9 +143,12 @@
 <a class="sr" href="#main">본문 바로가기</a>
 <div id="intro" aria-hidden="true">
   <div class="mark" id="mark">
-      <img class="ch" src="assets/img/logo-char-1.png" alt="" style="left:0.000%;width:33.886%">
-      <img class="ch" src="assets/img/logo-char-2.png" alt="" style="left:33.886%;width:29.367%">
-      <img class="ch" src="assets/img/logo-char-3.png" alt="" style="left:63.253%;width:36.747%">
+      <!-- 정식 로고는 ® 까지 포함합니다. 3글자를 순차로 그은 뒤 ® 가 마지막에 붙습니다.
+           배치값은 tools/make-logo-r.py 가 계산해 출력합니다. -->
+      <img class="ch" src="assets/img/logo-char-1.png" alt="" style="left:0.000%;width:31.250%">
+      <img class="ch" src="assets/img/logo-char-2.png" alt="" style="left:31.250%;width:27.083%">
+      <img class="ch" src="assets/img/logo-char-3.png" alt="" style="left:58.333%;width:33.889%">
+      <img class="ch ch-r" src="assets/img/logo-char-r.png" alt="" style="left:94.167%;width:5.833%">
   </div>
 </div>
 <div class="cur" id="cur" aria-hidden="true"></div><div class="cur-r" id="curr" aria-hidden="true"></div>
@@ -496,8 +499,8 @@
   <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M8 14V2M3 7l5-5 5 5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
 </button>
 
-<script src="assets/js/config.js?v=20260830a"></script>
-<script src="assets/data/stores.js?v=20260830a"></script>
-<script src="assets/js/main.js?v=20260830a"></script>
+<script src="assets/js/config.js?v=20260830b"></script>
+<script src="assets/data/stores.js?v=20260830b"></script>
+<script src="assets/js/main.js?v=20260830b"></script>
 </body>
 </html>
