@@ -60,7 +60,7 @@ FONT_CSS = ("@font-face{font-family:'Pretendard Variable';font-weight:45 930;"
 
 # ── 3. HTML 에서 본문만 뽑는다 (아티팩트가 head/body 를 감싸 줍니다) ────
 # 공유 갤러리에서는 SEO 제목보다 브랜드 이름 자체가 알아보기 쉽습니다
-title = '복만당 1++ 한우곰탕'
+title = '복만당 한우곰탕'
 body  = html.split('<body>',1)[1].rsplit('</body>',1)[0]
 body  = re.sub(r'<script src="[^"]*"></script>\s*', '', body)   # 외부 스크립트 참조 제거
 body  = re.sub(r'\s*<source type="image/webp"[^>]*>', '', body) # WebP <source> 제거 (AVIF 만 embed)
