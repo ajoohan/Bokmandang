@@ -1,11 +1,12 @@
 # 복만당 — robots.txt
-# ⚠️ 오픈 전 색인 차단 상태입니다. 정식 오픈 시:
-#    python tools/set-indexing.py allow
+# ⚠️ 현재 검색 제외 상태입니다 (각 페이지의 meta robots=noindex).
+#    크롤링 자체는 허용해야 noindex 가 읽히고 링크 미리보기도 동작합니다.
+#    정식 오픈 시: python tools/set-indexing.py allow
 # Sitemap 주소는 배포 도메인 확정 후: python tools/set-site-url.py https://도메인
 
 User-agent: *
-Disallow: /
+Allow: /
 Disallow: /admin.html
 Disallow: /api/
 
-Sitemap: https://bokmandang.example.com/sitemap.xml
+Sitemap: https://bokmandang.vercel.app/sitemap.xml
