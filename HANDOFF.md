@@ -109,22 +109,16 @@ Vercel 의 Root Directory 를 비워 둔 채로 그대로 붙습니다.
 ### 로컬 폴더 구조가 저장소와 다릅니다 ⚠️
 
 작업용 로컬 저장소는 한 단계 위(`D:okmandang`)에 있고 이 폴더는 그 하위입니다.
-그래서 **평범한 `git push` 로는 안 올라갑니다.** 아래로 밀어 넣으세요.
-`subtree` 명령은 반드시 **저장소 최상위(`D:okmandang`)에서** 실행해야 합니다.
+그래서 **평범한 `git push` 로는 안 올라갑니다.** 아래 한 줄로 미세요.
 
 ```bash
-git subtree push --prefix=bokmandang-web origin main
+python tools/push-to-github.py
 ```
 
-커밋이 쌓여 느려지면 분리 후 푸시해도 됩니다 — 결과는 같습니다.
-
-```bash
-git subtree split --prefix=bokmandang-web -b gh-main
-git push origin gh-main:main
-```
-
-로컬 저장소를 이 폴더로 옮겨 쓰고 싶으면 여기서 `git init` 을 새로 하지 말고,
-위 방식으로 계속 밀거나 저장소 자체를 클론해서 쓰세요 (이력이 갈라집니다).
+`git subtree push` 는 원격에 병합 커밋이 한 번이라도 생기면
+`non-fast-forward` 로 거부됩니다. 위 스크립트는 분리 → 원격 tip 을 부모로 얹기 →
+일반 push 순으로 처리해서 **force push 없이** 매번 통과합니다.
+원격 이력이 사라지지 않습니다.
 
 ### 배포
 

@@ -85,8 +85,18 @@ Supabase 대시보드에서 pg_cron 으로 매일 돌리거나, 담당자가 주
 **쿠키를 쓰게 되므로 `privacy.html` §10(자동 수집 장치) 문구도 함께 고쳐야 합니다.**
 현재 §10은 "쿠키를 사용하지 않습니다"로 적혀 있습니다.
 
-### 5. 시안 표기 제거
-정보가 다 확정되면 아래 문구를 지우세요.
+### 5. 색인 허용 + 시안 표기 제거  ⚠️ 지금 검색 차단 중입니다
+
+**현재 `noindex` 상태입니다.** 오픈해도 이걸 풀지 않으면 검색에 절대 안 잡힙니다.
+
+```bash
+python tools/set-indexing.py allow
+```
+
+`robots.txt` 와 두 HTML 의 `<meta name="robots">` 를 함께 바꿉니다.
+한쪽만 고치면 색인이 새거나 막히니 반드시 이 스크립트로 전환하세요.
+
+그리고 아래 시안 표기도 함께 지우세요.
 - `index.html` 푸터 — `— 본 페이지는 웹사이트 시안(프로토타입)입니다.`
 - `index.html` 매장 목록 하단 — `※ 지점명과 지역은 네이버 지도 검색 결과 기준입니다…`
 
@@ -138,6 +148,9 @@ Supabase 대시보드에서 pg_cron 으로 매일 돌리거나, 담당자가 주
 | 외부 채널 | `config.js` 의 `links` 에 주소를 넣은 항목만 버튼 생성 |
 | 캐시 무효화 | CSS·JS 에 `?v=20260829` — **배포할 때마다 숫자를 올리세요** |
 | 인트로 | 세션당 1회만 재생 (`sessionStorage`) |
+| 등급 표기 | `1++` 전면 삭제 (2026-08-30 발주처 확인 — 사실 아님). 경위는 `CONTENT.md` |
+| 검색 차단 | **`noindex` 적용 중** — 오픈 시 `python tools/set-indexing.py allow` |
+| GitHub | `ajoohan/Bokmandang` (private) · 푸시는 `python tools/push-to-github.py` |
 
 ---
 
