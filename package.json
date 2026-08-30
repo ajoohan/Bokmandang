@@ -1,0 +1,6 @@
+{
+  "name": "bokmandang-web",
+  "private": true,
+  "type": "module",
+  "description": "복만당 웹사이트. 의존성·빌드 없음 — 이 파일은 api/ 함수를 ESM 으로 해석시키기 위한 것입니다."
+}

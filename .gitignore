@@ -7,3 +7,6 @@ node_modules/
 
 # 아티팩트 빌드 중간 산출물 (tools/ 스크립트로 재생성)
 bokmandang-web/build/
+
+.vercel
+.env*
