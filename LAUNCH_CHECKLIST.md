@@ -11,8 +11,9 @@
 
 | # | 확인할 것 | 반영 위치 | 지금 상태 |
 |---|---|---|---|
-| 1 | **배포 도메인** | `python tools/set-site-url.py https://도메인` 한 번 실행 | `bokmandang.example.com` (임시) |
-| 2 | **Supabase 프로젝트 + 환경변수 3개** | Vercel 프로젝트 설정 | 코드는 완료. 키만 넣으면 동작 (아래 §2 참조) |
+| 1 | **고유 도메인** | `python tools/set-site-url.py https://도메인 --from https://bokmandang.vercel.app` | 현재 `bokmandang.vercel.app` 로 동작 중 |
+| ~~2~~ | ~~상담 폼 연동~~ | ~~Supabase + Vercel~~ | ✅ **동작 확인 완료** |
+| 2-b | **관리자 화면 켜기** — `ADMIN_PASSWORD`·`ADMIN_SECRET` + `0002_admin.sql` | Vercel · Supabase | 코드 완료, 미설정 |
 | ~~3~~ | ~~사업자 정보~~ | ~~푸터 · privacy.html~~ | ✅ **사업자등록증으로 반영 완료** |
 | 4 | **개인정보 보호책임자 이메일** | `privacy.html` §7 | 성명(이정석·대표이사)·전화는 반영됨. 이메일만 없음 |
 | 4-b | **401동 호수 확인** — 등록 124호 / 본점 116호 / 제조원 123호 | `CONTENT.md` 참조 | 세 가지가 달라 확인 필요 |
@@ -85,20 +86,18 @@ Supabase 대시보드에서 pg_cron 으로 매일 돌리거나, 담당자가 주
 **쿠키를 쓰게 되므로 `privacy.html` §10(자동 수집 장치) 문구도 함께 고쳐야 합니다.**
 현재 §10은 "쿠키를 사용하지 않습니다"로 적혀 있습니다.
 
-### 5. 색인 허용 + 시안 표기 제거  ⚠️ 지금 검색 차단 중입니다
+### 5. 임시 안내 문구 정리  ⚠️ 지금 검색이 열려 있습니다
 
-**현재 `noindex` 상태입니다.** 오픈해도 이걸 풀지 않으면 검색에 절대 안 잡힙니다.
+**색인 허용 상태입니다** (2026-08-30, 링크 미리보기 우선 결정).
+`noindex` 로 다시 닫으려면 `python tools/set-indexing.py block`.
 
-```bash
-python tools/set-indexing.py allow
-```
+푸터의 "웹사이트 시안(프로토타입)" 표기는 제거했습니다.
 
-`robots.txt` 와 두 HTML 의 `<meta name="robots">` 를 함께 바꿉니다.
-한쪽만 고치면 색인이 새거나 막히니 반드시 이 스크립트로 전환하세요.
-
-그리고 아래 시안 표기도 함께 지우세요.
-- `index.html` 푸터 — `— 본 페이지는 웹사이트 시안(프로토타입)입니다.`
+**남아 있는 안내 문구 — 정보가 확정되면 지우세요.**
 - `index.html` 매장 목록 하단 — `※ 지점명과 지역은 네이버 지도 검색 결과 기준입니다…`
+  **지점 주소·전화번호가 확정되기 전에는 지우지 마세요.** 이 문구가 없으면
+  동(洞) 단위 주소와 네이버 지도에서 옮겨 온 영업시간이 확정된 정보처럼 보입니다.
+- 상담 완료 화면의 "실제로 접수되지 않습니다" 는 전송이 켜져 있으면 자동으로 사라집니다.
 
 ### 6. 검색엔진 등록
 - [ ] Google Search Console 에 사이트 등록 + `sitemap.xml` 제출
@@ -131,7 +130,7 @@ python tools/set-indexing.py allow
 | 히어로 LCP | AVIF preload + `fetchpriority="high"` |
 | 메타 · OG | title/description/canonical/OG/Twitter + `og-cover.jpg` (1200×630) |
 | 구조화 데이터 | `Restaurant` + `Menu`(가격 8종) + `Organization` + `WebSite` JSON-LD |
-| sitemap · robots | 생성됨 (도메인만 치환하면 됨) |
+| sitemap · robots | `bokmandang.vercel.app` 기준으로 반영됨. admin·api 는 상시 차단 |
 | 개인정보처리방침 | `privacy.html` — 폼 동의 항목과 푸터에서 링크됨 |
 | 폼 검증 | 성함·연락처·동의 필수 검사, 오류 메시지, 포커스 이동 |
 | 폼 전송 | 중복 제출 차단 · 전송 중 표시 · 타임아웃 · 실패 시 재시도 · 허니팟 |
@@ -148,8 +147,10 @@ python tools/set-indexing.py allow
 | 외부 채널 | `config.js` 의 `links` 에 주소를 넣은 항목만 버튼 생성 |
 | 캐시 무효화 | CSS·JS 에 `?v=20260829` — **배포할 때마다 숫자를 올리세요** |
 | 인트로 | 세션당 1회만 재생 (`sessionStorage`) |
+| 관리자 화면 | `/admin` — 상담 상태·메모 관리 + 매장 목록 편집. 환경변수 넣으면 켜집니다 |
+| 링크 미리보기 | OG 이미지 실주소 반영 — 카카오·슬랙·페북 스크래퍼 응답 확인 완료 |
 | 등급 표기 | `1++` 전면 삭제 (2026-08-30 발주처 확인 — 사실 아님). 경위는 `CONTENT.md` |
-| 검색 차단 | **`noindex` 적용 중** — 오픈 시 `python tools/set-indexing.py allow` |
+| 검색 | **허용** (미리보기 우선). 되돌리려면 `python tools/set-indexing.py block` |
 | GitHub | `ajoohan/Bokmandang` (private) · 푸시는 `python tools/push-to-github.py` |
 
 ---
