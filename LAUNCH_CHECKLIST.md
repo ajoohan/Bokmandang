@@ -12,7 +12,7 @@
 | # | 확인할 것 | 반영 위치 | 지금 상태 |
 |---|---|---|---|
 | 1 | **배포 도메인** | `python tools/set-site-url.py https://도메인` 한 번 실행 | `bokmandang.example.com` (임시) |
-| 2 | **상담 폼을 어디로 받을지** — 메일 / 구글 시트 / 자체 API | `assets/js/config.js` → `form.endpoint` | 비어 있음 → 전송 안 됨 |
+| 2 | **Supabase 프로젝트 + 환경변수 3개** | Vercel 프로젝트 설정 | 코드는 완료. 키만 넣으면 동작 (아래 §2 참조) |
 | ~~3~~ | ~~사업자 정보~~ | ~~푸터 · privacy.html~~ | ✅ **사업자등록증으로 반영 완료** |
 | 4 | **개인정보 보호책임자 이메일** | `privacy.html` §7 | 성명(이정석·대표이사)·전화는 반영됨. 이메일만 없음 |
 | 4-b | **401동 호수 확인** — 등록 124호 / 본점 116호 / 제조원 123호 | `CONTENT.md` 참조 | 세 가지가 달라 확인 필요 |
@@ -38,14 +38,38 @@ python tools/set-site-url.py https://www.실제도메인
 `index.html` · `privacy.html` · `sitemap.xml` · `robots.txt` 를 한 번에 바꿉니다.
 실행 뒤 `index.html` 상단의 "배포 도메인 미확정" 주석을 지우세요.
 
-### 2. 상담 폼 켜기
-`assets/js/config.js` 의 `form.endpoint` 에 주소를 넣으면 그 즉시 실제 전송이 켜집니다.
-`mode` 는 받는 쪽에 맞춰 `form` / `json` / `opaque` 중 하나를 고르세요 (파일 안 주석 참고).
+### 2. 상담 폼 켜기 (Supabase + Vercel)
 
-켠 뒤 **반드시 실제로 한 번 제출해서 확인**하세요.
-- [ ] 접수 메일(또는 시트)에 항목이 다 들어오는지
-- [ ] 실패했을 때 오류 문구가 나오는지 (일부러 잘못된 주소로 한 번)
-- [ ] 완료 화면의 "실제로 접수되지 않습니다" 안내가 사라졌는지 (자동으로 사라집니다)
+구조 — 브라우저는 우리 서버만 호출하고, 그 함수가 Supabase 에 넣습니다.
+Supabase 키는 브라우저에 절대 내려가지 않습니다.
+
+```
+브라우저 ──POST /api/inquiry──> Vercel 함수 ──service_role──> Supabase
+                                (검증·중복차단·허니팟)
+```
+
+**a. Supabase**
+- [ ] 프로젝트 생성 (리전 **Seoul / ap-northeast-2**)
+- [ ] SQL Editor 에서 `supabase/migrations/0001_inquiries.sql` 실행
+- [ ] Settings → API 에서 **Project URL** 과 **service_role** 키 복사
+
+**b. Vercel 환경변수** (Settings → Environment Variables, Production+Preview 둘 다)
+
+| 이름 | 값 |
+|---|---|
+| `SUPABASE_URL` | `https://xxxx.supabase.co` |
+| `SUPABASE_SERVICE_KEY` | service_role 키 — **어디에도 커밋하지 마세요** |
+| `SUPABASE_TABLE` | `inquiries` (다른 프로젝트에 얹었다면 그 테이블명) |
+
+**c. 확인** — 배포 후 실제로 한 번 제출
+- [ ] Supabase Table Editor 의 `inquiries` 에 행이 생기는지
+- [ ] 이름 1자로 제출 → "성함을 2자 이상…" 이 뜨는지 (서버 검증)
+- [ ] 같은 번호로 연속 제출 → 1건만 쌓이는지 (중복 차단)
+- [ ] 완료 화면의 "실제로 접수되지 않습니다" 안내가 사라졌는지 (자동)
+
+**d. 보관기간 파기** — `purge_expired_inquiries()` 함수를 만들어 뒀습니다.
+Supabase 대시보드에서 pg_cron 으로 매일 돌리거나, 담당자가 주기적으로 실행하세요.
+처리방침 §3(1년)·§8(파기) 이행에 필요합니다.
 
 ### 3. 개인정보처리방침 마무리
 `privacy.html` 최상단 주석에 채워야 할 항목이 정리되어 있습니다.
@@ -98,6 +122,12 @@ python tools/set-site-url.py https://www.실제도메인
 | 폼 검증 | 성함·연락처·동의 필수 검사, 오류 메시지, 포커스 이동 |
 | 폼 전송 | 중복 제출 차단 · 전송 중 표시 · 타임아웃 · 실패 시 재시도 · 허니팟 |
 | 통계 | `config.js` 에 ID 넣으면 자동 로드 (안 넣으면 외부 스크립트 0개 유지) |
+| 폼 백엔드 | `api/inquiry.js` — 서버 검증·중복차단·허니팟. 키는 서버에만 |
+| 일시정지 방지 | `api/keepalive.js` + 매일 03:00 크론 (Supabase 무료 플랜 7일 미사용 정지 대응) |
+| 보안 헤더 | `vercel.json` — CSP·HSTS·X-Frame-Options·Referrer-Policy |
+| 캐시 정책 | 이미지 1년 immutable · CSS/JS 1주 revalidate · API no-store |
+| 함수 리전 | 서울(icn1) — 응답 지연 최소화 + 처리 위치 국내 |
+| 국외 이전 고지 | `privacy.html` §5 — Vercel·Supabase 기준 표 작성 |
 | 접근성 | 대비 위반 119건 → **0건** · 터치 타깃 44px · 건너뛰기 링크 · 폼 오류 `role="alert"` |
 | 모달 접근성 | 라이트박스·드로어 배경 `inert` + `Tab` 가둠 + 닫을 때 포커스 복귀 |
 | 손님 동선 | 본점 카드에 길찾기 · 주소 복사 분리 (기존에는 가맹 상담 폼으로 연결돼 있었음) |

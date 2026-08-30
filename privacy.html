@@ -5,8 +5,8 @@
   │                                                                          │
   │ ⚠️ 아직 확인이 필요한 값 — 게시 전 확정하세요                               │
   │  1. 보유·이용 기간  현재 "동의일로부터 1년" 으로 적어 두었습니다 (§3)        │
-  │  2. 위탁 업체  상담 폼 전송 방식이 확정되면 수탁자·위탁업무를 적으세요 (§5)  │
-  │     예) Formspree Inc. — 문의 데이터 전송·보관 / Google LLC — 시트 보관     │
+  │  2. §5 수탁자·국외이전 표 — Vercel / Supabase 기준으로 채워 두었습니다.      │
+  │     계약 주체나 리전이 다르면 고치세요. 다른 서비스로 갈아타면 반드시 갱신.  │
   │  3. 보호책임자 이메일 (§7) — 현재 전화번호만 기재                           │
   │  4. 시행일자  아래 "시행일"                                                │
   │                                                                          │
@@ -31,7 +31,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260830b">
+<link rel="stylesheet" href="assets/css/style.css?v=20260830c">
 </head>
 <body>
 <a class="sr" href="#doc">본문 바로가기</a>
@@ -93,10 +93,32 @@
     위탁 계약 시 개인정보의 안전한 관리에 관한 사항을 계약서에 명시하고, 수탁자가 이를 준수하는지 감독합니다.</p>
   <table>
     <tr><th>수탁자</th><th>위탁 업무</th></tr>
-    <tr><td>정보통신 서비스 제공자 (호스팅 사업자)</td><td>홈페이지 운영을 위한 서버 및 저장 공간 제공</td></tr>
-    <tr><td>문의 접수 서비스 제공자</td><td>가맹 상담 신청 내용의 전송 및 보관</td></tr>
+    <tr><td>Vercel Inc.</td><td>홈페이지 호스팅 및 가맹 상담 신청 내용의 전송 처리</td></tr>
+    <tr><td>Supabase, Inc.</td><td>가맹 상담 신청 내용의 저장 및 관리</td></tr>
   </table>
   <p>위탁 업무의 내용이나 수탁자가 변경되는 경우 본 방침을 통하여 공개하겠습니다.</p>
+
+  <h3>개인정보의 국외 이전</h3>
+  <p>회사는 「개인정보 보호법」 제28조의8에 따라 아래와 같이 개인정보 처리를 국외 사업자에게 위탁하고 있습니다.
+    회사는 처리 위치를 <strong>대한민국(서울) 리전</strong>으로 지정하여 운영하고 있으며,
+    이전받는 자는 위탁받은 업무 범위 내에서만 개인정보를 처리합니다.</p>
+  <table>
+    <tr><th>이전받는 자</th><th>이전 국가 · 처리 위치</th><th>이전 항목 · 시점 · 방법</th><th>이용 목적 · 보유 기간</th></tr>
+    <tr>
+      <td>Vercel Inc.<br><span style="color:var(--mute-2)">privacy@vercel.com</span></td>
+      <td>미국 (법인 소재)<br>처리 위치 — 대한민국 서울</td>
+      <td>성함, 연락처, 희망 지역, 창업 예산, 문의 내용<br>가맹 상담 신청 시<br>네트워크를 통한 암호화 전송(HTTPS)</td>
+      <td>홈페이지 운영 및 문의 전송<br>전송 완료 즉시 파기(저장하지 않음)</td>
+    </tr>
+    <tr>
+      <td>Supabase, Inc.<br><span style="color:var(--mute-2)">privacy@supabase.io</span></td>
+      <td>미국 (법인 소재)<br>처리 위치 — 대한민국 서울</td>
+      <td>성함, 연락처, 희망 지역, 창업 예산, 문의 내용<br>가맹 상담 신청 시<br>네트워크를 통한 암호화 전송(HTTPS)</td>
+      <td>상담 내역 보관<br>제3조의 보유 기간과 동일</td>
+    </tr>
+  </table>
+  <p>정보주체는 개인정보의 국외 이전을 거부할 수 있습니다. 다만 이 경우 홈페이지를 통한 가맹 상담 신청은
+    이용하실 수 없으며, <a href="tel:0256555288" class="num">02-565-5288</a>로 전화 상담을 이용해 주시기 바랍니다.</p>
 
   <h2>6. 정보주체의 권리 · 의무 및 행사 방법</h2>
   <p>정보주체는 회사에 대해 언제든지 다음 각 호의 권리를 행사할 수 있습니다.</p>

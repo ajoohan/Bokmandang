@@ -438,12 +438,15 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
   /* ── 전송 ── */
   function send(){
     const fd=new FormData(fm);
-    fd.append('_subject', CFG.subject||'복만당 가맹 상담 신청');
-    fd.append('보낸시각', new Date().toLocaleString('ko-KR'));
+    const mode=CFG.mode||'form';
+    if(mode!=='json'){
+      // 폼 서비스로 메일이 갈 때만 의미 있는 값입니다. 자체 API 에는 보내지 않습니다.
+      fd.append('_subject', CFG.subject||'복만당 가맹 상담 신청');
+      fd.append('보낸시각', new Date().toLocaleString('ko-KR'));
+    }
 
     const ctl=new AbortController();
     const timer=setTimeout(()=>ctl.abort(), CFG.timeout||15000);
-    const mode=CFG.mode||'form';
     const opt={method:'POST', signal:ctl.signal};
 
     if(mode==='json'){
@@ -460,7 +463,11 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
     return fetch(CFG.endpoint, opt).then(res=>{
       clearTimeout(timer);
       if(mode==='opaque') return;   // opaque 응답은 status 가 항상 0 입니다
-      if(!res.ok) throw new Error('HTTP '+res.status);
+      if(res.ok) return;
+      // 서버가 이유를 알려주면 그대로 보여줍니다 (예: "성함을 2자 이상…")
+      return res.json().then(
+        j=>{ const e=new Error(j&&j.error ? j.error : 'HTTP '+res.status); e.fromServer=!!(j&&j.error); throw e; },
+        ()=>{ throw new Error('HTTP '+res.status); });
     }, e=>{ clearTimeout(timer); throw e; });
   }
 
@@ -480,9 +487,14 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
       sending=false;
       btn.disabled=false; fm.removeAttribute('aria-busy');
       btnT.textContent='다시 보내기';
-      err.innerHTML=(ex&&ex.name==='AbortError')
-        ? '전송이 지연되고 있습니다. 잠시 후 다시 시도하시거나 <a href="tel:0256555288">02-565-5288</a>로 연락 주세요.'
-        : '전송에 실패했습니다. 네트워크를 확인한 뒤 다시 시도하시거나 <a href="tel:0256555288">02-565-5288</a>로 연락 주세요.';
+      const TEL=' <a href="tel:0256555288">02-565-5288</a>로 연락 주세요.';
+      err.textContent='';   // 서버 문구는 HTML 로 해석하지 않습니다
+      if(ex&&ex.name==='AbortError')
+        err.innerHTML='전송이 지연되고 있습니다. 잠시 후 다시 시도하시거나'+TEL;
+      else if(ex&&ex.fromServer)
+        err.textContent=ex.message;
+      else
+        err.innerHTML='전송에 실패했습니다. 네트워크를 확인한 뒤 다시 시도하시거나'+TEL;
       err.hidden=false;
       if(!RM) anim(err,{opacity:[0,1],transform:['translateY(-6px)','none']},{d:340,clear:'opacity,transform'});
     });

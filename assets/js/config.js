@@ -7,30 +7,27 @@
 window.BOKMANDANG = {
 
   /* ── 가맹 상담 폼 전송 ──────────────────────────────────────────────────
-     form.endpoint 가 비어 있으면 전송하지 않고 완료 화면만 보여줍니다(현재 상태).
-     주소를 채우는 순간 실제 전송이 켜집니다.
+     브라우저는 우리 서버(/api/inquiry)만 호출하고, 그 함수가 Supabase 에 넣습니다.
+     Supabase 키는 Vercel 환경변수로만 존재해 브라우저에 내려가지 않습니다.
 
-     mode — 받는 쪽에 맞춰 셋 중 하나를 고르세요.
-       'form'   multipart/form-data 로 POST. 응답 상태로 성공을 판정합니다.
-                → Formspree, Getform, Basin 등 폼 서비스. **권장**
-                  예) endpoint:'https://formspree.io/f/xxxxxxxx', mode:'form'
-       'json'   application/json 으로 POST. 응답 상태로 성공을 판정합니다.
-                → 자체 API 서버 / Resend·SendGrid 를 감싼 서버리스 함수
-                  예) endpoint:'https://api.복만당도메인/inquiry', mode:'json'
-       'opaque' no-cors 로 POST. **응답을 읽을 수 없어 실패해도 성공으로 보입니다.**
-                → Google Apps Script 웹앱처럼 CORS 헤더를 못 주는 경우만.
-                  이 방식을 쓰면 시트에 실제로 쌓이는지 주기적으로 확인해야 합니다.
+       브라우저 ──POST /api/inquiry──> Vercel 함수 ──service_role──> Supabase
+                                       (검증 · 중복차단 · 허니팟)
 
-     Formspree 로 붙이는 절차
-       1. formspree.io 가입 → New Form → 받을 메일 주소 지정
-       2. 발급된 https://formspree.io/f/XXXXXXXX 를 endpoint 에 붙여넣기
-       3. 폼에서 한 번 제출 → 메일함의 확인 링크 클릭 (첫 1회만)
-     ──────────────────────────────────────────────────────────────────── */
+     Vercel 프로젝트 설정에 아래 환경변수가 있어야 실제로 저장됩니다.
+       SUPABASE_URL          https://xxxx.supabase.co
+       SUPABASE_SERVICE_KEY  service_role 키   ★ 이 파일에 쓰지 마세요 (브라우저에 노출됩니다)
+       SUPABASE_TABLE        기본 inquiries (다른 스키마면 "bokmandang.inquiries")
+
+     endpoint 를 비우면 전송하지 않고 완료 화면만 보여줍니다(로컬 확인용).
+     방식을 갈아탈 때는 mode 를 바꾸세요 —
+       'json'   application/json POST (현재. 자체 API·서버리스 함수)
+       'form'   multipart/form-data POST (Formspree 등 폼 서비스)
+       'opaque' no-cors POST (Google Apps Script. 성공/실패를 알 수 없습니다) */
   form: {
-    endpoint: '',
-    mode: 'form',
+    endpoint: '/api/inquiry',
+    mode: 'json',
     timeout: 15000,          // ms. 이 시간을 넘기면 실패로 처리합니다.
-    subject: '복만당 가맹 상담 신청'   // Formspree 계열의 메일 제목(_subject)
+    subject: '복만당 가맹 상담 신청'   // Formspree 계열('form' 모드)의 메일 제목
   },
 
   /* ── 외부 채널 ──────────────────────────────────────────────────────────
