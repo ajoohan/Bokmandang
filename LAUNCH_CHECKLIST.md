@@ -57,9 +57,13 @@ Supabase 키는 브라우저에 절대 내려가지 않습니다.
 
 | 이름 | 값 |
 |---|---|
-| `SUPABASE_URL` | `https://xxxx.supabase.co` |
+| `SUPABASE_URL` | `https://yxhuyreepsulvxzsldca.supabase.co` |
 | `SUPABASE_SERVICE_KEY` | service_role 키 — **어디에도 커밋하지 마세요** |
-| `SUPABASE_TABLE` | `inquiries` (다른 프로젝트에 얹었다면 그 테이블명) |
+| `SUPABASE_TABLE` | `inquiries` |
+
+> Supabase 프로젝트는 **PLUSTONIC 조직과 다른 계정**에 있습니다 (무료 플랜 2개 제한 회피).
+> 나중에 담당자 인수인계를 위해 **소유 계정이 누구 것인지 기록해 두세요.**
+> 개인 메일이면 발주처 계정으로 이관하거나 조직 멤버로 초대해야 합니다.
 
 **c. 확인** — 배포 후 실제로 한 번 제출
 - [ ] Supabase Table Editor 의 `inquiries` 에 행이 생기는지
