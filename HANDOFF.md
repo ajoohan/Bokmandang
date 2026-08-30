@@ -110,12 +110,13 @@ Vercel 의 Root Directory 를 비워 둔 채로 그대로 붙습니다.
 
 작업용 로컬 저장소는 한 단계 위(`D:okmandang`)에 있고 이 폴더는 그 하위입니다.
 그래서 **평범한 `git push` 로는 안 올라갑니다.** 아래로 밀어 넣으세요.
+`subtree` 명령은 반드시 **저장소 최상위(`D:okmandang`)에서** 실행해야 합니다.
 
 ```bash
 git subtree push --prefix=bokmandang-web origin main
 ```
 
-느리면 분리 후 푸시해도 됩니다 — 결과는 같습니다.
+커밋이 쌓여 느려지면 분리 후 푸시해도 됩니다 — 결과는 같습니다.
 
 ```bash
 git subtree split --prefix=bokmandang-web -b gh-main
