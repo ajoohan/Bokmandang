@@ -35,16 +35,19 @@ for y in range(H):
 bg = Image.composite(Image.new('RGB', (W, H), (16, 15, 12)), bg,
                      grad.resize((W, H)))
 
-# 워드마크
-# 정식 로고(® 포함)를 씁니다 — tools/make-logo-r.py 로 생성
+# 워드마크 — 정식 로고(® 포함). tools/make-logo-r.py 로 생성
 logo = Image.open(os.path.join(IMG, 'logo-white-r.png')).convert('RGBA')
-lw = 352
+lw = 372
 logo = logo.resize((lw, round(logo.height * lw / logo.width)), Image.LANCZOS)
-bg.paste(logo, ((W - lw) // 2, 168), logo)
+bg.paste(logo, ((W - lw) // 2, 150), logo)
 
 d = ImageDraw.Draw(bg)
-serif  = ImageFont.truetype('C:/Windows/Fonts/georgia.ttf', 27)
-serif_s= ImageFont.truetype('C:/Windows/Fonts/georgia.ttf', 17)
+# 카피는 사이트와 같은 Pretendard 를 씁니다.
+# 없으면 tools/README 참고 — 가변 폰트를 정적 TTF 로 뽑아 두어야 합니다.
+KR = os.path.join(os.path.dirname(__file__), '..', 'build', 'Pretendard-600.ttf')
+if not os.path.exists(KR):
+    raise SystemExit(HELP)
+kr = ImageFont.truetype(KR, 40)
 
 def center(text, y, font, fill, track=0):
     w = sum(d.textlength(c, font=font) + track for c in text) - track
@@ -53,9 +56,9 @@ def center(text, y, font, fill, track=0):
         d.text((x, y), c, font=font, fill=fill)
         x += d.textlength(c, font=font) + track
 
-center('1++ HANWOO GOMTANG', 392, serif, (250, 248, 244), track=5)
-d.line([(W / 2 - 26, 448), (W / 2 + 26, 448)], fill=GOLD, width=1)
-center('BOKMANDANG  ·  SEOUL', 472, serif_s, GOLD, track=4)
+# 한글은 자간을 살짝 조입니다 (DESIGN.md 타이포 규칙)
+center('맑고 깊은 한우곰탕', 400, kr, (250, 248, 244), track=-1.2)
+d.line([(W / 2 - 26, 476), (W / 2 + 26, 476)], fill=GOLD, width=1)
 
 out = os.path.join(IMG, 'og-cover.jpg')
 bg.save(out, 'JPEG', quality=86, optimize=True, progressive=True)

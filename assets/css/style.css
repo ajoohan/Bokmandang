@@ -136,7 +136,7 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .price-card i{font-style:normal;font-size:13px;color:var(--mute)}
 .price-card i .num{font-size:15px}
 .stats{border-top:1px solid var(--line);margin-top:clamp(56px,7vw,96px)}
-.stats-in{display:grid;grid-template-columns:repeat(3,1fr);max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
+.stats-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
 .stats div{padding:clamp(26px,3vw,42px) 0;border-right:1px solid var(--line)}
 .stats div:last-child{border-right:0}
 .stats div:not(:first-child){padding-left:clamp(20px,3vw,44px)}

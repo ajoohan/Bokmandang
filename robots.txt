@@ -1,8 +1,9 @@
 # 복만당 — robots.txt
-# ⚠️ Sitemap 주소는 배포 도메인 확정 후 아래 명령으로 한 번에 바꾸세요.
-#    python tools/set-site-url.py https://실제도메인
+# ⚠️ 오픈 전 색인 차단 상태입니다. 정식 오픈 시:
+#    python tools/set-indexing.py allow
+# Sitemap 주소는 배포 도메인 확정 후: python tools/set-site-url.py https://도메인
 
 User-agent: *
-Allow: /
+Disallow: /
 
 Sitemap: https://bokmandang.example.com/sitemap.xml
