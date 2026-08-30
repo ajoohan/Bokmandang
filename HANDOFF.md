@@ -95,6 +95,51 @@
 - 인용 문구를 실존 인물의 발언으로 표기하지 마세요.
 - 이미지 파일명을 바꾸지 마세요 (CSS·JS·HTML 세 곳에서 참조).
 
+## 4-1. 저장소 · 배포
+
+| | |
+|---|---|
+| GitHub | `ajoohan/Bokmandang` · **private** · 기본 브랜치 `main` |
+| Vercel | `plustonic/bokmandang` · 함수 리전 서울(icn1) |
+| Supabase | `yxhuyreepsulvxzsldca` (PLUSTONIC 조직과 **다른 계정** — 인수인계 시 소유자 확인) |
+
+**저장소 루트 = 이 폴더의 내용물입니다.** `index.html` 이 최상단에 있어
+Vercel 의 Root Directory 를 비워 둔 채로 그대로 붙습니다.
+
+### 로컬 폴더 구조가 저장소와 다릅니다 ⚠️
+
+작업용 로컬 저장소는 한 단계 위(`D:okmandang`)에 있고 이 폴더는 그 하위입니다.
+그래서 **평범한 `git push` 로는 안 올라갑니다.** 아래로 밀어 넣으세요.
+
+```bash
+git subtree push --prefix=bokmandang-web origin main
+```
+
+느리면 분리 후 푸시해도 됩니다 — 결과는 같습니다.
+
+```bash
+git subtree split --prefix=bokmandang-web -b gh-main
+git push origin gh-main:main
+```
+
+로컬 저장소를 이 폴더로 옮겨 쓰고 싶으면 여기서 `git init` 을 새로 하지 말고,
+위 방식으로 계속 밀거나 저장소 자체를 클론해서 쓰세요 (이력이 갈라집니다).
+
+### 배포
+
+CLI 로 직접 올릴 때는 **이 폴더 안에서** 실행합니다.
+
+```bash
+npx vercel deploy --prod
+```
+
+GitHub 연동(자동배포)을 붙이면 Root Directory 는 **비워 두세요.** 저장소 루트가
+곧 사이트 루트입니다.
+
+`.vercelignore` 가 내부 문서(`*.md`)·`tools/`·`supabase/`·`brand/`·`build/` 를
+배포에서 제외합니다. **이 파일이 없으면 `https://도메인/CONTENT.md` 로 미확정 값이
+그대로 열립니다.** 새 내부 문서를 추가하면 여기도 함께 확인하세요.
+
 ## 5. 코드 지도
 
 ### `index.html`
