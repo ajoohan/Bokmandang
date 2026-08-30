@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>복만당 · 1++ 한우곰탕 | 브랜드 · 메뉴 · 매장 · 가맹점 모집</title>
+<meta name="description" content="1++ 암소 한우만을 약탕기에 14시간 저온으로 우려낸 맑고 깊은 곰탕. 복만당 브랜드 이야기와 메뉴, 서울·경기 매장 안내, 가맹점 창업 상담을 안내합니다.">
+
+<!-- ⚠️ 배포 도메인 미확정 — bokmandang.example.com 은 임시 placeholder 입니다.
+     도메인이 정해지면 아래 한 줄로 index.html · sitemap.xml · robots.txt 를 한꺼번에 바꾸세요.
+       python tools/set-site-url.py https://실제도메인
+     치환 전까지 og:image · canonical · sitemap 은 정상 동작하지 않습니다. -->
+<link rel="canonical" href="https://bokmandang.example.com/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="복만당">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://bokmandang.example.com/">
+<meta property="og:title" content="복만당 · 1++ 한우곰탕">
+<meta property="og:description" content="1++ 암소 한우만을 약탕기에 14시간 저온으로 우려낸 맑고 깊은 곰탕. 브랜드 · 메뉴 · 매장 · 가맹점 모집 안내.">
+<meta property="og:image" content="https://bokmandang.example.com/assets/img/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="복만당 1++ 한우곰탕">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+<meta name="theme-color" content="#FAF8F4">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=20260830a">
+<!-- LCP — 히어로 사진. AVIF 미지원 브라우저는 이 preload 를 건너뜁니다. -->
+<link rel="preload" as="image" href="assets/img/hero-gomtang.avif" type="image/avif" fetchpriority="high">
+
+<!-- 구조화 데이터 — CONTENT.md 의 ✅ 확정 정보만 넣었습니다.
+     영업시간(openingHours)은 미확정이라 의도적으로 비워 두었습니다. 확정되면 추가하세요. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "@id": "https://bokmandang.example.com/#restaurant",
+  "name": "복만당",
+  "alternateName": "BOKMANDANG",
+  "description": "1++ 암소 한우만을 약탕기에 저온으로 우려낸 맑은 한우곰탕 전문점.",
+  "url": "https://bokmandang.example.com/",
+  "image": "https://bokmandang.example.com/assets/img/og-cover.jpg",
+  "logo": "https://bokmandang.example.com/assets/img/logo-black.png",
+  "telephone": "+82-2-565-5288",
+  "servesCuisine": ["한식", "곰탕"],
+  "parentOrganization": {"@id": "https://bokmandang.example.com/#organization"},
+  "priceRange": "₩₩",
+  "currenciesAccepted": "KRW",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "언주로 563 원에디션강남 401동 116호",
+    "addressLocality": "강남구",
+    "addressRegion": "서울특별시",
+    "addressCountry": "KR"
+  },
+  "amenityFeature": {
+    "@type": "LocationFeatureSpecification",
+    "name": "주차",
+    "value": "지하주차장 이용"
+  },
+  "hasMenu": {
+    "@type": "Menu",
+    "name": "복만당 본점 메뉴",
+    "hasMenuSection": [
+      {
+        "@type": "MenuSection",
+        "name": "곰탕",
+        "hasMenuItem": [
+          {"@type":"MenuItem","name":"곰탕","offers":{"@type":"Offer","price":"11000","priceCurrency":"KRW"}},
+          {"@type":"MenuItem","name":"특곰탕","offers":{"@type":"Offer","price":"13000","priceCurrency":"KRW"}},
+          {"@type":"MenuItem","name":"우설곰탕","offers":{"@type":"Offer","price":"16000","priceCurrency":"KRW"}},
+          {"@type":"MenuItem","name":"수육곰탕","offers":{"@type":"Offer","price":"19000","priceCurrency":"KRW"}}
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "사이드",
+        "hasMenuItem": [
+          {"@type":"MenuItem","name":"한우수육 250g","offers":{"@type":"Offer","price":"35000","priceCurrency":"KRW"}},
+          {"@type":"MenuItem","name":"이북식 손만두 (1알)","offers":{"@type":"Offer","price":"2000","priceCurrency":"KRW"}},
+          {"@type":"MenuItem","name":"공깃밥","offers":{"@type":"Offer","price":"1000","priceCurrency":"KRW"}}
+        ]
+      },
+      {
+        "@type": "MenuSection",
+        "name": "밀키트",
+        "hasMenuItem": [
+          {"@type":"MenuItem","name":"곰탕 밀키트 600g","offers":{"@type":"Offer","price":"9000","priceCurrency":"KRW"}}
+        ]
+      }
+    ]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://bokmandang.example.com/#organization",
+  "name": "복만당",
+  "legalName": "주식회사 복만당",
+  "url": "https://bokmandang.example.com/",
+  "logo": "https://bokmandang.example.com/assets/img/logo-black.png",
+  "taxID": "269-88-02527",
+  "foundingDate": "2023-01-01",
+  "founder": {"@type": "Person", "name": "이정석"},
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "언주로 563, 401동 124호",
+    "addressLocality": "강남구",
+    "addressRegion": "서울특별시",
+    "addressCountry": "KR"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+82-2-565-5288",
+    "contactType": "가맹 문의",
+    "areaServed": "KR",
+    "availableLanguage": "Korean"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://bokmandang.example.com/#website",
+  "name": "복만당",
+  "url": "https://bokmandang.example.com/",
+  "inLanguage": "ko-KR",
+  "publisher": {"@id": "https://bokmandang.example.com/#organization"}
+}
+</script>
+</head>
+<body>
+<a class="sr" href="#main">본문 바로가기</a>
+<div id="intro" aria-hidden="true">
+  <div class="mark" id="mark">
+      <img class="ch" src="assets/img/logo-char-1.png" alt="" style="left:0.000%;width:33.886%">
+      <img class="ch" src="assets/img/logo-char-2.png" alt="" style="left:33.886%;width:29.367%">
+      <img class="ch" src="assets/img/logo-char-3.png" alt="" style="left:63.253%;width:36.747%">
+  </div>
+</div>
+<div class="cur" id="cur" aria-hidden="true"></div><div class="cur-r" id="curr" aria-hidden="true"></div>
+<div class="prog" id="pg" aria-hidden="true"></div>
+
+<header id="hd">
+  <div class="wrap">
+    <a href="#top" class="brand" aria-label="복만당 홈"><img src="assets/img/logo-black.png" alt="복만당"><span>1++</span></a>
+    <nav aria-label="주 메뉴"><ul>
+      <li><a href="#brand">브랜드</a></li>
+      <li><a href="#menu">메뉴</a></li>
+      <li><a href="#kit">밀키트</a></li>
+      <li><a href="#store">매장안내</a></li>
+      <li><a href="#franchise">창업안내</a></li>
+    </ul></nav>
+    <a href="#contact" class="btn btn-dark">가맹 상담 신청
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>
+    <button class="burger" id="bg" aria-label="메뉴 열기" aria-expanded="false"><i></i><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="drawer" id="dw">
+  <a href="#brand">브랜드</a><a href="#menu">메뉴</a><a href="#kit">밀키트</a>
+  <a href="#store">매장안내</a><a href="#franchise">창업안내</a>
+  <a href="#contact" class="btn btn-dark">가맹 상담 신청</a>
+</div>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="rv">
+      <p class="lbl lbl-g">SINCE 2024 — 서울 · 경기 7개 매장</p>
+      <h1 class="d1">맑은 국물에<br>깊은 맛을 담다</h1>
+      <p class="hero-lock"><em>복만당</em> 1++ 한우곰탕</p>
+      <p class="body">1++ 한우를 정성껏 우려, 맑고 깊은 맛을 담았습니다. 따뜻한 마음과 정성으로 완성한 곰탕에 복만당의 또 하나의 시그니처, 이북식 손만두를 곁들이면 담백하고 깊은 맛을 한층 더 풍성하게 즐기실 수 있습니다.</p>
+      <div class="hero-cta">
+        <a href="#franchise" class="btn btn-dark">가맹점 창업 안내
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>
+        <a href="#menu" class="btn btn-ghost">메뉴 보기</a>
+      </div>
+    </div>
+    <div class="hero-img rv">
+      <picture>
+        <source type="image/avif" srcset="assets/img/hero-gomtang.avif">
+        <source type="image/webp" srcset="assets/img/hero-gomtang.webp">
+        <img src="assets/img/hero-gomtang.jpg" alt="놋그릇에 담긴 복만당 한우곰탕" width="820" height="930" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="price-card">
+        <p class="lbl" lang="en">SIGNATURE</p><b>한우곰탕</b><i><span class="num">11,000</span>원 · 본점 기준</i>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-ind" aria-hidden="true" lang="en"><span class="ln"></span>SCROLL</div>
+  <div class="stats"><div class="stats-in">
+    <div><b>1++</b><span>암소 한우만 사용</span></div>
+    <div><b>14시간</b><span>약탕기 저온 추출</span></div>
+    <div><b>100%</b><span>국내산 원재료</span></div>
+  </div></div>
+</section>
+
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="mq">
+    <span>1++ 한우<i></i>약탕기 14시간 저온 추출<i></i>이북식 손만두<i></i>국내산 100%<i></i>오픈키친 조리<i></i>맑은 곰탕<i></i></span>
+    <span>1++ 한우<i></i>약탕기 14시간 저온 추출<i></i>이북식 손만두<i></i>국내산 100%<i></i>오픈키친 조리<i></i>맑은 곰탕<i></i></span>
+  </div>
+</div>
+
+<section class="sec" id="brand">
+  <div class="wrap grid2">
+    <div class="rail rv"><span class="idx">01</span><span class="lbl" lang="en">Our Promise</span><span class="bar"></span></div>
+    <div>
+      <div class="head rv">
+        <h2 class="d2">좋은 재료로 만든<br>곰탕의 깊이는 다릅니다</h2>
+        <p class="body">1++ 한우와 엄선한 식재료로 완성한 맑고 깊은 한 그릇. 좋은 재료에서 시작해 누구나 쉽게 만들고, 효율적으로 운영할 수 있도록 설계했습니다.</p>
+        <p class="principle"><span class="lbl lbl-g">복만당의 3가지 원칙</span>재료는 제대로, 조리는 간편하게, 운영은 효율적으로.</p>
+      </div>
+      <div class="promise-grid">
+        <div class="pcard rv"><span class="k">01 — 재료</span><h3>좋은 재료가 만드는<br>확실한 경쟁력</h3>
+          <p>1++ 한우를 중심으로 엄선한 식재료를 사용해 맑고 깊은 한우곰탕이라는 분명한 브랜드 경쟁력을 갖췄습니다.</p></div>
+        <div class="pcard rv"><span class="k">02 — 조리</span><h3>조리 경력 없이도<br>가능한 간편한 운영</h3>
+          <p>약탕기에서 저온으로 14시간, 맑고 깊게 우려낸 한우곰탕. 복잡한 불 조절이나 조리 중 지속적인 관리 부담을 줄인 시스템으로, 매일 한결같은 복만당의 맛을 구현합니다.</p></div>
+        <div class="pcard rv"><span class="k">03 — 운영</span><h3>작은 매장에서도<br>가능한 효율적인 창업</h3>
+          <p>복잡한 주방 설비와 많은 인력에 의존하지 않는 단순한 주방 · 효율적인 동선 · 소규모 운영 시스템으로 창업과 운영의 부담을 낮췄습니다.</p></div>
+      </div>
+      <div class="promise-img rv"><picture>
+        <source type="image/avif" sizes="(max-width:1080px) 92vw, min(950px, 74vw)" srcset="assets/img/brand-yaktanggi-800.avif 800w, assets/img/brand-yaktanggi.avif 1300w">
+        <source type="image/webp" sizes="(max-width:1080px) 92vw, min(950px, 74vw)" srcset="assets/img/brand-yaktanggi-800.webp 800w, assets/img/brand-yaktanggi.webp 1300w">
+        <img src="assets/img/brand-yaktanggi.jpg" alt="본점 주방의 약탕기 — 한우 육수를 저온으로 우려내는 설비" width="1300" height="735" loading="lazy" decoding="async">
+      </picture></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="band">
+  <picture class="bg-w" aria-hidden="true">
+    <source type="image/avif" sizes="100vw" srcset="assets/img/band-broth-800.avif 800w, assets/img/band-broth.avif 1600w">
+    <source type="image/webp" sizes="100vw" srcset="assets/img/band-broth-800.webp 800w, assets/img/band-broth.webp 1600w">
+    <img class="bg" src="assets/img/band-broth.jpg" alt="" width="1600" height="900" loading="lazy" decoding="async">
+  </picture>
+  <div class="wrap rv">
+    <div class="bar"></div>
+    <h2><q>좋은 한우, 어려운 조리는 필요 없습니다.<br>1++ 한우를 정성껏 우려낸 맑고 깊은 곰탕,<br>복만당의 맛과 깊이를 그대로 담았습니다.</q></h2>
+    <p class="sig" lang="en">BOKMANDANG KITCHEN</p>
+  </div>
+</section>
+
+<section class="sec" id="menu">
+  <div class="wrap grid2 wide">
+    <div class="rail rv"><span class="idx">02</span><span class="lbl" lang="en">Menu</span><span class="bar"></span></div>
+    <div>
+      <div class="head rv">
+        <h2 class="d2">시그니처 메뉴</h2>
+        <p class="body">본점 기준 가격이며 지점별로 상이할 수 있습니다. 메뉴를 선택하면 사진을 크게 볼 수 있습니다.</p>
+      </div>
+      <div class="tabs rv" role="tablist" aria-label="메뉴 분류">
+        <span class="tabind" id="ti" aria-hidden="true"></span>
+        <button class="tab on" data-f="all">전체</button>
+        <button class="tab" data-f="tang">곰탕</button>
+        <button class="tab" data-f="side">사이드</button>
+        <button class="tab" data-f="kit">밀키트</button>
+      </div>
+      <p class="swipe-hint" id="swipe" aria-hidden="true" style="display:none">옆으로 밀어 보기
+        <svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></p>
+      <div class="menu-grid" id="mgrid"></div>
+      <p class="origin rv"><strong>1++ 한우만 사용합니다.</strong><br>
+        원산지 — 소고기(국내산), 쌀(국내산), 돼지고기(국내산), 무(국내산), 고춧가루(국내산·중국산)</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec dark kit" id="kit">
+  <div class="wrap grid2">
+    <div class="rail rv"><span class="idx">03</span><span class="lbl" lang="en">Retail</span><span class="bar"></span></div>
+    <div>
+      <div class="head rv"><h2 class="d2" style="color:#FAF8F4">맑은 한우 곰탕,<br>집에서도 그대로</h2>
+        <p class="body">1++ 한우를 정성껏 우려낸 맑고 깊은 곰탕을 그 맛 그대로 정성스럽게 담았습니다. 간편하게 데우기만 하면 완성되는 복만당 한우곰탕 밀키트, 언제 어디서나 따뜻하고 든든한 한 끼를 즐겨보세요.</p></div>
+      <div class="kit-in">
+        <div class="rv">
+          <ul>
+            <li>1++ 한우를 약탕기에 우려낸 맑고 깊은 맛</li>
+            <li>600g · 162kcal · 냉동 보관 (−18℃ 이하)</li>
+            <li>소고기육수 88%, 소고기(국내산) 12%</li>
+            <li>가맹점 부수입 · 온라인 판매 채널 동시 운영</li>
+            <li>제조원 — 서울 강남구 언주로 563, 401동 123호</li>
+          </ul>
+          <div class="kit-cta">
+            <a href="#contact" class="btn btn-line">유통 · 입점 문의
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>
+            <!-- config.js 의 links.kitShop 에 주소를 넣으면 구매 버튼이 여기에 생깁니다 -->
+            <span id="kitshop"></span>
+          </div>
+        </div>
+        <div class="kit-img rv"><picture>
+          <source type="image/avif" srcset="assets/img/kit-package.avif">
+          <source type="image/webp" srcset="assets/img/kit-package.webp">
+          <img src="assets/img/kit-package.jpg" alt="복만당 맑은 한우 곰탕 밀키트 패키지" width="600" height="1066" loading="lazy" decoding="async">
+        </picture></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="store">
+  <div class="wrap grid2 wide">
+    <div class="rail rv"><span class="idx">04</span><span class="lbl" lang="en">Store</span><span class="bar"></span></div>
+    <div>
+      <div class="head rv"><h2 class="d2">매장 안내</h2></div>
+      <div class="store-grid">
+        <div class="rv">
+          <button type="button" class="gal-zoom" id="galzoom" aria-label="본점 사진 크게 보기">
+          <picture id="gp">
+            <source type="image/avif" sizes="(max-width:1080px) 92vw, min(600px, 46vw)" srcset="assets/img/store-hall-800.avif 800w, assets/img/store-hall.avif 1120w">
+            <source type="image/webp" sizes="(max-width:1080px) 92vw, min(600px, 46vw)" srcset="assets/img/store-hall-800.webp 800w, assets/img/store-hall.webp 1120w">
+            <img class="gal-main" id="gm" src="assets/img/store-hall.jpg" alt="복만당 본점 홀 전경" width="1120" height="750" loading="lazy" decoding="async">
+          </picture></button>
+          <div class="thumbs" id="th">
+            <button type="button" class="thumb on" aria-pressed="true" aria-label="본점 홀 전경 사진 보기"><picture><source type="image/avif" srcset="assets/img/store-hall-240.avif"><source type="image/webp" srcset="assets/img/store-hall-240.webp"><img class="on" data-base="store-hall" src="assets/img/store-hall.jpg" alt="본점 홀 전경" width="240" height="161" loading="lazy" decoding="async"></picture></button>
+            <button type="button" class="thumb" aria-pressed="false" aria-label="본점 입구 사진 보기"><picture><source type="image/avif" srcset="assets/img/store-entrance-240.avif"><source type="image/webp" srcset="assets/img/store-entrance-240.webp"><img data-base="store-entrance" src="assets/img/store-entrance.jpg" alt="본점 입구" width="240" height="161" loading="lazy" decoding="async"></picture></button>
+            <button type="button" class="thumb" aria-pressed="false" aria-label="본점 카운터석 사진 보기"><picture><source type="image/avif" srcset="assets/img/store-counter-240.avif"><source type="image/webp" srcset="assets/img/store-counter-240.webp"><img data-base="store-counter" src="assets/img/store-counter.jpg" alt="본점 카운터석" width="240" height="161" loading="lazy" decoding="async"></picture></button>
+            <button type="button" class="thumb" aria-pressed="false" aria-label="본점 홀 사진 보기"><picture><source type="image/avif" srcset="assets/img/store-hall-2-240.avif"><source type="image/webp" srcset="assets/img/store-hall-2-240.webp"><img data-base="store-hall-2" src="assets/img/store-hall-2.jpg" alt="본점 홀" width="240" height="161" loading="lazy" decoding="async"></picture></button>
+            <button type="button" class="thumb" aria-pressed="false" aria-label="본점 외관 사인 사진 보기"><picture><source type="image/avif" srcset="assets/img/store-sign-240.avif"><source type="image/webp" srcset="assets/img/store-sign-240.webp"><img data-base="store-sign" src="assets/img/store-sign.jpg" alt="본점 외관 사인" width="240" height="161" loading="lazy" decoding="async"></picture></button>
+          </div>
+        </div>
+        <div class="store-info rv">
+          <p class="lbl" lang="en">BOKMANDANG</p><h3 class="d3">본점</h3>
+          <div class="info-row"><span class="k">주소</span><span>서울시 강남구 언주로 <span class="num">563</span><br>원에디션강남 <span class="num">401</span>동 <span class="num">116</span>호</span></div>
+          <div class="info-row"><span class="k">대표문의</span><span class="num">02-565-5288</span></div>
+          <div class="info-row"><span class="k">영업</span><span><span class="num">15:40</span> 라스트오더<br><small style="color:var(--mute-2)">지점별 영업시간 상이 · 아래 목록 참조</small></span></div>
+          <div class="info-row"><span class="k">주차</span><span>지하주차장 이용</span></div>
+          <p class="note">현재 서울·경기 수도권 중심으로 매장을 운영하고 있습니다.<br>전체 매장은 아래 목록에서 확인하세요.</p>
+          <!-- 손님용 동선. 가맹 상담(#contact)과 목적이 달라 분리했습니다.
+               네이버 플레이스·예약·배달앱 버튼은 config.js 의 links 에 주소를 넣으면 자동으로 붙습니다. -->
+          <div class="store-act">
+            <a class="btn btn-ghost" href="https://map.naver.com/p/search/%EB%B3%B5%EB%A7%8C%EB%8B%B9%20%EB%B3%B8%EC%A0%90" target="_blank" rel="noopener">길찾기
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>
+            <button type="button" class="btn btn-ghost" id="cpaddr"
+              data-addr="서울특별시 강남구 언주로 563 원에디션강남 401동 116호">주소 복사</button>
+          </div>
+          <div class="ext" id="ext"></div>
+        </div>
+      </div>
+
+      <div class="dir">
+        <div class="dir-top rv">
+          <h3>전체 매장 찾기</h3>
+          <p class="cnt" lang="en"><b id="scnt">0</b> STORES</p>
+        </div>
+        <div class="dir-tools rv">
+          <div class="dir-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+            <input id="sq" type="search" placeholder="지점명 또는 지역으로 검색" aria-label="매장 검색">
+          </div>
+          <div class="rgn" id="rgn" role="group" aria-label="지역 필터">
+            <button class="on" data-r="all">전체</button>
+            <button data-r="서울">서울</button>
+            <button data-r="경기">경기·인천</button>
+            <button data-r="지방">그 외 지역</button>
+          </div>
+        </div>
+        <div class="dir-list" id="slist" role="list"></div>
+        <p class="dir-empty" id="sempty">검색 결과가 없습니다.</p>
+        <!-- 검색·지역 필터 결과를 스크린리더에 알립니다 (화면에는 보이지 않음) -->
+        <p class="sr" id="sstatus" role="status" aria-live="polite"></p>
+        <p class="dir-note rv">※ 지점명과 지역은 네이버 지도 검색 결과 기준입니다. 상세 주소와 지점 전화번호는 확인 후 보완 예정입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="franchise">
+  <div class="wrap grid2 wide">
+    <div class="rail rv"><span class="idx">05</span><span class="lbl" lang="en">Franchise</span><span class="bar"></span></div>
+    <div>
+      <div class="head rv"><h2 class="d2">복잡한 조리는 줄이고,<br>운영의 효율은 높였습니다</h2>
+        <p class="body"><strong>조리 경력은 필요 없습니다.</strong> 오픈키친에서 약탕기 하나로 간편하게 완성하는 복만당 맑은 한우곰탕. 복잡한 조리 과정은 줄이고, 누구나 쉽게 배우고 운영할 수 있도록 설계한 단순화 조리 시스템입니다.</p></div>
+
+      <div class="support">
+        <div class="scard rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M6 9V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3M5 9l1.2 9.2A2 2 0 0 0 8.2 20h7.6a2 2 0 0 0 2-1.8L19 9"/></svg></div>
+          <h3>약탕기 조리 시스템</h3><p>약탕기로 1++ 한우를 오래 우려내어 맑고 진한 곰탕을 조리합니다.</p></div>
+        <div class="scard rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.2"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5M16.5 14.2c2.6.3 4.5 1.9 4.5 4.8"/></svg></div>
+          <h3>주방 인력 최소화</h3><p>표준 레시피와 계량 도구를 제공해 2인 운영이 가능한 소형 매장 구조를 설계합니다.</p></div>
+        <div class="scard rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20V9.5L12 4l9 5.5V20M3 20h18M9 20v-6h6v6"/></svg></div>
+          <h3>인테리어 패키지</h3><p>15평 기준 표준 도면과 사인물·집기를 일괄 제공하여 공사 기간과 비용을 줄입니다.</p></div>
+        <div class="scard rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg></div>
+          <h3>오픈 후 관리</h3><p>월 1회 정기 점검과 온라인 마케팅을 지원합니다.</p></div>
+      </div>
+
+      <div class="steps">
+        <div class="step rv"><b>01</b><h4>상담 신청</h4><p>온라인 폼 또는 전화로 희망 지역과 예산을 알려주세요.</p></div>
+        <div class="step rv"><b>02</b><h4>상권 분석</h4><p>후보 입지의 유동인구·경쟁도를 조사해 리포트로 전달합니다.</p></div>
+        <div class="step rv"><b>03</b><h4>계약 · 설계</h4><p>가맹 계약 후 도면 확정, 인테리어 및 집기 발주를 진행합니다.</p></div>
+        <div class="step rv"><b>04</b><h4>교육</h4><p>본점에서 2주간 조리·위생·POS 운영 교육을 이수합니다.</p></div>
+        <div class="step rv"><b>05</b><h4>오픈</h4><p>시식회와 지역 마케팅을 함께 진행하며 매장을 엽니다.</p></div>
+      </div>
+
+      <div class="faq rv" id="faq">
+        <div class="qa"><button aria-expanded="false">조리 경험이 없어도 운영할 수 있나요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>저희 복만당은 복잡한 조리 기술 없이, 약탕기로 제조하며, 표준화된 시스템만으로 누구나 한결같은 맛을 구현할 수 있습니다.</p></div></div>
+        <div class="qa"><button aria-expanded="false">최소 평수와 필요한 인원은 어떻게 되나요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>15평(약 50㎡) 기준 표준 도면을 제공하며, 홀 1명·주방 1명 2인 운영이 가능한 동선으로 설계했습니다. 좌석 수는 입지에 따라 조정합니다.</p></div></div>
+        <div class="qa"><button aria-expanded="false">창업 비용은 어느 정도인가요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>점포 임차 조건과 평수에 따라 달라집니다. 상담 신청 시 희망 지역과 예산을 알려주시면 해당 조건에 맞춘 상세 견적을 보내드립니다.</p></div></div>
+        <div class="qa"><button aria-expanded="false">밀키트도 가맹점에서 판매할 수 있나요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>네. 매장 판매용 밀키트를 별도 공급하며, 온라인 채널은 본사가 운영합니다. 당일 생산한 신선한 미사용 재료를 정해진 시간에 밀키트로 전환하여, 신선도는 유지하고 식재료 폐기는 최소화하는 운영 방식입니다.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec dark" id="contact">
+  <div class="wrap grid2">
+    <div class="rail rv"><span class="idx">06</span><span class="lbl" lang="en">Contact</span><span class="bar"></span></div>
+    <div>
+      <div class="cta-in">
+        <div class="rv">
+          <h2 class="d2" style="color:#FAF8F4">가맹 상담<br>신청하기</h2>
+          <p class="body" style="margin-top:24px">희망 지역과 예산만 남겨주시면, 담당자가 영업일 기준 1일 이내에 연락드립니다. 상담은 무료이며 계약 의무가 없습니다.</p>
+          <div class="cta-contact">가맹 문의 전용<b class="num">02-565-5288</b>평일 10:00 – 18:00</div>
+        </div>
+        <form id="fm" novalidate>
+          <div class="fld"><label for="f1">성함 <b class="req">필수</b></label>
+            <input id="f1" name="name" type="text" placeholder="홍길동" autocomplete="name" required></div>
+          <div class="fld"><label for="f2">연락처 <b class="req">필수</b></label>
+            <input id="f2" name="phone" type="tel" inputmode="tel" placeholder="010-0000-0000" autocomplete="tel" required></div>
+          <div class="fld"><label for="f3">희망 지역</label>
+            <input id="f3" name="region" type="text" placeholder="서울 서초구"></div>
+          <div class="fld"><label for="f4">창업 예산</label><select id="f4" name="budget">
+            <option>1억 원 미만</option><option>1억 – 1.5억 원</option><option>1.5억 – 2억 원</option><option>2억 원 이상</option></select></div>
+          <div class="fld full"><label for="f5">문의 내용</label>
+            <textarea id="f5" name="message" placeholder="점포 보유 여부, 희망 오픈 시기 등을 적어주세요."></textarea></div>
+          <!-- 스팸 봇 차단용. 사람에게는 보이지 않으며, 값이 채워져 오면 전송하지 않습니다. -->
+          <div class="hp" aria-hidden="true"><label for="f0">이 칸은 비워 두세요</label>
+            <input id="f0" name="_gotcha" type="text" tabindex="-1" autocomplete="off"></div>
+          <div class="agree-row">
+            <label class="agree"><input id="f6" name="agree" type="checkbox" required> 개인정보 수집 및 이용에 동의합니다. <b class="req">필수</b></label>
+            <a class="agree-link" href="privacy.html" target="_blank" rel="noopener">처리방침 전문<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>
+          </div>
+          <p class="ferr" id="ferr" role="alert" hidden></p>
+          <button type="submit" class="btn btn-brass" id="fsub"><span class="t">상담 신청 보내기</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></button>
+          <div class="sent" id="sent"><div class="ok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.6 4.5L19 7.5"/></svg></div><h3>상담 신청이 접수되었습니다</h3>
+            <p>영업일 기준 1일 이내에 담당자가 연락드리겠습니다.<span class="demo"><br>지금은 전송 대상이 설정되지 않아 실제로 접수되지 않습니다.</span></p></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- 라이트박스 — 배경(#main)을 inert 로 잠그므로 <main> 밖에 두어야 합니다 -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="메뉴 사진 크게 보기">
+  <button class="x" id="lbx" aria-label="닫기"><span lang="en" aria-hidden="true">CLOSE</span></button>
+  <div><img id="lbi" alt=""><div class="cap"><h3 id="lbt"></h3><p id="lbp"></p></div></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="top-row">
+      <div><img src="assets/img/logo-white.png" alt="복만당">
+        <p>복만당 <span class="num">1++</span> 맑은 한우곰탕<br>서울시 강남구 언주로 <span class="num">563</span> 원에디션강남 <span class="num">401</span>동 <span class="num">116</span>호<br><span class="num">02-565-5288</span></p></div>
+      <div class="fnav">
+        <a href="#brand">브랜드</a><a href="#menu">메뉴</a><a href="#store">매장안내</a><a href="#franchise">창업안내</a><a href="#contact">가맹문의</a>
+        <a href="privacy.html" class="pp">개인정보처리방침</a>
+      </div>
+    </div>
+    <!-- 사업자 정보 — 「전자상거래 등에서의 소비자보호에 관한 법률」 제10조 표시 의무 항목.
+         출처: 사업자등록증(2026-04-10 발급). 값을 고칠 일이 있으면 등록증과 대조하세요.
+         ※ 밀키트 온라인 판매를 시작하면 통신판매업 신고번호를 여기에 추가해야 합니다. -->
+    <dl class="biz">
+      <div><dt>상호</dt><dd>주식회사 복만당</dd></div>
+      <div><dt>대표자</dt><dd>이정석</dd></div>
+      <div><dt>사업자등록번호</dt><dd class="num">269-88-02527</dd></div>
+      <div><dt>주소</dt><dd>서울특별시 강남구 언주로 <span class="num">563</span>, <span class="num">401</span>동 <span class="num">124</span>호 (역삼동, 원에디션강남)</dd></div>
+      <div><dt>대표전화</dt><dd><a href="tel:0256555288" class="num">02-565-5288</a></dd></div>
+    </dl>
+    <p class="copy">© 2026 주식회사 복만당. ALL RIGHTS RESERVED. — 본 페이지는 웹사이트 시안(프로토타입)입니다.</p>
+  </div>
+</footer>
+
+<nav class="mbar" id="mbar" aria-label="빠른 실행">
+  <a class="call" href="tel:0256555288"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a1.6 1.6 0 0 1-1.8 1.6C10.6 20 4 13.4 3.4 5.8A1.6 1.6 0 0 1 5 4z"/></svg>전화 문의</a>
+  <a class="cta" href="#contact">가맹 상담 신청</a>
+</nav>
+
+<button class="top" id="tp" aria-label="맨 위로">
+  <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M8 14V2M3 7l5-5 5 5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
+</button>
+
+<script src="assets/js/config.js?v=20260830a"></script>
+<script src="assets/data/stores.js?v=20260830a"></script>
+<script src="assets/js/main.js?v=20260830a"></script>
+</body>
+</html>
