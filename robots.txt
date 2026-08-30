@@ -5,5 +5,7 @@
 
 User-agent: *
 Disallow: /
+Disallow: /admin.html
+Disallow: /api/
 
 Sitemap: https://bokmandang.example.com/sitemap.xml

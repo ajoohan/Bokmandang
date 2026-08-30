@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--
+  복만당 관리자 — 가맹 상담 접수 관리 + 매장 목록 편집
+
+  · 브라우저는 /api/admin/* 만 호출합니다. Supabase 키는 서버에만 있습니다.
+  · 로그인은 담당자 공용 비밀번호 1개입니다(개인별 추적 불가).
+    계정을 나눠야 하면 Supabase Auth 로 올리세요 — HANDOFF 참조.
+
+  필요한 Vercel 환경변수
+    ADMIN_PASSWORD  담당자 공용 비밀번호 (길고 무작위하게)
+    ADMIN_SECRET    세션 쿠키 서명키 (무작위 32자 이상). 바꾸면 전원 로그아웃됩니다.
+-->
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>복만당 관리자</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/favicon-64.png">
+<meta name="theme-color" content="#F3EFE7">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=20260830d">
+</head>
+<body class="adm">
+
+<!-- 로그인 -->
+<div class="adm-login" id="login" hidden>
+  <form id="loginForm">
+    <img src="assets/img/logo-black.png" alt="복만당">
+    <h1>관리자 로그인</h1>
+    <p>가맹 상담 접수와 매장 목록을 관리합니다.<br>비밀번호는 담당자끼리만 공유하세요.</p>
+    <input type="password" id="pw" placeholder="비밀번호" autocomplete="current-password" required>
+    <button type="submit" id="loginBtn">로그인</button>
+    <p class="adm-err" id="loginErr" role="alert"></p>
+  </form>
+</div>
+
+<!-- 본체 -->
+<div id="app" hidden>
+  <header class="adm-hd">
+    <div class="in">
+      <img src="assets/img/logo-black.png" alt="복만당">
+      <span class="sep"></span>
+      <h1>관리자</h1>
+      <div class="adm-tab" role="tablist">
+        <button class="on" data-view="inq" role="tab">상담 접수</button>
+        <button data-view="str" role="tab">매장 목록</button>
+      </div>
+      <div class="sp">
+        <a class="adm-btn" href="index.html" target="_blank" rel="noopener">사이트 보기</a>
+        <button class="adm-btn" id="logout">로그아웃</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="adm-main">
+    <!-- 상담 접수 -->
+    <section id="view-inq">
+      <div class="adm-bar">
+        <button class="adm-chip on" data-status="">전체 <b id="c-all">0</b></button>
+        <button class="adm-chip" data-status="new">접수 <b id="c-new">0</b></button>
+        <button class="adm-chip" data-status="contacted">연락함 <b id="c-contacted">0</b></button>
+        <button class="adm-chip" data-status="visiting">상권검토 <b id="c-visiting">0</b></button>
+        <button class="adm-chip" data-status="contracted">계약 <b id="c-contracted">0</b></button>
+        <button class="adm-chip" data-status="closed">종료 <b id="c-closed">0</b></button>
+        <div class="adm-search"><input id="q" type="search" placeholder="이름 · 연락처 · 지역 · 문의 내용 검색"></div>
+      </div>
+      <div class="adm-card">
+        <div class="adm-row head"><div>신청자</div><div>희망 지역 · 예산</div><div>문의 내용 · 메모</div><div>상태</div><div></div></div>
+        <div id="inqList"><div class="adm-empty">불러오는 중…</div></div>
+      </div>
+      <p class="adm-note">상태와 메모는 고른 즉시 저장됩니다. 삭제는 되돌릴 수 없습니다 —
+        정보주체가 삭제를 요청한 경우에만 쓰세요(개인정보처리방침 §6).</p>
+    </section>
+
+    <!-- 매장 목록 -->
+    <section id="view-str" hidden>
+      <div class="adm-bar">
+        <button class="adm-btn primary" id="addStore">+ 매장 추가</button>
+        <p class="adm-note" style="margin:0">여기서 바꾸면 사이트 매장 안내에 바로 반영됩니다.
+          <strong>게시</strong>를 끄면 사이트에서 숨겨집니다.</p>
+      </div>
+      <div class="adm-card">
+        <div class="adm-store head"><div>순서</div><div>지점명</div><div>지역</div><div>주소</div><div>영업 정보</div><div>배지 · 삭제</div></div>
+        <div id="strList"><div class="adm-empty">불러오는 중…</div></div>
+      </div>
+      <p class="adm-note">순서는 숫자가 작을수록 위입니다. 지역은 사이트의 지역 필터 버튼과 연결됩니다.</p>
+    </section>
+  </main>
+</div>
+
+<div class="adm-toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/js/admin.js?v=20260830d"></script>
+</body>
+</html>

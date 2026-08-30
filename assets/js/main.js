@@ -794,7 +794,7 @@ document.querySelectorAll('.sec').forEach(sec=>{
    ▼ 실제 지점 정보는 아래 STORES 배열만 교체하면 됩니다.
    r: '서울' | '경기' | '지방'   ·  new:true → NEW 배지  ·  soon:true → 오픈예정 배지 */
 // 매장 데이터는 assets/data/stores.js 에서 주입됩니다 (window.STORES)
-const STORES = window.STORES || [];
+const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 교체될 수 있습니다
 (function(){
   const list=document.getElementById('slist'), empty=document.getElementById('sempty'),
         cnt=document.getElementById('scnt'), q=document.getElementById('sq'), rgn=document.getElementById('rgn');
@@ -840,6 +840,21 @@ const STORES = window.STORES || [];
   let deb; q.addEventListener('input',()=>{clearTimeout(deb);deb=setTimeout(()=>{kw=q.value.trim().toLowerCase();draw();},160);});
   draw(false);
   { const st=document.getElementById('sstatus'); if(st) st.textContent=''; }
+
+  /* 관리자 화면에서 고친 매장 목록을 받아옵니다.
+     assets/data/stores.js 로 먼저 그린 뒤라, API 가 없거나 실패해도 화면은 정상입니다.
+     (관리자 기능을 안 쓰면 /api/stores 가 rows:null 을 돌려주고 아무 일도 없습니다) */
+  fetch('/api/stores', {headers:{'Accept':'application/json'}})
+    .then(r=>r.ok?r.json():null)
+    .then(j=>{
+      if(!j||!Array.isArray(j.rows)||!j.rows.length) return;
+      const same = j.rows.length===STORES.length &&
+        j.rows.every((s,i)=>s.n===STORES[i].n&&s.a===STORES[i].a&&s.t===STORES[i].t&&s.r===STORES[i].r);
+      if(same) return;                       // 바뀐 게 없으면 다시 그리지 않습니다
+      STORES.length=0; STORES.push(...j.rows);
+      draw(false);
+    })
+    .catch(()=>{});                          // 오프라인·차단 등 — 정적 목록 유지
   inView(list,()=>{ [...list.children].forEach((el,i)=>{
     el.style.opacity='0';
     anim(el,{opacity:[0,1],transform:['translateY(16px)','none']},{d:600,delay:i*55,ease:E.out,clear:'opacity,transform'});

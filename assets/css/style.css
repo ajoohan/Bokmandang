@@ -635,3 +635,113 @@ header.hide{transform:translateY(-104%)}
   .doc tr{margin-bottom:16px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
   .doc tr td:last-child{border-bottom:0}
 }
+
+/* ══════ 10. 관리자 화면 (admin.html) ══════
+   사이트와 같은 토큰을 쓰되, 읽는 페이지가 아니라 다루는 도구라
+   여백을 줄이고 정보 밀도를 높입니다. */
+.adm{--row:#fff;min-height:100vh;background:var(--bg-2)}
+.adm-hd{position:sticky;top:0;z-index:50;background:rgba(250,248,244,.94);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-2)}
+.adm-hd .in{max-width:1280px;margin:0 auto;padding:0 clamp(16px,3vw,32px);height:60px;
+  display:flex;align-items:center;gap:16px}
+.adm-hd img{height:26px}
+.adm-hd .sep{width:1px;height:20px;background:var(--line-2)}
+.adm-hd h1{font-size:14px;font-weight:700;letter-spacing:-.03em}
+.adm-hd .sp{margin-left:auto;display:flex;align-items:center;gap:10px}
+.adm-tab{display:flex;gap:2px;background:var(--bg-2);padding:3px;border-radius:8px}
+.adm-tab button{padding:7px 15px;border-radius:6px;font-size:13px;font-weight:600;color:var(--mute);
+  letter-spacing:-.02em;transition:background .2s,color .2s}
+.adm-tab button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(20,18,15,.09)}
+.adm-main{max-width:1280px;margin:0 auto;padding:clamp(20px,3vw,34px) clamp(16px,3vw,32px) 90px}
+
+.adm-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.adm-chip{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 14px;border-radius:100px;
+  border:1px solid var(--line-2);background:var(--card);font-size:13px;font-weight:600;color:var(--mute);
+  transition:border-color .2s,color .2s,background .2s}
+.adm-chip.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.adm-chip b{font-family:var(--serif);font-size:15px;font-weight:500}
+.adm-search{flex:1;min-width:200px;position:relative}
+.adm-search input{width:100%;min-height:38px;padding:0 14px;border-radius:8px;border:1px solid var(--line-2);
+  background:var(--card);font-family:inherit;font-size:14px;color:var(--ink)}
+.adm-search input:focus{border-color:var(--gold);outline:none}
+
+.adm-card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.adm-row{display:grid;grid-template-columns:minmax(150px,1.1fr) minmax(120px,.9fr) 1.4fr 150px auto;
+  gap:14px;align-items:start;padding:16px 18px;border-bottom:1px solid var(--line);font-size:13.5px}
+.adm-row:last-child{border-bottom:0}
+.adm-row.head{background:var(--bg-2);font-size:11px;letter-spacing:.14em;font-weight:600;
+  color:var(--mute);text-transform:uppercase;position:sticky;top:60px;z-index:5}
+.adm-row .who b{display:block;font-size:15px;letter-spacing:-.03em;margin-bottom:3px}
+.adm-row .when{color:var(--mute-2);font-size:12px}
+.adm-row .msg{color:var(--ink-2);line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.adm-row .msg:empty::before{content:'—';color:var(--mute-2)}
+.adm-row a[href^="tel"]{border-bottom:1px solid var(--line-2)}
+.adm-row a[href^="tel"]:hover{border-bottom-color:var(--gold)}
+
+.adm-sel{min-height:34px;padding:0 10px;border-radius:7px;border:1px solid var(--line-2);
+  background:var(--card);font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink)}
+.adm-sel:focus{border-color:var(--gold);outline:none}
+.adm-sel[data-s=new]{border-color:var(--gold);color:var(--gold-t)}
+.adm-sel[data-s=contracted]{border-color:#3F7A55;color:#2F6042}
+.adm-sel[data-s=closed]{color:var(--mute-2)}
+.adm-memo{width:100%;margin-top:8px;min-height:34px;padding:7px 10px;border-radius:7px;
+  border:1px solid var(--line);background:var(--bg);font-family:inherit;font-size:12.5px;
+  color:var(--ink-2);resize:vertical}
+.adm-memo:focus{border-color:var(--gold);outline:none;background:var(--card)}
+
+.adm-act{display:flex;gap:6px;align-items:center}
+.adm-btn{min-height:34px;padding:0 12px;border-radius:7px;border:1px solid var(--line-2);
+  background:var(--card);font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink-2);
+  transition:border-color .2s,background .2s,color .2s}
+.adm-btn:hover{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.adm-btn.danger:hover{border-color:var(--red);background:var(--red)}
+.adm-btn.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.adm-btn.primary:hover{background:var(--gold-d);border-color:var(--gold-d)}
+.adm-btn:disabled{opacity:.45;pointer-events:none}
+
+.adm-empty{padding:60px 20px;text-align:center;color:var(--mute)}
+.adm-note{margin-top:14px;font-size:12.5px;color:var(--mute);line-height:1.75}
+.adm-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:200;
+  background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:8px;font-size:13px;
+  font-weight:600;box-shadow:0 14px 40px rgba(20,18,15,.28);opacity:0;pointer-events:none;
+  transition:opacity .25s,transform .25s}
+.adm-toast.on{opacity:1;transform:translateX(-50%) translateY(-4px)}
+.adm-toast.bad{background:var(--red)}
+
+/* 로그인 */
+.adm-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.adm-login form{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:clamp(28px,4vw,40px)}
+.adm-login img{height:34px;margin-bottom:26px}
+.adm-login h1{font-size:19px;letter-spacing:-.04em;margin-bottom:8px}
+.adm-login p{font-size:13px;color:var(--mute);line-height:1.75;margin-bottom:24px}
+.adm-login input{width:100%;min-height:46px;padding:0 14px;border-radius:8px;border:1px solid var(--line-2);
+  background:var(--bg);font-family:inherit;font-size:16px;color:var(--ink);margin-bottom:12px}
+.adm-login input:focus{border-color:var(--gold);outline:none;background:var(--card)}
+.adm-login button{width:100%;min-height:46px;border-radius:8px;background:var(--ink);color:var(--bg);
+  font-family:inherit;font-size:14px;font-weight:700;letter-spacing:-.02em}
+.adm-login button:hover{background:var(--gold-d)}
+.adm-err{margin-top:12px;font-size:13px;color:var(--red);line-height:1.7}
+.adm-err:empty{display:none}
+
+/* 매장 편집 */
+.adm-store{display:grid;grid-template-columns:64px minmax(130px,1fr) 96px minmax(160px,1.5fr) minmax(120px,1fr) auto;
+  gap:10px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line)}
+.adm-store:last-of-type{border-bottom:0}
+.adm-store input[type=text],.adm-store input[type=number],.adm-store select{
+  width:100%;min-height:36px;padding:0 10px;border-radius:7px;border:1px solid var(--line-2);
+  background:var(--card);font-family:inherit;font-size:13px;color:var(--ink)}
+.adm-store input:focus,.adm-store select:focus{border-color:var(--gold);outline:none}
+.adm-store.head{background:var(--bg-2);font-size:11px;letter-spacing:.14em;font-weight:600;
+  color:var(--mute);text-transform:uppercase}
+.adm-flags{display:flex;gap:12px;align-items:center;font-size:12px;color:var(--mute)}
+.adm-flags label{display:flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap}
+.adm-flags input{accent-color:var(--gold);width:15px;height:15px}
+
+@media (max-width:900px){
+  .adm-row{grid-template-columns:1fr;gap:8px}
+  .adm-row.head{display:none}
+  .adm-store{grid-template-columns:1fr;gap:8px}
+  .adm-store.head{display:none}
+  .adm-hd h1{display:none}
+}
