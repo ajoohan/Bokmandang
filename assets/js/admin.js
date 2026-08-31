@@ -337,17 +337,25 @@ function openAddr(row) {
     return;
   }
   const inp = row.querySelector('[data-f=address]');
-  new daum.Postcode({
-    oncomplete(d) {
-      let a = d.roadAddress || d.jibunAddress;
-      if (d.buildingName) a += ', ' + d.buildingName;
-      inp.value = a;
-      syncRegion(row);
-      inp.focus();
-      inp.setSelectionRange(a.length, a.length);
-      toast('주소를 넣었습니다. 동·호수는 이어서 적으세요.');
-    }
-  }).open({ popupTitle: '복만당 매장 주소 검색', autoClose: true });
+  /* 팝업이 막히면 아무 일도 안 일어난 것처럼 보입니다 —
+     창이 안 열렸을 때를 잡아 무엇을 해야 하는지 알려 줍니다. */
+  const openOrig = window.open;
+  let win;
+  window.open = function () { win = openOrig.apply(window, arguments); return win; };
+  try {
+    new daum.Postcode({
+      oncomplete(d) {
+        let a = d.roadAddress || d.jibunAddress;
+        if (d.buildingName) a += ', ' + d.buildingName;
+        inp.value = a;
+        syncRegion(row);
+        inp.focus();
+        inp.setSelectionRange(a.length, a.length);
+        toast('주소를 넣었습니다. 동·호수는 이어서 적으세요.');
+      }
+    }).open({ popupTitle: '복만당 매장 주소 검색', autoClose: true });
+  } finally { window.open = openOrig; }
+  if (!win) toast('브라우저가 팝업을 막았습니다. 주소창의 팝업 차단 아이콘에서 허용한 뒤 다시 눌러 주세요.', true);
 }
 
 /* ── 저장 ───────────────────────────────────────────────────────────── */
