@@ -120,6 +120,18 @@ python tools/push-to-github.py
 일반 push 순으로 처리해서 **force push 없이** 매번 통과합니다.
 원격 이력이 사라지지 않습니다.
 
+### ⚠️ Vercel 계정에 GitHub 이 연결돼 있어야 합니다
+
+Vercel **Hobby 는 프로젝트 소유자의 커밋만 배포합니다.** 계정에 GitHub 이
+연결돼 있지 않으면 푸시는 성공하는데 배포가 조용히 `Blocked` 로 멈춥니다.
+목록에는 이유가 안 뜨고, Redeploy 창을 열어야 아래 문구가 보입니다.
+
+> The Deployment was blocked because the commit author does not have
+> contributing access to the project on Vercel.
+
+확인 위치 — Vercel → 계정 설정 → Authentication → **GitHub** 이 연결됨 상태여야 합니다.
+(이 프로젝트에서 20시간 넘게 배포가 막혔던 원인입니다.)
+
 ### ⚠️ 커밋 작성자를 바꾸지 마세요
 
 Vercel **Hobby 플랜은 프로젝트 소유자가 아닌 사람이 만든 커밋을 배포하지 않습니다.**

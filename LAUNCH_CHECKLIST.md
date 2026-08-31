@@ -13,7 +13,7 @@
 |---|---|---|---|
 | 1 | **고유 도메인** | `python tools/set-site-url.py https://도메인 --from https://bokmandang.vercel.app` | 현재 `bokmandang.vercel.app` 로 동작 중 |
 | ~~2~~ | ~~상담 폼 연동~~ | ~~Supabase + Vercel~~ | ✅ **동작 확인 완료** |
-| 2-b | **관리자 화면 켜기** — `ADMIN_PASSWORD`·`ADMIN_SECRET` + `0002_admin.sql` | Vercel · Supabase | 코드 완료, 미설정 |
+| ~~2-b~~ | ~~관리자 화면~~ | ~~Vercel · Supabase~~ | ✅ **구글 로그인으로 활성화 완료** |
 | ~~3~~ | ~~사업자 정보~~ | ~~푸터 · privacy.html~~ | ✅ **사업자등록증으로 반영 완료** |
 | 4-b | **401동 호수 확인** — 등록 124호 / 본점 116호 / 제조원 123호 | `CONTENT.md` 참조 | 세 가지가 달라 확인 필요 |
 | 5 | **개인정보 보유 기간** | `privacy.html` §3 | "동의일로부터 1년" (표준값으로 임시 기재) |
@@ -52,13 +52,21 @@ Supabase 키는 브라우저에 절대 내려가지 않습니다.
 - [ ] SQL Editor 에서 `supabase/migrations/0001_inquiries.sql` 실행
 - [ ] Settings → API 에서 **Project URL** 과 **service_role** 키 복사
 
-**b. Vercel 환경변수** (Settings → Environment Variables, Production+Preview 둘 다)
+**b. Vercel 환경변수** (Settings → Environment Variables, 세 환경 모두)
 
 | 이름 | 값 |
 |---|---|
 | `SUPABASE_URL` | `https://yxhuyreepsulvxzsldca.supabase.co` |
 | `SUPABASE_SERVICE_KEY` | service_role 키 — **어디에도 커밋하지 마세요** |
 | `SUPABASE_TABLE` | `inquiries` |
+| `GOOGLE_CLIENT_ID` | 구글 OAuth 클라이언트 ID (공개값) |
+| `ADMIN_EMAILS` | 관리자 구글 계정. 쉼표로 여러 명 |
+| `ADMIN_SECRET` | 세션 쿠키 서명키. 바꾸면 전원 로그아웃 |
+
+**관리자 담당자가 바뀌면** `ADMIN_EMAILS` 만 고치면 됩니다. 비밀번호 공유가 없습니다.
+
+⚠️ 구글 Cloud Console 의 **승인된 자바스크립트 원본**에 사이트 주소가 있어야
+로그인 버튼이 뜹니다. 고유 도메인을 붙이면 그 주소도 추가하세요.
 
 > Supabase 프로젝트는 **PLUSTONIC 조직과 다른 계정**에 있습니다 (무료 플랜 2개 제한 회피).
 > 나중에 담당자 인수인계를 위해 **소유 계정이 누구 것인지 기록해 두세요.**
@@ -145,7 +153,8 @@ Supabase 대시보드에서 pg_cron 으로 매일 돌리거나, 담당자가 주
 | 외부 채널 | `config.js` 의 `links` 에 주소를 넣은 항목만 버튼 생성 |
 | 캐시 무효화 | CSS·JS 에 `?v=20260829` — **배포할 때마다 숫자를 올리세요** |
 | 인트로 | 세션당 1회만 재생 (`sessionStorage`) |
-| 관리자 화면 | `/admin` — 상담 상태·메모 관리 + 매장 목록 편집. 환경변수 넣으면 켜집니다 |
+| 관리자 화면 | `/admin` — **구글 로그인**. 상담 상태·메모 관리 + 매장 목록 편집 |
+| 관리자 접근 권한 | `ADMIN_EMAILS` 환경변수에 이메일 추가/삭제로 관리 (쉼표 구분) |
 | 링크 미리보기 | OG 이미지 실주소 반영 — 카카오·슬랙·페북 스크래퍼 응답 확인 완료 |
 | 등급 표기 | `1++` 전면 삭제 (2026-08-30 발주처 확인 — 사실 아님). 경위는 `CONTENT.md` |
 | 검색 | **허용** (미리보기 우선). 되돌리려면 `python tools/set-indexing.py block` |
