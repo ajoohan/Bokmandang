@@ -745,3 +745,10 @@ header.hide{transform:translateY(-104%)}
   .adm-store.head{display:none}
   .adm-hd h1{display:none}
 }
+
+/* 관리자 로그인 — 구글 버튼 · 구분선 */
+.adm-login #gsiBtn{display:flex;justify-content:center;margin-bottom:12px}
+.adm-hint{font-size:12.5px;color:var(--mute-2);text-align:center;line-height:1.7;margin-bottom:0}
+.adm-or{display:flex;align-items:center;gap:12px;margin:22px 0 16px;
+  font-size:11.5px;letter-spacing:.14em;color:var(--mute-2)}
+.adm-or::before,.adm-or::after{content:'';flex:1;height:1px;background:var(--line)}

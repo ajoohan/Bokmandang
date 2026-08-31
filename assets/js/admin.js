@@ -27,17 +27,48 @@ function show(which) {
 }
 
 /* ── 로그인 ─────────────────────────────────────────────────────────── */
+/* 로그인 성공 후 공통 처리 */
+function enter() { show('app'); loadInq(); loadStr(); }
+
+/* 구글에서 받은 ID 토큰을 서버로 보냅니다. 검증은 전부 서버가 합니다. */
+async function onGoogle(resp) {
+  const err = $('#loginErr'); err.textContent = '';
+  try {
+    const r = await api('/api/admin/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: resp.credential })
+    });
+    if (r && r.email) console.log('로그인:', r.email);
+    enter();
+  } catch (ex) { err.textContent = ex.message; }
+}
+
+/* GIS 스크립트가 늦게 로드될 수 있어 준비될 때까지 짧게 기다립니다 */
+function initGoogle(clientId, tries = 0) {
+  if (!window.google || !google.accounts || !google.accounts.id) {
+    if (tries < 40) return setTimeout(() => initGoogle(clientId, tries + 1), 150);
+    $('#loginErr').textContent = '구글 로그인을 불러오지 못했습니다. 새로고침해 주세요.';
+    return;
+  }
+  google.accounts.id.initialize({ client_id: clientId, callback: onGoogle });
+  google.accounts.id.renderButton($('#gsiBtn'),
+    { theme: 'outline', size: 'large', width: 300, text: 'signin_with', locale: 'ko' });
+  $('#gsi').hidden = false;
+}
+
 $('#loginForm').onsubmit = async e => {
   e.preventDefault();
+  const pw = $('#pw');
+  if (!pw || $('#pwBox').hidden) return;          // 비밀번호 수단이 꺼져 있으면 무시
   const btn = $('#loginBtn'), err = $('#loginErr');
   btn.disabled = true; btn.textContent = '확인 중…'; err.textContent = '';
   try {
     await api('/api/admin/login', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: $('#pw').value })
+      body: JSON.stringify({ password: pw.value })
     });
-    $('#pw').value = '';
-    show('app'); loadInq(); loadStr();
+    pw.value = '';
+    enter();
   } catch (ex) {
     err.textContent = ex.message;
   } finally {
@@ -220,11 +251,16 @@ $('#addStore').onclick = async () => {
     const s = await api('/api/admin/session');
     if (!s.configured) {
       show('login');
-      $('#loginErr').textContent = '관리자 기능이 아직 설정되지 않았습니다. Vercel 환경변수 ADMIN_PASSWORD·ADMIN_SECRET 를 넣어 주세요.';
+      $('#loginErr').innerHTML = '관리자 기능이 아직 설정되지 않았습니다.<br>' +
+        'Vercel 환경변수 <b>ADMIN_SECRET</b> 과 ' +
+        '<b>GOOGLE_CLIENT_ID</b> · <b>ADMIN_EMAILS</b> 를 넣어 주세요.';
       $('#loginBtn').disabled = true;
       return;
     }
-    if (s.authenticated) { show('app'); loadInq(); loadStr(); }
+    $('#pwBox').hidden = !s.methods.password;
+    $('#pwOr').hidden = !(s.methods.password && s.methods.google);
+    if (s.methods.google && s.googleClientId) initGoogle(s.googleClientId);
+    if (s.authenticated) enter();
     else show('login');
   } catch { show('login'); }
 })();
