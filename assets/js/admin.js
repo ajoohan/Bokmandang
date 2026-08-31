@@ -5,6 +5,13 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+/* 빈 상태 · 오류를 같은 틀로 — 한 줄 문구만 띄우면 무엇을 해야 할지 알 수 없습니다 */
+const empty = (mark, title, desc) =>
+  `<div class="adm-empty">
+     <div class="mk" aria-hidden="true">${mark}</div>
+     <h3>${title}</h3><p>${desc}</p>
+   </div>`;
+
 let toastT;
 function toast(msg, bad) {
   const t = $('#toast');
@@ -99,8 +106,12 @@ const fmt = iso => {
          ` ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 };
 
+const skeleton = n => Array.from({ length: n },
+  () => '<div class="adm-skel"><i></i><i></i><i></i></div>').join('');
+
 async function loadInq() {
   const box = $('#inqList');
+  box.innerHTML = skeleton(4);
   try {
     const p = new URLSearchParams();
     if (filter) p.set('status', filter);
@@ -111,7 +122,12 @@ async function loadInq() {
       $('#c-' + k).textContent = counts[k] || 0;
 
     if (!rows.length) {
-      box.innerHTML = `<div class="adm-empty">${q || filter ? '조건에 맞는 상담이 없습니다.' : '아직 접수된 상담이 없습니다.'}</div>`;
+      box.innerHTML = (q || filter)
+        ? empty('0', '조건에 맞는 상담이 없습니다',
+                '검색어를 지우거나 다른 상태를 눌러 보세요.')
+        : empty('—', '아직 접수된 상담이 없습니다',
+                '사이트의 가맹 상담 신청이 들어오면 이 자리에 쌓입니다. ' +
+                '접수되면 상태를 바꿔가며 진행 상황을 관리하세요.');
       return;
     }
     box.innerHTML = rows.map(r => `
@@ -134,7 +150,7 @@ async function loadInq() {
         <div class="adm-act"><button class="adm-btn danger" data-del title="삭제">삭제</button></div>
       </div>`).join('');
   } catch (ex) {
-    box.innerHTML = `<div class="adm-empty">${esc(ex.message)}</div>`;
+    box.innerHTML = empty('!', '목록을 불러오지 못했습니다', esc(ex.message));
   }
 }
 
@@ -183,9 +199,14 @@ const REGIONS = ['서울', '경기', '지방'];
 
 async function loadStr() {
   const box = $('#strList');
+  box.innerHTML = skeleton(3);
   try {
     const { rows } = await api('/api/admin/stores');
-    if (!rows.length) { box.innerHTML = '<div class="adm-empty">매장이 없습니다. 위의 “매장 추가”를 눌러 시작하세요.</div>'; return; }
+    if (!rows.length) {
+      box.innerHTML = empty('—', '등록된 매장이 없습니다',
+        '위의 “매장 추가”로 지점을 만들고 주소와 영업 정보를 채우세요.');
+      return;
+    }
     box.innerHTML = rows.map(s => `
       <div class="adm-store" data-id="${s.id}">
         <div><input type="number" data-f="sort" value="${s.sort}"></div>
@@ -203,7 +224,7 @@ async function loadStr() {
         </div>
       </div>`).join('');
   } catch (ex) {
-    box.innerHTML = `<div class="adm-empty">${esc(ex.message)}</div>`;
+    box.innerHTML = empty('!', '매장 목록을 불러오지 못했습니다', esc(ex.message));
   }
 }
 

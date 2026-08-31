@@ -637,125 +637,195 @@ header.hide{transform:translateY(-104%)}
 }
 
 /* ══════ 10. 관리자 화면 (admin.html) ══════
-   ⚠️ hidden 속성이 항상 이기게 둡니다.
-      .adm-login{display:flex} 같은 규칙이 [hidden]{display:none} 을 덮어써서
-      로그인 후에도 로그인 카드가 사라지지 않던 문제가 있었습니다.
-      화면 전환을 hidden 으로 하는 이상 이 한 줄이 없으면 같은 일이 반복됩니다. */
+   사이트와 같은 토큰을 씁니다. 다만 읽는 페이지가 아니라 다루는 도구라
+   여백을 줄이고 정보 밀도를 올렸습니다. 숫자는 전부 자리를 맞춥니다(tabular-nums).
+
+   ⚠️ hidden 이 항상 이기게 둡니다 — .adm-login{display:flex} 같은 규칙이
+      [hidden]{display:none} 을 덮어써 로그인 후에도 카드가 안 사라지던 문제가 있었습니다. */
 .adm [hidden], .adm[hidden]{display:none !important}
 
-   사이트와 같은 토큰을 쓰되, 읽는 페이지가 아니라 다루는 도구라
-   여백을 줄이고 정보 밀도를 높입니다. */
-.adm{--row:#fff;min-height:100vh;background:var(--bg-2)}
-.adm-hd{position:sticky;top:0;z-index:50;background:rgba(250,248,244,.94);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line-2)}
-.adm-hd .in{max-width:1280px;margin:0 auto;padding:0 clamp(16px,3vw,32px);height:60px;
-  display:flex;align-items:center;gap:16px}
-.adm-hd img{height:26px}
-.adm-hd .sep{width:1px;height:20px;background:var(--line-2)}
-.adm-hd h1{font-size:14px;font-weight:700;letter-spacing:-.03em}
-.adm-hd .sp{margin-left:auto;display:flex;align-items:center;gap:10px}
-.adm-tab{display:flex;gap:2px;background:var(--bg-2);padding:3px;border-radius:8px}
-.adm-tab button{padding:7px 15px;border-radius:6px;font-size:13px;font-weight:600;color:var(--mute);
-  letter-spacing:-.02em;transition:background .2s,color .2s}
-.adm-tab button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(20,18,15,.09)}
-.adm-main{max-width:1280px;margin:0 auto;padding:clamp(20px,3vw,34px) clamp(16px,3vw,32px) 90px}
+.adm{--gap:clamp(16px,2.4vw,28px);min-height:100dvh;background:var(--bg-2);color:var(--ink)}
+.adm ::selection{background:var(--gold-d);color:#fff}
 
-.adm-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
-.adm-chip{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 14px;border-radius:100px;
-  border:1px solid var(--line-2);background:var(--card);font-size:13px;font-weight:600;color:var(--mute);
-  transition:border-color .2s,color .2s,background .2s}
+/* ── 헤더 ────────────────────────────────────────────── */
+.adm-hd{position:sticky;top:0;z-index:60;background:rgba(250,248,244,.88);
+  backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line-2)}
+.adm-hd .in{max-width:1320px;margin:0 auto;padding:0 var(--gap);height:64px;
+  display:flex;align-items:center;gap:14px}
+.adm-hd img{height:24px;display:block}
+.adm-hd .sep{width:1px;height:18px;background:var(--line-2);flex:none}
+.adm-hd h1{font-size:13px;font-weight:600;letter-spacing:-.02em;color:var(--mute);white-space:nowrap}
+.adm-hd .sp{margin-left:auto;display:flex;align-items:center;gap:8px}
+
+/* 탭 — 세그먼트 컨트롤 */
+.adm-tab{display:flex;gap:2px;margin-left:10px;padding:3px;border-radius:9px;
+  background:var(--bg-2);border:1px solid var(--line)}
+.adm-tab button{padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;
+  letter-spacing:-.02em;color:var(--mute);white-space:nowrap;
+  transition:background .22s,color .22s,box-shadow .22s}
+.adm-tab button:hover{color:var(--ink)}
+.adm-tab button.on{background:var(--card);color:var(--ink);
+  box-shadow:0 1px 2px rgba(20,18,15,.10),0 0 0 1px rgba(20,18,15,.05)}
+.adm-tab button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+.adm-main{max-width:1320px;margin:0 auto;padding:clamp(24px,3.4vw,40px) var(--gap) 96px}
+
+/* ── 툴바 ────────────────────────────────────────────── */
+.adm-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:20px}
+.adm-chip{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 15px;
+  border-radius:100px;border:1px solid var(--line-2);background:var(--card);
+  font-size:13px;font-weight:600;letter-spacing:-.02em;color:var(--mute);
+  transition:border-color .22s,color .22s,background .22s}
+.adm-chip:hover{border-color:var(--mute-2);color:var(--ink)}
+.adm-chip b{font-family:var(--serif);font-size:15px;font-weight:500;
+  font-variant-numeric:tabular-nums;color:var(--mute-2);transition:color .22s}
+.adm-chip:hover b{color:var(--ink-2)}
 .adm-chip.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.adm-chip b{font-family:var(--serif);font-size:15px;font-weight:500}
-.adm-search{flex:1;min-width:200px;position:relative}
-.adm-search input{width:100%;min-height:38px;padding:0 14px;border-radius:8px;border:1px solid var(--line-2);
-  background:var(--card);font-family:inherit;font-size:14px;color:var(--ink)}
-.adm-search input:focus{border-color:var(--gold);outline:none}
+.adm-chip.on b{color:var(--gold-l)}
+.adm-chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
-.adm-card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.adm-row{display:grid;grid-template-columns:minmax(150px,1.1fr) minmax(120px,.9fr) 1.4fr 150px auto;
-  gap:14px;align-items:start;padding:16px 18px;border-bottom:1px solid var(--line);font-size:13.5px}
-.adm-row:last-child{border-bottom:0}
-.adm-row.head{background:var(--bg-2);font-size:11px;letter-spacing:.14em;font-weight:600;
-  color:var(--mute);text-transform:uppercase;position:sticky;top:60px;z-index:5}
-.adm-row .who b{display:block;font-size:15px;letter-spacing:-.03em;margin-bottom:3px}
-.adm-row .when{color:var(--mute-2);font-size:12px}
-.adm-row .msg{color:var(--ink-2);line-height:1.7;white-space:pre-wrap;word-break:break-word}
-.adm-row .msg:empty::before{content:'—';color:var(--mute-2)}
-.adm-row a[href^="tel"]{border-bottom:1px solid var(--line-2)}
-.adm-row a[href^="tel"]:hover{border-bottom-color:var(--gold)}
+.adm-search{flex:1 1 240px;min-width:0}
+.adm-search input{width:100%;height:40px;padding:0 15px;border-radius:9px;
+  border:1px solid var(--line-2);background:var(--card);
+  font-family:inherit;font-size:13.5px;letter-spacing:-.02em;color:var(--ink)}
+.adm-search input::placeholder{color:var(--mute-2)}
+.adm-search input:focus{border-color:var(--gold);outline:none;
+  box-shadow:0 0 0 3px rgba(165,131,75,.14)}
 
-.adm-sel{min-height:34px;padding:0 10px;border-radius:7px;border:1px solid var(--line-2);
-  background:var(--card);font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink)}
-.adm-sel:focus{border-color:var(--gold);outline:none}
-.adm-sel[data-s=new]{border-color:var(--gold);color:var(--gold-t)}
-.adm-sel[data-s=contracted]{border-color:#3F7A55;color:#2F6042}
-.adm-sel[data-s=closed]{color:var(--mute-2)}
-.adm-memo{width:100%;margin-top:8px;min-height:34px;padding:7px 10px;border-radius:7px;
+/* ── 표 ──────────────────────────────────────────────── */
+.adm-card{background:var(--card);border:1px solid var(--line);border-radius:12px}
+.adm-row{display:grid;
+  grid-template-columns:minmax(160px,1.05fr) minmax(120px,.8fr) minmax(220px,1.6fr) 152px 72px;
+  gap:18px;align-items:start;padding:18px 20px;border-top:1px solid var(--line);
+  font-size:13.5px;transition:background .2s}
+.adm-row:not(.head):hover{background:var(--bg)}
+.adm-row.head{border-top:0;padding:13px 20px;background:transparent;
+  border-bottom:1px solid var(--line-2);
+  font-size:11px;letter-spacing:.16em;font-weight:600;color:var(--mute-2);text-transform:uppercase}
+
+.adm-row .who b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.035em;margin-bottom:4px}
+.adm-row .who a{font-variant-numeric:tabular-nums;color:var(--ink-2);
+  border-bottom:1px solid var(--line-2);transition:border-color .2s,color .2s}
+.adm-row .who a:hover{color:var(--ink);border-bottom-color:var(--gold)}
+.adm-row .when{margin-top:5px;font-size:11.5px;color:var(--mute-2);font-variant-numeric:tabular-nums}
+.adm-row .msg{color:var(--ink-2);line-height:1.72;white-space:pre-wrap;word-break:break-word;
+  max-width:62ch;text-wrap:pretty}
+.adm-row .msg:empty::before{content:"—";color:var(--mute-2)}
+
+.adm-sel{width:100%;height:36px;padding:0 11px;border-radius:8px;
+  border:1px solid var(--line-2);background:var(--card);
+  font-family:inherit;font-size:12.5px;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.adm-sel:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(165,131,75,.14)}
+/* 상태는 색만이 아니라 왼쪽 띠로도 구분합니다 — 색각 이상에서도 읽히도록 */
+.adm-sel[data-s=new]{border-left:3px solid var(--gold);color:var(--gold-t)}
+.adm-sel[data-s=contacted]{border-left:3px solid var(--mute-2)}
+.adm-sel[data-s=visiting]{border-left:3px solid var(--ink-2)}
+.adm-sel[data-s=contracted]{border-left:3px solid #3F7A55;color:#2F6042}
+.adm-sel[data-s=closed]{border-left:3px solid var(--line-2);color:var(--mute-2)}
+
+.adm-memo{width:100%;margin-top:10px;min-height:36px;padding:8px 11px;border-radius:8px;
   border:1px solid var(--line);background:var(--bg);font-family:inherit;font-size:12.5px;
-  color:var(--ink-2);resize:vertical}
-.adm-memo:focus{border-color:var(--gold);outline:none;background:var(--card)}
+  line-height:1.65;color:var(--ink-2);resize:vertical}
+.adm-memo::placeholder{color:var(--mute-2)}
+.adm-memo:focus{border-color:var(--gold);outline:none;background:var(--card);
+  box-shadow:0 0 0 3px rgba(165,131,75,.14)}
 
-.adm-act{display:flex;gap:6px;align-items:center}
-.adm-btn{min-height:34px;padding:0 12px;border-radius:7px;border:1px solid var(--line-2);
-  background:var(--card);font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink-2);
-  transition:border-color .2s,background .2s,color .2s}
+.adm-act{display:flex;gap:6px;align-items:center;justify-content:flex-end}
+
+/* ── 버튼 ────────────────────────────────────────────── */
+.adm-btn{display:inline-flex;align-items:center;justify-content:center;
+  height:36px;padding:0 13px;border-radius:8px;border:1px solid var(--line-2);
+  background:var(--card);font-family:inherit;font-size:12.5px;font-weight:600;
+  letter-spacing:-.02em;color:var(--ink-2);white-space:nowrap;
+  transition:border-color .2s,background .2s,color .2s,transform .12s}
 .adm-btn:hover{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.adm-btn:active{transform:translateY(1px)}
+.adm-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .adm-btn.danger:hover{border-color:var(--red);background:var(--red)}
 .adm-btn.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .adm-btn.primary:hover{background:var(--gold-d);border-color:var(--gold-d)}
 .adm-btn:disabled{opacity:.45;pointer-events:none}
 
-.adm-empty{padding:60px 20px;text-align:center;color:var(--mute)}
-.adm-note{margin-top:14px;font-size:12.5px;color:var(--mute);line-height:1.75}
-.adm-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:200;
-  background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:8px;font-size:13px;
-  font-weight:600;box-shadow:0 14px 40px rgba(20,18,15,.28);opacity:0;pointer-events:none;
+/* ── 빈 상태 · 로딩 ──────────────────────────────────── */
+.adm-empty{padding:72px 24px;text-align:center}
+.adm-empty .mk{width:38px;height:38px;margin:0 auto 18px;border-radius:50%;
+  border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:19px;color:var(--mute-2)}
+.adm-empty h3{font-size:15.5px;font-weight:700;letter-spacing:-.035em;margin-bottom:7px}
+.adm-empty p{font-size:13px;color:var(--mute);line-height:1.8;max-width:38ch;margin:0 auto}
+.adm-skel{padding:18px 20px;border-top:1px solid var(--line)}
+.adm-skel:first-child{border-top:0}
+.adm-skel i{display:block;height:11px;border-radius:4px;background:var(--line);
+  animation:admPulse 1.4s ease-in-out infinite}
+.adm-skel i + i{margin-top:9px;width:62%}
+.adm-skel i + i + i{width:38%}
+@keyframes admPulse{0%,100%{opacity:.55}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.adm-skel i{animation:none}}
+
+.adm-note{margin-top:16px;font-size:12.5px;color:var(--mute);line-height:1.8;max-width:78ch}
+.adm-note strong{color:var(--ink-2);font-weight:600}
+
+/* ── 알림 ────────────────────────────────────────────── */
+.adm-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(8px);
+  z-index:200;background:var(--ink);color:var(--bg);padding:13px 22px;border-radius:9px;
+  font-size:13px;font-weight:600;letter-spacing:-.02em;
+  box-shadow:0 16px 44px rgba(20,18,15,.26);opacity:0;pointer-events:none;
   transition:opacity .25s,transform .25s}
-.adm-toast.on{opacity:1;transform:translateX(-50%) translateY(-4px)}
+.adm-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .adm-toast.bad{background:var(--red)}
 
-/* 로그인 */
-.adm-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.adm-login form{display:block;   /* 가맹 상담 폼용 form{display:grid} 이 여기까지 잡힙니다 */
-  width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);
-  border-radius:12px;padding:clamp(28px,4vw,40px)}
-.adm-login img{display:block;height:34px;margin-bottom:26px}
-.adm-login h1{font-size:19px;letter-spacing:-.04em;margin-bottom:8px}
-.adm-login p{font-size:13px;color:var(--mute);line-height:1.75;margin-bottom:24px}
-.adm-login input{width:100%;min-height:46px;padding:0 14px;border-radius:8px;border:1px solid var(--line-2);
-  background:var(--bg);font-family:inherit;font-size:16px;color:var(--ink);margin-bottom:12px}
-.adm-login input:focus{border-color:var(--gold);outline:none;background:var(--card)}
-.adm-login button{width:100%;min-height:46px;border-radius:8px;background:var(--ink);color:var(--bg);
-  font-family:inherit;font-size:14px;font-weight:700;letter-spacing:-.02em}
-.adm-login button:hover{background:var(--gold-d)}
-.adm-err{margin-top:12px;font-size:13px;color:var(--red);line-height:1.7}
-.adm-err:empty{display:none}
-
-/* 매장 편집 */
-.adm-store{display:grid;grid-template-columns:64px minmax(130px,1fr) 96px minmax(160px,1.5fr) minmax(120px,1fr) auto;
-  gap:10px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line)}
-.adm-store:last-of-type{border-bottom:0}
+/* ── 매장 편집 ───────────────────────────────────────── */
+.adm-store{display:grid;
+  grid-template-columns:68px minmax(130px,1fr) 100px minmax(180px,1.7fr) minmax(130px,1fr) auto;
+  gap:10px;align-items:center;padding:12px 20px;border-top:1px solid var(--line)}
+.adm-store.head{border-top:0;padding:13px 20px;border-bottom:1px solid var(--line-2);
+  font-size:11px;letter-spacing:.16em;font-weight:600;color:var(--mute-2);text-transform:uppercase}
+.adm-store:not(.head):hover{background:var(--bg)}
 .adm-store input[type=text],.adm-store input[type=number],.adm-store select{
-  width:100%;min-height:36px;padding:0 10px;border-radius:7px;border:1px solid var(--line-2);
-  background:var(--card);font-family:inherit;font-size:13px;color:var(--ink)}
-.adm-store input:focus,.adm-store select:focus{border-color:var(--gold);outline:none}
-.adm-store.head{background:var(--bg-2);font-size:11px;letter-spacing:.14em;font-weight:600;
-  color:var(--mute);text-transform:uppercase}
-.adm-flags{display:flex;gap:12px;align-items:center;font-size:12px;color:var(--mute)}
+  width:100%;height:36px;padding:0 11px;border-radius:8px;border:1px solid var(--line-2);
+  background:var(--card);font-family:inherit;font-size:13px;letter-spacing:-.02em;color:var(--ink)}
+.adm-store input[type=number]{font-variant-numeric:tabular-nums}
+.adm-store input:focus,.adm-store select:focus{border-color:var(--gold);outline:none;
+  box-shadow:0 0 0 3px rgba(165,131,75,.14)}
+.adm-flags{display:flex;gap:13px;align-items:center;font-size:12px;color:var(--mute)}
 .adm-flags label{display:flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap}
 .adm-flags input{accent-color:var(--gold);width:15px;height:15px}
 
-@media (max-width:900px){
-  .adm-row{grid-template-columns:1fr;gap:8px}
-  .adm-row.head{display:none}
-  .adm-store{grid-template-columns:1fr;gap:8px}
-  .adm-store.head{display:none}
-  .adm-hd h1{display:none}
-}
+/* ── 로그인 ──────────────────────────────────────────── */
+.adm-login{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
+.adm-login form{display:block;   /* 가맹 상담 폼의 form{display:grid} 이 여기까지 잡힙니다 */
+  width:100%;max-width:372px;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:clamp(30px,4vw,40px);
+  box-shadow:0 24px 60px rgba(20,18,15,.07)}
+.adm-login img{display:block;height:30px;margin-bottom:28px}
+.adm-login h1{font-size:20px;font-weight:700;letter-spacing:-.045em;margin-bottom:9px}
+.adm-login > form > p{font-size:13px;color:var(--mute);line-height:1.8;margin-bottom:26px}
+.adm-login #gsiBtn{display:flex;justify-content:center;margin-bottom:14px;min-height:44px}
+.adm-hint{font-size:12.5px;color:var(--mute-2);text-align:center;line-height:1.7;margin:0}
+.adm-or{display:flex;align-items:center;gap:12px;margin:24px 0 16px;
+  font-size:11px;letter-spacing:.16em;color:var(--mute-2)}
+.adm-or::before,.adm-or::after{content:"";flex:1;height:1px;background:var(--line)}
+.adm-login input{width:100%;height:46px;padding:0 14px;border-radius:9px;
+  border:1px solid var(--line-2);background:var(--bg);
+  font-family:inherit;font-size:16px;color:var(--ink);margin-bottom:12px}
+.adm-login input:focus{border-color:var(--gold);outline:none;background:var(--card);
+  box-shadow:0 0 0 3px rgba(165,131,75,.14)}
+.adm-login button[type=submit]{width:100%;height:46px;border-radius:9px;
+  background:var(--ink);color:var(--bg);font-family:inherit;font-size:14px;
+  font-weight:700;letter-spacing:-.02em;transition:background .22s}
+.adm-login button[type=submit]:hover{background:var(--gold-d)}
+.adm-err{margin-top:14px;font-size:13px;color:var(--red);line-height:1.75}
+.adm-err:empty{display:none}
 
-/* 관리자 로그인 — 구글 버튼 · 구분선 */
-.adm-login #gsiBtn{display:flex;justify-content:center;margin-bottom:12px}
-.adm-hint{font-size:12.5px;color:var(--mute-2);text-align:center;line-height:1.7;margin-bottom:0}
-.adm-or{display:flex;align-items:center;gap:12px;margin:22px 0 16px;
-  font-size:11.5px;letter-spacing:.14em;color:var(--mute-2)}
-.adm-or::before,.adm-or::after{content:'';flex:1;height:1px;background:var(--line)}
+/* ── 좁은 화면 — 표를 카드로 ─────────────────────────── */
+@media (max-width:940px){
+  .adm-hd .in{height:auto;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+  .adm-hd h1{display:none}
+  .adm-tab{margin-left:0;order:3;width:100%}
+  .adm-tab button{flex:1}
+  .adm-row,.adm-store{grid-template-columns:1fr;gap:10px}
+  .adm-row.head,.adm-store.head{display:none}
+  .adm-row{padding:20px}
+  .adm-act{justify-content:flex-start}
+  .adm-store{padding:18px 20px}
+}
