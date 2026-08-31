@@ -59,10 +59,14 @@ export const readCookie = (req) =>
     .map(s => s.trim().split('='))
     .find(([k]) => k === COOKIE)?.[1] || '';
 
-/* 관리자 라우트 진입 가드 — 통과하면 true */
+/* 관리자 라우트 진입 가드 — 통과하면 true
+   로그인 수단은 구글 또는 비밀번호 중 하나만 있으면 됩니다.
+   필수는 세션 서명키(ADMIN_SECRET) 뿐입니다. */
 export function guard(req, res) {
-  if (!process.env.ADMIN_PASSWORD || !secret()) {
-    res.status(500).json({ error: '관리자 기능이 설정되지 않았습니다. ADMIN_PASSWORD·ADMIN_SECRET 환경변수를 확인하세요.' });
+  const hasGoogle = !!(process.env.GOOGLE_CLIENT_ID && (process.env.ADMIN_EMAILS || '').trim());
+  const hasPassword = !!process.env.ADMIN_PASSWORD;
+  if (!secret() || !(hasGoogle || hasPassword)) {
+    res.status(500).json({ error: '관리자 기능이 설정되지 않았습니다. ADMIN_SECRET 과 로그인 수단(GOOGLE_CLIENT_ID·ADMIN_EMAILS)을 확인하세요.' });
     return false;
   }
   if (!validSession(readCookie(req))) {
