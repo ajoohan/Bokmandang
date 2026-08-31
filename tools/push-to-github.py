@@ -38,6 +38,12 @@ dirty = git('status', '--porcelain')
 if dirty:
     sys.exit('커밋되지 않은 변경이 있습니다. 먼저 커밋하세요:\n' + dirty)
 
+author = git('log', '-1', '--format=%an <%ae>')
+print(f'커밋 작성자: {author}')
+if 'noreply.github.com' not in author:
+    print('  ⚠️ Vercel Hobby 는 프로젝트 소유자가 아닌 작성자의 커밋을 배포하지 않습니다.')
+    print('     git config user.email 을 확인하세요.')
+
 print('1) 원격 최신 상태 가져오기')
 git('fetch', REMOTE, BRANCH)
 remote_tip = git('rev-parse', f'{REMOTE}/{BRANCH}')

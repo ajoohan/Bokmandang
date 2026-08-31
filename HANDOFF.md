@@ -120,6 +120,25 @@ python tools/push-to-github.py
 일반 push 순으로 처리해서 **force push 없이** 매번 통과합니다.
 원격 이력이 사라지지 않습니다.
 
+### ⚠️ 커밋 작성자를 바꾸지 마세요
+
+Vercel **Hobby 플랜은 프로젝트 소유자가 아닌 사람이 만든 커밋을 배포하지 않습니다.**
+
+> The Deployment was blocked because the commit author does not have
+> contributing access to the project on Vercel.
+
+작성자가 다르면 GitHub 푸시는 성공하는데 Vercel 에서 조용히 `Blocked` 로 멈춥니다.
+목록에 이유가 표시되지 않고, Redeploy 창을 열어야 위 문구가 보입니다.
+
+이 저장소는 아래 값으로 고정해 두었습니다.
+
+```bash
+git log -1 --format='%an <%ae>'
+```
+
+담당자가 바뀌면 **그 사람의 GitHub 이메일로 바꾸고, 그 계정이 Vercel 프로젝트
+소유자이거나 Pro 팀 멤버여야** 합니다. Hobby 는 팀 협업을 지원하지 않습니다.
+
 ### 배포
 
 CLI 로 직접 올릴 때는 **이 폴더 안에서** 실행합니다.
