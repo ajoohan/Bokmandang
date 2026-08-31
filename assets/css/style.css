@@ -710,9 +710,10 @@ header.hide{transform:translateY(-104%)}
 
 /* 로그인 */
 .adm-login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.adm-login form{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);
+.adm-login form{display:block;   /* 가맹 상담 폼용 form{display:grid} 이 여기까지 잡힙니다 */
+  width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);
   border-radius:12px;padding:clamp(28px,4vw,40px)}
-.adm-login img{height:34px;margin-bottom:26px}
+.adm-login img{display:block;height:34px;margin-bottom:26px}
 .adm-login h1{font-size:19px;letter-spacing:-.04em;margin-bottom:8px}
 .adm-login p{font-size:13px;color:var(--mute);line-height:1.75;margin-bottom:24px}
 .adm-login input{width:100%;min-height:46px;padding:0 14px;border-radius:8px;border:1px solid var(--line-2);
