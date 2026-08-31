@@ -231,8 +231,9 @@ function viewRow(s, i, last) {
       <div class="rg">${esc(s.region) || '<span class="dim">—</span>'}</div>
       <div class="ad">${esc(s.address) || '<span class="dim">주소 미입력</span>'}</div>
       <div class="hr">${esc(s.hours) || '<span class="dim">—</span>'}</div>
-      <div class="bdgs">${badge(s.is_main, 'main', '본점')}${badge(s.is_new, 'new', 'NEW')}${
-        badge(s.is_soon, '', '예정')}${badge(!s.published, 'off', '비공개')}</div>
+      <div class="bdgs">${badge(s.is_main, 'main', '본점') + badge(s.is_new, 'new', 'NEW') +
+        badge(s.is_soon, '', '예정') + badge(!s.published, 'off', '비공개')
+        || '<span class="dim">—</span>'}</div>
       <div class="adm-act">
         <button class="adm-btn" data-edit>수정</button>
         <button class="adm-btn danger" data-del>삭제</button>

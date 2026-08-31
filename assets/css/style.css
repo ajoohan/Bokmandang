@@ -908,7 +908,9 @@ header.hide{transform:translateY(-104%)}
 .adm-err:empty{display:none}
 
 /* ── 푸터 ────────────────────────────────────────────── */
-.adm-ft{flex:none;padding:26px var(--gap) 32px;text-align:center;border-top:1px solid var(--line)}
+/* 사이트의 footer{background:var(--dark-2)} 가 여기까지 내려옵니다 — 밝은 화면에 맞춰 되돌립니다 */
+.adm-ft{flex:none;padding:26px var(--gap) 32px;text-align:center;
+  background:var(--bg-2);border-top:1px solid var(--line)}
 .adm-ft p{font-size:var(--fs-sm);letter-spacing:.04em;color:var(--mute-2)}
 
 /* ── 좁은 화면 — 표를 카드로 ─────────────────────────── */
