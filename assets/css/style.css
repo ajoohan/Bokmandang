@@ -778,9 +778,11 @@ header.hide{transform:translateY(-104%)}
 .adm-toast.bad{background:var(--red)}
 
 /* ── 매장 편집 ───────────────────────────────────────── */
+/* 마지막 열을 auto 로 두면 배지 칸 폭이 행마다 달라져 헤더와 어긋납니다.
+   고정폭으로 잡아 라벨과 입력칸이 같은 세로선에 서게 합니다. */
 .adm-store{display:grid;
-  grid-template-columns:68px minmax(130px,1fr) 100px minmax(180px,1.7fr) minmax(130px,1fr) auto;
-  gap:10px;align-items:center;padding:12px 20px;border-top:1px solid var(--line)}
+  grid-template-columns:68px minmax(120px,1fr) 92px minmax(200px,1.9fr) minmax(140px,1.05fr) 300px;
+  gap:12px;align-items:center;padding:12px 20px;border-top:1px solid var(--line)}
 .adm-store.thead{border-top:0;padding:13px 20px;border-bottom:1px solid var(--line-2);
   font-size:11px;letter-spacing:.16em;font-weight:600;color:var(--mute-2);text-transform:uppercase}
 .adm-store:not(.thead):hover{background:var(--bg)}
@@ -790,7 +792,8 @@ header.hide{transform:translateY(-104%)}
 .adm-store input[type=number]{font-variant-numeric:tabular-nums}
 .adm-store input:focus,.adm-store select:focus{border-color:var(--gold);outline:none;
   box-shadow:0 0 0 3px rgba(165,131,75,.14)}
-.adm-flags{display:flex;gap:13px;align-items:center;font-size:12px;color:var(--mute)}
+.adm-flags{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:8px;
+  align-items:center;font-size:12px;color:var(--mute)}
 .adm-flags label{display:flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap}
 .adm-flags input{accent-color:var(--gold);width:15px;height:15px}
 
