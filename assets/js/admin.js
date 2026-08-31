@@ -261,7 +261,6 @@ function editRow(s) {
                      placeholder="주소 검색을 눌러 찾은 뒤 동·호수를 이어서 적으세요" maxlength="200">
               <button type="button" class="adm-btn lg" data-find>주소 검색</button>
             </div>
-            <div class="post" data-post hidden></div>
             <p class="ehint"><b data-region>${esc(s.region) || '—'}</b>지역은 주소에서 자동으로 정해집니다.
               사이트의 지역 필터 버튼과 연결됩니다.</p>
           </div>
@@ -312,9 +311,10 @@ function syncRegion(row) {
   row.querySelector('[data-region]').textContent = r;
 }
 
-/* ── 주소 검색 (카카오 우편번호) ─────────────────────────────────────────
-   눌렀을 때만 스크립트를 내려받습니다. 관리자 화면에만 필요한 기능이라
-   CSP 도 /admin 경로에서만 이 출처를 허용합니다(vercel.json). */
+/* ── 주소 검색 (카카오 우편번호) ────────────────────────────────────────
+   별도 창으로 엽니다. 페이지 안에 iframe 으로 넣으면 그 문서가 우리 CSP 를
+   그대로 물려받아 내부 리소스가 전부 막힙니다(about:blank 상속).
+   창은 자기 출처의 정책을 따르므로 우리 쪽은 스크립트 출처 하나만 열면 됩니다. */
 let daumP;
 function loadDaum() {
   if (daumP) return daumP;
@@ -328,32 +328,26 @@ function loadDaum() {
   return daumP;
 }
 
-async function findAddr(row, btn) {
-  const box = row.querySelector('[data-post]');
+/* 팝업 차단을 피하려면 클릭 그 순간에 열어야 합니다.
+   그래서 편집 폼이 열릴 때 미리 스크립트를 받아 둡니다. */
+function openAddr(row) {
+  if (!window.daum || !daum.Postcode) {
+    loadDaum().catch(() => {});
+    toast('주소 검색을 준비하고 있습니다. 잠시 뒤 다시 눌러 주세요.', true);
+    return;
+  }
   const inp = row.querySelector('[data-f=address]');
-  if (!box.hidden) { box.hidden = true; box.innerHTML = ''; btn.textContent = '주소 검색'; return; }
-
-  btn.disabled = true; btn.textContent = '여는 중…';
-  let daum;
-  try { daum = await loadDaum(); }
-  catch (ex) { toast(ex.message, true); btn.disabled = false; btn.textContent = '주소 검색'; return; }
-  btn.disabled = false; btn.textContent = '닫기';
-
-  box.hidden = false; box.innerHTML = '';
   new daum.Postcode({
-    width: '100%', height: '100%',
     oncomplete(d) {
       let a = d.roadAddress || d.jibunAddress;
       if (d.buildingName) a += ', ' + d.buildingName;
       inp.value = a;
       syncRegion(row);
-      box.hidden = true; box.innerHTML = ''; btn.textContent = '주소 검색';
       inp.focus();
       inp.setSelectionRange(a.length, a.length);
       toast('주소를 넣었습니다. 동·호수는 이어서 적으세요.');
-    },
-    onclose() { box.hidden = true; box.innerHTML = ''; btn.textContent = '주소 검색'; }
-  }).embed(box, { autoClose: false });
+    }
+  }).open({ popupTitle: '복만당 매장 주소 검색', autoClose: true });
 }
 
 /* ── 저장 ───────────────────────────────────────────────────────────── */
@@ -422,12 +416,13 @@ $('#strList').addEventListener('click', async e => {
 
   if (btn.hasAttribute('data-up'))   return move(i, -1);
   if (btn.hasAttribute('data-down')) return move(i, 1);
-  if (btn.hasAttribute('data-find')) return findAddr(row, btn);
+  if (btn.hasAttribute('data-find')) return openAddr(row);
   if (btn.hasAttribute('data-save')) return saveStore(row);
 
   if (btn.hasAttribute('data-edit')) {
     if (editing === NEW) stores = stores.filter(s => s.id !== NEW);
     editing = stores[i].id; render();
+    loadDaum().catch(() => {});          // 주소 검색을 미리 받아 둡니다
     $('#strList').querySelector('.editing [data-f=name]').focus();
     return;
   }
@@ -456,6 +451,7 @@ $('#addStore').onclick = () => {
   stores.push({ id: NEW, name: '', region: '서울', address: '', hours: '',
                 is_main: false, is_new: false, is_soon: false, published: false });
   editing = NEW; render();
+  loadDaum().catch(() => {});
   const el = $('#strList').querySelector('.editing');
   el.scrollIntoView({ block: 'center', behavior: 'smooth' });
   el.querySelector('[data-f=name]').focus();

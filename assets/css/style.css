@@ -866,8 +866,6 @@ header.hide{transform:translateY(-104%)}
 .ehint b{display:inline-flex;align-items:center;height:21px;padding:0 9px;margin-right:7px;
   border-radius:5px;background:var(--ink);color:var(--bg);
   font-size:var(--fs-lbl);font-weight:700;letter-spacing:.06em}
-.post{margin-top:12px;height:430px;border:1px solid var(--line-2);border-radius:10px;
-  overflow:hidden;background:var(--card)}
 .ea{display:flex;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
 
 .adm-flags{display:flex;flex-wrap:wrap;gap:8px}
