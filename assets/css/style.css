@@ -637,6 +637,12 @@ header.hide{transform:translateY(-104%)}
 }
 
 /* ══════ 10. 관리자 화면 (admin.html) ══════
+   ⚠️ hidden 속성이 항상 이기게 둡니다.
+      .adm-login{display:flex} 같은 규칙이 [hidden]{display:none} 을 덮어써서
+      로그인 후에도 로그인 카드가 사라지지 않던 문제가 있었습니다.
+      화면 전환을 hidden 으로 하는 이상 이 한 줄이 없으면 같은 일이 반복됩니다. */
+.adm [hidden], .adm[hidden]{display:none !important}
+
    사이트와 같은 토큰을 쓰되, 읽는 페이지가 아니라 다루는 도구라
    여백을 줄이고 정보 밀도를 높입니다. */
 .adm{--row:#fff;min-height:100vh;background:var(--bg-2)}
