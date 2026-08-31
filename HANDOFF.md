@@ -100,7 +100,7 @@
 | | |
 |---|---|
 | GitHub | `ajoohan/Bokmandang` · **private** · 기본 브랜치 `main` |
-| Vercel | `plustonic/bokmandang` · 함수 리전 서울(icn1) |
+| Vercel | `bokmandang/bokmandang` (복만당 계정 `bokmandangmkt-2267`) · 함수 리전 서울(icn1) |
 | Supabase | `yxhuyreepsulvxzsldca` (PLUSTONIC 조직과 **다른 계정** — 인수인계 시 소유자 확인) |
 
 **저장소 루트 = 이 폴더의 내용물입니다.** `index.html` 이 최상단에 있어
