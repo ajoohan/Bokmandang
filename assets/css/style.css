@@ -150,6 +150,22 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .pcard .k{font-family:var(--serif);font-size:13px;letter-spacing:.16em;color:var(--gold-t);display:block;margin-bottom:16px}
 .pcard h3{font-size:21px;margin-bottom:14px;letter-spacing:-.045em}
 .pcard p{font-size:14px;color:var(--mute);line-height:1.95}
+/* ── 매장 직접 조리 ─────────────────────────────
+   완제품 육수를 데우는 브랜드로 오해받지 않게, 브랜드 섹션 안에서
+   한 번 더 못 박는 자리입니다. 나머지 카드와 톤을 달리해 눈에 걸리게 뒀습니다. */
+.fresh{margin-top:clamp(52px,7vw,88px);padding:clamp(30px,4vw,48px);
+  background:var(--bg-2);border-radius:12px;border:1px solid var(--line);
+  display:grid;grid-template-columns:minmax(280px,1.15fr) minmax(240px,.85fr);
+  gap:clamp(28px,4vw,56px);align-items:center}
+.fresh-t .lbl{display:block;margin-bottom:14px}
+.fresh-t h3{font-size:clamp(23px,2.5vw,34px);line-height:1.2;letter-spacing:-.045em;margin-bottom:18px}
+.fresh-t p{font-size:15px;color:var(--ink-2);line-height:1.95;max-width:46ch;text-wrap:pretty}
+.fresh-t strong{font-weight:700;color:var(--ink);box-shadow:inset 0 -8px 0 rgba(165,131,75,.16)}
+.fresh-l{list-style:none;display:grid;gap:14px}
+.fresh-l li{padding:16px 18px;background:var(--card);border-radius:9px;border:1px solid var(--line)}
+.fresh-l b{display:block;font-size:15px;letter-spacing:-.035em;margin-bottom:5px}
+.fresh-l span{display:block;font-size:13px;color:var(--mute);line-height:1.7}
+
 .promise-img{margin-top:clamp(52px,7vw,96px)}
 .promise-img img{width:100%;height:clamp(260px,36vw,520px);object-fit:cover;object-position:center 55%;border-radius:10px}
 
@@ -297,6 +313,70 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 }
 
 /* ── 가맹 ─────────────────────────────────────── */
+/* ══════ 25년 경험 (#why) ══════
+   손님 파트에서 점주 파트로 넘어가는 지점입니다. 어두운 면으로 끊어
+   '여기부터는 창업 이야기'라는 걸 스크롤만으로도 알 수 있게 했습니다. */
+.why-cmp{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(20px,3vw,40px);
+  margin-top:clamp(44px,5.5vw,76px)}
+.wc{padding:clamp(24px,3vw,34px);border-radius:11px;border:1px solid var(--line-d);
+  background:rgba(250,248,244,.035)}
+.wc.up{border-color:rgba(198,166,103,.34);background:rgba(198,166,103,.07)}
+.wc .lbl{display:block;margin-bottom:18px}
+.wc ul{list-style:none;display:grid;gap:12px}
+.wc li{font-size:14.5px;line-height:1.6;color:rgba(250,248,244,.74);padding-left:20px;position:relative}
+.wc li::before{content:"—";position:absolute;left:0;color:rgba(250,248,244,.34)}
+.wc.up li{color:rgba(250,248,244,.9)}
+.wc.up li::before{content:"+";color:var(--gold-l)}
+
+.opt{margin-top:clamp(40px,5vw,68px);padding-top:clamp(32px,4vw,48px);border-top:1px solid var(--line-d)}
+.opt h3{font-size:clamp(24px,2.8vw,38px);line-height:1.2;letter-spacing:-.05em;color:#FAF8F4;margin-bottom:18px}
+.opt p{font-size:15.5px;line-height:1.95;color:rgba(250,248,244,.74);max-width:62ch;text-wrap:pretty}
+.opt strong{color:#FAF8F4;font-weight:600}
+
+.voice{margin-top:clamp(40px,5vw,68px);padding:clamp(28px,3.6vw,44px);
+  border-radius:11px;border:1px solid var(--line-d);background:rgba(250,248,244,.035)}
+.voice blockquote{font-family:var(--serif);font-size:clamp(21px,2.4vw,31px);line-height:1.42;
+  color:var(--gold-l);letter-spacing:-.01em;margin-bottom:20px;text-wrap:balance}
+.voice figcaption{font-size:14.5px;line-height:1.95;color:rgba(250,248,244,.68);max-width:64ch;text-wrap:pretty}
+.voice strong{color:#FAF8F4;font-weight:600}
+.voice .line{display:block;margin-top:16px;padding-top:16px;border-top:1px solid var(--line-d);
+  color:rgba(250,248,244,.86);font-weight:600;letter-spacing:-.02em}
+
+/* ══════ 창업 운영 시스템 블록 (#franchise) ══════ */
+.fblock{margin-top:clamp(44px,5.5vw,80px);padding-top:clamp(30px,3.6vw,44px);border-top:1px solid var(--line)}
+.fblock:first-of-type{margin-top:clamp(38px,4.6vw,64px)}
+.fk{font-family:var(--serif);font-size:13px;letter-spacing:.16em;color:var(--gold-t);display:block;margin-bottom:16px}
+.fblock h3{font-size:clamp(23px,2.6vw,34px);line-height:1.22;letter-spacing:-.05em;margin-bottom:20px;text-wrap:balance}
+.fblock h3.en-h{font-family:var(--serif);font-weight:500;letter-spacing:.01em;line-height:1.16}
+.fblock p{font-size:15px;color:var(--ink-2);line-height:1.95;max-width:64ch;text-wrap:pretty}
+.fblock p + p{margin-top:16px}
+.fblock strong{font-weight:700;color:var(--ink);box-shadow:inset 0 -8px 0 rgba(165,131,75,.16)}
+.fblock.wide-b p{max-width:74ch}
+
+/* 영업시간 선택지 */
+.chips{list-style:none;display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.chips li{padding:9px 16px;border:1px solid var(--line-2);border-radius:100px;
+  font-size:13.5px;color:var(--ink-2);background:var(--card);letter-spacing:-.02em}
+
+/* 기존 주방 vs 복만당 */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.2vw,26px);margin-top:30px}
+.cm{padding:clamp(22px,2.6vw,30px);border-radius:11px;border:1px solid var(--line);background:var(--bg-2)}
+.cm.on{border-color:var(--gold);background:rgba(165,131,75,.06)}
+.cm .lbl{display:block;margin-bottom:16px}
+.cm ul{list-style:none;display:grid;gap:11px}
+.cm li{font-size:14px;line-height:1.6;color:var(--mute);padding-left:19px;position:relative}
+.cm li::before{content:"—";position:absolute;left:0;color:var(--line-2)}
+.cm.on li{color:var(--ink-2)}
+.cm.on li::before{content:"+";color:var(--gold-t)}
+.fnote{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
+.fnote .small{display:block;margin-top:12px;font-size:12.5px;color:var(--mute-2);line-height:1.8}
+
+/* 홀 · 배달 · 밀키트 */
+.chan{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.2vw,26px);margin-top:30px}
+.ch{padding:clamp(22px,2.6vw,30px);border-radius:11px;background:var(--bg-2);border:1px solid var(--line)}
+.ch b{display:block;font-size:19px;letter-spacing:-.045em;margin-bottom:12px}
+.ch p{font-size:13.5px;color:var(--mute);line-height:1.85;max-width:none}
+
 .support{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2vw,32px);margin-top:clamp(44px,5vw,72px)}
 .scard{padding-top:24px;border-top:1px solid var(--line-2);transition:border-color .35s}
 .scard:hover{border-top-color:var(--gold)}
@@ -512,6 +592,8 @@ header.hide{transform:translateY(-104%)}
   .price-card{left:auto;right:-14px}
   .menu-grid{grid-template-columns:repeat(2,1fr)}
   .support{grid-template-columns:repeat(2,1fr)}
+  .why-cmp,.cmp{grid-template-columns:1fr}
+  .chan{grid-template-columns:1fr}
   .steps{grid-template-columns:repeat(2,1fr)}
   .kit-in,.store-grid,.cta-in{grid-template-columns:1fr}
   nav,header .btn{display:none}
@@ -519,6 +601,7 @@ header.hide{transform:translateY(-104%)}
 }
 @media (max-width:640px){
   .promise-grid{grid-template-columns:1fr;gap:34px}
+  .fresh{grid-template-columns:1fr;gap:28px}
   .menu-grid,.support,form{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
   .stats-in{grid-template-columns:1fr}

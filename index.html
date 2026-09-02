@@ -30,7 +30,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260902a">
+<link rel="stylesheet" href="assets/css/style.css?v=20260902b">
 <!-- LCP — 히어로 사진. AVIF 미지원 브라우저는 이 preload 를 건너뜁니다. -->
 <link rel="preload" as="image" href="assets/img/hero-gomtang.avif" type="image/avif" fetchpriority="high">
 
@@ -162,6 +162,7 @@
       <li><a href="#menu">메뉴</a></li>
       <li><a href="#kit">밀키트</a></li>
       <li><a href="#store">매장안내</a></li>
+      <li><a href="#why">왜 복만당</a></li>
       <li><a href="#franchise">창업안내</a></li>
     </ul></nav>
     <a href="#contact" class="btn btn-dark">가맹 상담 신청
@@ -172,7 +173,7 @@
 
 <div class="drawer" id="dw">
   <a href="#brand">브랜드</a><a href="#menu">메뉴</a><a href="#kit">밀키트</a>
-  <a href="#store">매장안내</a><a href="#franchise">창업안내</a>
+  <a href="#store">매장안내</a><a href="#why">왜 복만당</a><a href="#franchise">창업안내</a>
   <a href="#contact" class="btn btn-dark">가맹 상담 신청</a>
 </div>
 
@@ -222,22 +223,45 @@
     <div class="rail rv"><span class="idx">01</span><span class="lbl" lang="en">Our Promise</span><span class="bar"></span></div>
     <div>
       <div class="head rv">
-        <h2 class="d2">좋은 재료로 만든<br>곰탕의 깊이는 다릅니다</h2>
-        <p class="body">한우와 엄선한 식재료로 완성한 맑고 깊은 한 그릇. 좋은 재료에서 시작해 누구나 쉽게 만들고, 효율적으로 운영할 수 있도록 설계했습니다.</p>
+        <h2 class="d2">매일 먹을 수 있는 가격에서,<br>특별하게 즐기는 한 그릇까지</h2>
+        <p class="body">곰탕은 <span class="num">10,000</span>원에서 시작합니다. 그렇다고 가격에 맞춰 덜어낸 한 그릇은 아닙니다.
+          <strong>1++ 한우</strong>와 엄선한 식재료, 방짜유기 그릇, 정갈한 공간 — 부담 없이 자주 드시되
+          경험은 가격 그 이상이 되도록 만들었습니다.</p>
         <p class="principle"><span class="lbl lbl-g">복만당의 3가지 원칙</span>재료는 제대로, 조리는 간편하게, 운영은 효율적으로.</p>
       </div>
       <div class="promise-grid">
-        <div class="pcard rv"><span class="k">01 — 재료</span><h3>좋은 재료가 만드는<br>확실한 경쟁력</h3>
-          <p>한우를 중심으로 엄선한 식재료를 사용해 맑고 깊은 한우곰탕이라는 분명한 브랜드 경쟁력을 갖췄습니다.</p></div>
-        <div class="pcard rv"><span class="k">02 — 조리</span><h3>조리 경력 없이도<br>가능한 간편한 운영</h3>
-          <p>약탕기에서 저온으로 14시간, 맑고 깊게 우려낸 한우곰탕. 복잡한 불 조절이나 조리 중 지속적인 관리 부담을 줄인 시스템으로, 매일 한결같은 복만당의 맛을 구현합니다.</p></div>
-        <div class="pcard rv"><span class="k">03 — 운영</span><h3>작은 매장에서도<br>가능한 효율적인 창업</h3>
-          <p>복잡한 주방 설비와 많은 인력에 의존하지 않는 단순한 주방 · 효율적인 동선 · 소규모 운영 시스템으로 창업과 운영의 부담을 낮췄습니다.</p></div>
+        <div class="pcard rv"><span class="k">01 — 재료</span><h3>재료는<br>제대로</h3>
+          <p><strong>1++ 한우</strong>와 엄선한 식재료로 맑고 깊은 한우곰탕을 냅니다.
+            좋은 재료에서 시작해야 조리를 단순하게 해도 맛이 남습니다.</p></div>
+        <div class="pcard rv"><span class="k">02 — 조리</span><h3>조리는<br>간편하게</h3>
+          <p>약탕기에서 저온으로 <span class="num">14</span>시간. 복잡한 불 조절이나 조리 중 관리 부담을 덜어낸
+            표준화된 방식으로, 매장마다 같은 맛을 냅니다.</p></div>
+        <div class="pcard rv"><span class="k">03 — 운영</span><h3>운영은<br>효율적으로</h3>
+          <p>작은 매장, 최소한의 인력, 상권과 점주에 맞춘 유연한 영업.
+            매장 규모와 운영 방식을 하나로 정해 두지 않았습니다.</p></div>
       </div>
+
+      <!-- 발주처 강조 사항(2026-09-02): 완제품 육수를 받아 데우는 브랜드로 오해받지 않도록
+           '매장 직접 조리'를 브랜드 섹션 안에서 못 박습니다. -->
+      <div class="fresh rv">
+        <div class="fresh-t">
+          <span class="lbl lbl-g">매장 직접 조리</span>
+          <h3>공장에서 받은 육수를<br>데우지 않습니다</h3>
+          <p>각 매장이 약탕기로 <strong>매일 직접</strong> 곰탕을 끓입니다.
+            <span class="num">10</span>평 남짓한 작은 주방에서도 직접 생산할 수 있도록 조리를 단순하게 설계했고,
+            <strong>당일 생산 · 당일 소비</strong>를 기본 원칙으로 합니다.</p>
+        </div>
+        <ul class="fresh-l">
+          <li><b>매장에서</b><span>본사·공장 완제품 육수를 데우는 방식이 아닙니다</span></li>
+          <li><b>매일</b><span>영업일마다 새로 끓입니다</span></li>
+          <li><b>당일 소비</b><span>그날 생산한 만큼 그날 씁니다</span></li>
+        </ul>
+      </div>
+
       <div class="promise-img rv"><picture>
         <source type="image/avif" sizes="(max-width:1080px) 92vw, min(950px, 74vw)" srcset="assets/img/brand-yaktanggi-800.avif 800w, assets/img/brand-yaktanggi.avif 1300w">
         <source type="image/webp" sizes="(max-width:1080px) 92vw, min(950px, 74vw)" srcset="assets/img/brand-yaktanggi-800.webp 800w, assets/img/brand-yaktanggi.webp 1300w">
-        <img src="assets/img/brand-yaktanggi.jpg" alt="본점 주방의 약탕기 — 한우 육수를 저온으로 우려내는 설비" width="1300" height="735" loading="lazy" decoding="async">
+        <img src="assets/img/brand-yaktanggi.jpg" alt="매장 주방의 약탕기 — 한우 육수를 저온으로 우려내는 설비" width="1300" height="735" loading="lazy" decoding="async">
       </picture></div>
     </div>
   </div>
@@ -251,7 +275,7 @@
   </picture>
   <div class="wrap rv">
     <div class="bar"></div>
-    <h2><q>좋은 한우, 어려운 조리는 필요 없습니다.<br>한우를 정성껏 우려낸 맑고 깊은 곰탕,<br>복만당의 맛과 깊이를 그대로 담았습니다.</q></h2>
+    <h2><q>좋은 재료라면, 어려운 조리는 필요하지 않습니다.<br>1++ 한우를 약탕기에 오래 우려낸 맑고 깊은 곰탕.<br>그 한 그릇을 매장에서 매일 직접 끓입니다.</q></h2>
     <p class="sig" lang="en">BOKMANDANG KITCHEN</p>
   </div>
 </section>
@@ -380,49 +404,206 @@
   </div>
 </section>
 
+<section class="sec dark" id="why">
+  <div class="wrap grid2 wide">
+    <div class="rail rv"><span class="idx">05</span><span class="lbl" lang="en">Why Bokmandang</span><span class="bar"></span></div>
+    <div>
+      <div class="head rv">
+        <h2 class="d2" style="color:#FAF8F4"><span class="num">25</span>년 외식업의 경험,<br>더하는 대신 덜어냈습니다</h2>
+        <p class="body">복만당은 아이디어로 만든 브랜드가 아닙니다. 대표가 <span class="num">25</span>년 넘게 직접 식당을 운영하며
+          겪은 장점과 단점, 시행착오를 하나씩 덜어내며 만들어졌습니다.</p>
+      </div>
+
+      <div class="why-cmp">
+        <div class="wc rv">
+          <span class="lbl">덜어낸 것</span>
+          <ul>
+            <li>전문 주방인력에 대한 높은 의존</li>
+            <li>복잡한 조리 과정</li>
+            <li>무거운 고정식 주방 설비와 시설투자</li>
+            <li>점주가 매장에 묶이는 시간</li>
+            <li>매출이 늘면 비용도 함께 늘던 구조</li>
+          </ul>
+        </div>
+        <div class="wc up rv">
+          <span class="lbl lbl-g">높인 것</span>
+          <ul>
+            <li>음식의 품질</li>
+            <li>한 그릇의 가치</li>
+            <li>점주가 쓸 수 있는 시간</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="opt rv">
+        <h3>최대 매출이 아닌, 최적의 매출</h3>
+        <p>매출을 키우려고 사람과 시간을 더 넣으면 외형은 커지지만 인건비와 운영비도 함께 커집니다.
+          <strong>매출이 크다고 반드시 많이 남는 것은 아닙니다.</strong>
+          복만당은 얼마나 파느냐보다, 얼마의 인력과 비용으로 운영하고 점주에게 무엇이 남는지를 먼저 봅니다.</p>
+      </div>
+
+      <figure class="voice rv">
+        <blockquote>좋은 사업은 그 사람의 삶도 함께 지켜줄 수 있어야 한다고 생각합니다.</blockquote>
+        <figcaption>어린 시절부터 장사를 시작해, 결혼한 뒤에도 아침 일찍 나가 밤늦게 들어오는 생활이 오래 이어졌습니다.
+          아이들이 자라는 모습을 가까이에서 보지 못한 시간이 있었습니다. 복만당을 만들면서
+          매출과 수익만큼이나 <strong>외식업을 하면서도 점주의 삶을 지킬 수 있는 구조</strong>를 중요하게 생각한 이유입니다.
+          <span class="line">식당을 위해 삶을 포기하지 않아도 되는 외식업.</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="franchise">
   <div class="wrap grid2 wide">
-    <div class="rail rv"><span class="idx">05</span><span class="lbl" lang="en">Franchise</span><span class="bar"></span></div>
+    <div class="rail rv"><span class="idx">06</span><span class="lbl" lang="en">Franchise</span><span class="bar"></span></div>
     <div>
-      <div class="head rv"><h2 class="d2">복잡한 조리는 줄이고,<br>운영의 효율은 높였습니다</h2>
-        <p class="body"><strong>조리 경력은 필요 없습니다.</strong> 오픈키친에서 약탕기 하나로 간편하게 완성하는 복만당 맑은 한우곰탕. 복잡한 조리 과정은 줄이고, 누구나 쉽게 배우고 운영할 수 있도록 설계한 단순화 조리 시스템입니다.</p></div>
+      <div class="head rv"><h2 class="d2">내가 가게를 운영해야지,<br>가게가 나를 운영하게 하지 않습니다</h2>
+        <p class="body">복만당의 운영 시스템은 점주가 매장에 끌려가지 않도록 만들어졌습니다.
+          사람·시간·공간·비용 네 가지를 각각 어떻게 덜어냈는지 정리했습니다.</p></div>
 
+      <!-- ── 사람 ───────────────────────────────────────────── -->
+      <div class="fblock rv">
+        <span class="fk">01 — 사람</span>
+        <h3>사람의 기술이 아닌,<br>시스템으로 운영합니다</h3>
+        <p>특정 주방장이나 숙련 조리사의 기술에 기대는 매장이 아닙니다. 약탕기를 쓰는 표준화된 조리와
+          단순한 주방 동선 덕분에, 조리 경험이 많지 않은 직원도 비교적 짧은 기간에 업무를 익힐 수 있습니다.
+          <strong>직원이 바뀌어도 매장은 흔들리지 않도록</strong> 설계했습니다.</p>
+        <p>그만큼 필요한 인원도 최소화됩니다. 대표 부부가 별도의 정규직 직원 없이 둘이서 오랜 기간
+          매장을 운영한 경험도 있습니다. 단순한 인건비 절감이 아니라
+          <strong>사람에 대한 고정비와 의존도를 낮춘 매장</strong>이라는 뜻입니다.</p>
+      </div>
+
+      <!-- ── 시간 ───────────────────────────────────────────── -->
+      <div class="fblock rv">
+        <span class="fk">02 — 시간</span>
+        <h3>매장에 삶을 맞추는 것이 아니라,<br>내 삶에 맞춰 매장을 운영합니다</h3>
+        <p>모든 매장에 똑같은 장시간 영업을 요구하지 않습니다. 상권과 점주의 목표에 따라 운영 시간을 고릅니다.
+          더 많은 매출을 원하는 점주는 영업시간을 늘리고, 자신의 시간이 중요한 점주는 필요한 시간대에 집중합니다.
+          핵심은 <strong>운영시간의 선택권이 점주에게 있다</strong>는 것입니다.</p>
+        <ul class="chips">
+          <li>점심 집중</li><li>아침 + 점심</li><li>점심 + 저녁</li><li>장시간 영업</li>
+          <li>상권에 따라 <span class="num">24</span>시간 검토</li>
+        </ul>
+      </div>
+
+      <!-- ── 규모 ───────────────────────────────────────────── -->
+      <div class="fblock rv">
+        <span class="fk">03 — 규모</span>
+        <h3>모든 점주에게<br>같은 성공을 강요하지 않습니다</h3>
+        <p>실제 복만당 매장은 <strong><span class="num">8</span>평 남짓한 곳부터 <span class="num">25</span>평까지</strong>
+          규모가 제각각이고, 임대료 조건도 매장마다 크게 다릅니다. 하나의 매장 크기나 하나의 매출 모델을
+          모든 가맹점에 그대로 적용하는 브랜드가 아닙니다.</p>
+        <p>매장 크기 · 임대료 · 상권 · 점주의 목표 수익 · 투자 규모 · 영업시간을 함께 놓고
+          <strong>점주에게 맞는 운영 모델을 설계</strong>합니다.
+          매출에 매장을 맞추는 것이 아니라, 점주의 목표에 매장을 맞춥니다.</p>
+      </div>
+
+      <!-- ── 비용 ───────────────────────────────────────────── -->
+      <div class="fblock rv">
+        <span class="fk">04 — 비용</span>
+        <h3>상황이 바뀌어도<br>조정할 수 있는 비용 구조</h3>
+        <p>외식업 매출은 경기와 계절, 상권 변화에 따라 움직입니다. 정규직과 전문인력이 많이 필요한 매장은
+          매출이 떨어져도 인건비를 곧바로 줄이기 어렵습니다.</p>
+        <p>복만당은 전문인력에 대한 의존도가 낮고 인력 구성을 유연하게 짤 수 있어, 매장 상황에 따라
+          인력과 영업시간을 조정하며 <strong>운영비를 관리하기가 상대적으로 수월한 구조</strong>입니다.
+          고정비 부담을 낮춰 실패 가능성을 줄이는 방향입니다.</p>
+      </div>
+
+      <!-- ── 주방과 인테리어 ────────────────────────────────── -->
+      <div class="fblock wide-b rv">
+        <span class="fk">05 — 공간</span>
+        <h3>주방이라는 공간부터<br>다시 생각했습니다</h3>
+        <p>복만당은 주방을 무겁고 복잡한 별도의 공간으로 만들기보다, 홀과 자연스럽게 연결되는 간결한 주방을 지향합니다.
+          현장 여건에 따라 홀과 같은 바닥 높이로 주방을 구성할 수 있고, 홀과 주방의 경계를 최소화한
+          오픈키친 형태로 운영하는 매장도 있습니다. 약탕기와 인덕션 중심의 간결한 조리 시스템으로
+          <strong>가스화구·대형 후드와 덕트 같은 고정식 설비에 대한 의존도를 낮춘</strong> 덕분입니다.</p>
+        <div class="cmp">
+          <div class="cm">
+            <span class="lbl">일반적인 외식업 주방</span>
+            <ul><li>주방을 별도로 구획</li><li>복잡한 고정식 설비</li><li>높은 시설투자 비중</li><li>철거·원상복구 부담</li></ul>
+          </div>
+          <div class="cm on">
+            <span class="lbl lbl-g">복만당</span>
+            <ul><li>홀과 연결된 간결한 주방</li><li>약탕기·인덕션 중심</li><li>고정식 설비 최소화</li><li><span class="num">8</span>평부터 다양한 공간 구성</li><li>이전·철거까지 고려한 설계</li></ul>
+          </div>
+        </div>
+        <p class="fnote"><strong>들어갈 때만 생각하지 않고, 나올 때까지 생각했습니다.</strong>
+          주요 구조를 시스템각 등을 활용한 모듈형으로 설계해 분해와 이동이 가능하도록 했습니다.
+          매장 이전이나 임대차 종료 시 철거와 원상복구 부담을 줄이고, 활용 가능한 시설과 집기는
+          다음 매장에서도 최대한 다시 쓸 수 있도록 했습니다.
+          <span class="small">※ 습식주방 공사·덕트 등 필요한 범위와 재사용 가능한 항목은 건축물과 현장 여건에 따라 달라집니다.</span></p>
+      </div>
+
+      <!-- ── 판매 채널 ──────────────────────────────────────── -->
+      <div class="fblock wide-b rv">
+        <span class="fk">06 — 판매</span>
+        <h3 lang="en" class="en-h">ONE KITCHEN,<br>THREE CHANNELS</h3>
+        <p>하나의 주방에서 세 가지 판매 채널을 함께 운영할 수 있는 구조입니다.
+          별도의 배달 전용 주방을 두는 개념이 아니라, 기존 주방과 인력을 그대로 쓰면서 채널을 하나씩 더하는 방식입니다.</p>
+        <div class="chan">
+          <div class="ch"><b>홀</b><p>매장에서 방짜유기 그릇에 담아냅니다.</p></div>
+          <div class="ch"><b>배달</b><p>메뉴와 조리 과정이 단순해 배달 주문에 추가 조리가 많지 않습니다.
+            점심 피크타임에도 홀 영업의 주방 흐름이 크게 흔들리지 않도록 운영할 수 있습니다.</p></div>
+          <div class="ch"><b>밀키트</b><p>다음 날 예상 매출을 보고 필요한 만큼 계획 생산하고,
+            기준에 맞는 생산분을 밀키트 상품으로 연결합니다. 식재료 활용도를 높이고 판매 기회를 하나 더 만드는 방식입니다.</p></div>
+        </div>
+      </div>
+
+      <!-- ── 본사 지원 ──────────────────────────────────────── -->
       <div class="support">
         <div class="scard rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M6 9V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3M5 9l1.2 9.2A2 2 0 0 0 8.2 20h7.6a2 2 0 0 0 2-1.8L19 9"/></svg></div>
-          <h3>약탕기 조리 시스템</h3><p>약탕기로 한우를 오래 우려내어 맑고 진한 곰탕을 조리합니다.</p></div>
+          <h3>약탕기 조리 시스템</h3><p>약탕기로 <span class="num">1++</span> 한우를 저온에서 오래 우려내는 표준 조리법과 계량 도구를 제공합니다.</p></div>
         <div class="scard rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.2"/><path d="M3 19c0-3.3 2.7-5 6-5s6 1.7 6 5M16.5 14.2c2.6.3 4.5 1.9 4.5 4.8"/></svg></div>
-          <h3>주방 인력 최소화</h3><p>표준 레시피와 계량 도구를 제공해 2인 운영이 가능한 소형 매장 구조를 설계합니다.</p></div>
+          <h3>인력 구성 설계</h3><p>상권과 영업시간에 맞춰 필요한 인원과 시간대를 함께 설계합니다.</p></div>
         <div class="scard rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20V9.5L12 4l9 5.5V20M3 20h18M9 20v-6h6v6"/></svg></div>
-          <h3>인테리어 패키지</h3><p>15평 기준 표준 도면과 사인물·집기를 일괄 제공하여 공사 기간과 비용을 줄입니다.</p></div>
+          <h3>매장별 도면 설계</h3><p>평수와 현장 여건에 맞춘 도면과 사인물·집기를 제공해 공사 기간과 비용을 줄입니다.</p></div>
         <div class="scard rv"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg></div>
-          <h3>오픈 후 관리</h3><p>월 1회 정기 점검과 온라인 마케팅을 지원합니다.</p></div>
+          <h3>오픈 후 관리</h3><p>정기 점검과 온라인 마케팅을 지원하고, 운영 중 생기는 문제를 함께 조정합니다.</p></div>
       </div>
 
       <div class="steps">
-        <div class="step rv"><b>01</b><h4>상담 신청</h4><p>온라인 폼 또는 전화로 희망 지역과 예산을 알려주세요.</p></div>
+        <div class="step rv"><b>01</b><h4>상담 신청</h4><p>온라인 폼 또는 전화로 희망 지역과 예산, 원하는 운영 형태를 알려주세요.</p></div>
         <div class="step rv"><b>02</b><h4>상권 분석</h4><p>후보 입지의 유동인구·경쟁도를 조사해 리포트로 전달합니다.</p></div>
-        <div class="step rv"><b>03</b><h4>계약 · 설계</h4><p>가맹 계약 후 도면 확정, 인테리어 및 집기 발주를 진행합니다.</p></div>
-        <div class="step rv"><b>04</b><h4>교육</h4><p>본점에서 2주간 조리·위생·POS 운영 교육을 이수합니다.</p></div>
+        <div class="step rv"><b>03</b><h4>운영 모델 설계</h4><p>평수·임대료·목표 수익·영업시간을 함께 놓고 그 매장에 맞는 모델을 정합니다.</p></div>
+        <div class="step rv"><b>04</b><h4>계약 · 설계 · 교육</h4><p>가맹 계약 후 도면을 확정하고, 조리·위생·POS 운영 교육을 이수합니다.</p></div>
         <div class="step rv"><b>05</b><h4>오픈</h4><p>시식회와 지역 마케팅을 함께 진행하며 매장을 엽니다.</p></div>
       </div>
 
       <div class="faq rv" id="faq">
         <div class="qa"><button aria-expanded="false">조리 경험이 없어도 운영할 수 있나요?<i aria-hidden="true"></i></button>
-          <div class="a"><p>저희 복만당은 복잡한 조리 기술 없이, 약탕기로 제조하며, 표준화된 시스템만으로 누구나 한결같은 맛을 구현할 수 있습니다.</p></div></div>
-        <div class="qa"><button aria-expanded="false">최소 평수와 필요한 인원은 어떻게 되나요?<i aria-hidden="true"></i></button>
-          <div class="a"><p>15평(약 50㎡) 기준 표준 도면을 제공하며, 홀 1명·주방 1명 2인 운영이 가능한 동선으로 설계했습니다. 좌석 수는 입지에 따라 조정합니다.</p></div></div>
+          <div class="a"><p>네. 특정 주방장의 기술에 기대는 구조가 아닙니다. 약탕기를 쓰는 표준화된 조리와 단순한 주방 동선이라,
+            조리 경험이 많지 않은 직원도 비교적 짧은 기간에 주요 업무를 익힐 수 있습니다.</p></div></div>
+        <div class="qa"><button aria-expanded="false">몇 평부터 가능한가요? 필요한 인원은요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>실제 운영 중인 매장은 <span class="num">8</span>평 남짓한 곳부터 <span class="num">25</span>평까지 다양합니다.
+            정해진 하나의 규격을 적용하지 않고, 평수와 상권·목표에 맞춰 도면과 인력 구성을 함께 설계합니다.
+            소규모 매장은 <span class="num">2</span>인 운영이 가능한 동선으로 구성합니다.</p></div></div>
+        <div class="qa"><button aria-expanded="false">육수는 본사에서 완제품으로 받나요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>아닙니다. 각 매장이 약탕기로 <strong>매일 직접</strong> 끓입니다.
+            공장에서 완성된 육수를 받아 데워 파는 방식이 아니며, 당일 생산 · 당일 소비를 기본 원칙으로 합니다.</p></div></div>
+        <div class="qa"><button aria-expanded="false">영업시간은 본사가 정하나요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>아닙니다. 상권과 점주의 목표에 따라 점심 집중, 아침+점심, 점심+저녁, 장시간 영업 등으로 정할 수 있고,
+            상권에 따라서는 <span class="num">24</span>시간 운영도 검토합니다. 매출을 더 원하면 시간을 늘리고,
+            시간을 지키고 싶으면 집중 운영하는 방식으로 조정합니다.</p></div></div>
         <div class="qa"><button aria-expanded="false">창업 비용은 어느 정도인가요?<i aria-hidden="true"></i></button>
-          <div class="a"><p>점포 임차 조건과 평수에 따라 달라집니다. 상담 신청 시 희망 지역과 예산을 알려주시면 해당 조건에 맞춘 상세 견적을 보내드립니다.</p></div></div>
-        <div class="qa"><button aria-expanded="false">밀키트도 가맹점에서 판매할 수 있나요?<i aria-hidden="true"></i></button>
-          <div class="a"><p>네. 매장 판매용 밀키트를 별도 공급하며, 온라인 채널은 본사가 운영합니다. 당일 생산한 신선한 미사용 재료를 정해진 시간에 밀키트로 전환하여, 신선도는 유지하고 식재료 폐기는 최소화하는 운영 방식입니다.</p></div></div>
+          <div class="a"><p>평수와 점포 임차 조건, 원하는 운영 형태에 따라 달라집니다. 상담 신청 시 희망 지역과 예산을 알려주시면
+            해당 조건에 맞춘 상세 견적을 보내드립니다.</p></div></div>
+        <div class="qa"><button aria-expanded="false">매장을 옮기게 되면 시설은 어떻게 되나요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>주요 구조를 모듈형으로 설계해 분해와 이동을 고려했고, 고정식 설비 의존도를 낮췄습니다.
+            그만큼 철거와 원상복구 부담을 줄이고 활용 가능한 시설·집기는 다시 쓸 수 있도록 했습니다.
+            다만 실제 재사용 범위와 원상복구 조건은 건축물과 임대차 조건, 현장 여건에 따라 달라집니다.</p></div></div>
+        <div class="qa"><button aria-expanded="false">배달과 밀키트도 함께 할 수 있나요?<i aria-hidden="true"></i></button>
+          <div class="a"><p>네. 하나의 주방에서 홀·배달·밀키트를 함께 운영할 수 있는 구조입니다.
+            배달은 별도의 전용 주방 없이 기존 인력으로 소화하고, 밀키트는 계획 생산분을 상품으로 연결해
+            식재료 활용도를 높이는 방식입니다. 온라인 판매 채널은 본사가 운영합니다.</p></div></div>
       </div>
     </div>
   </div>
 </section>
 
+
 <section class="sec dark" id="contact">
   <div class="wrap grid2">
-    <div class="rail rv"><span class="idx">06</span><span class="lbl" lang="en">Contact</span><span class="bar"></span></div>
+    <div class="rail rv"><span class="idx">07</span><span class="lbl" lang="en">Contact</span><span class="bar"></span></div>
     <div>
       <div class="cta-in">
         <div class="rv">
@@ -479,7 +660,7 @@
       <div><img src="assets/img/logo-white.png" alt="복만당">
         <p>복만당 맑은 한우곰탕<br>서울시 강남구 언주로 <span class="num">563</span> 원에디션강남 <span class="num">401</span>동 <span class="num">116</span>호<br><span class="num">02-565-5288</span></p></div>
       <div class="fnav">
-        <a href="#brand">브랜드</a><a href="#menu">메뉴</a><a href="#store">매장안내</a><a href="#franchise">창업안내</a><a href="#contact">가맹문의</a>
+        <a href="#brand">브랜드</a><a href="#menu">메뉴</a><a href="#store">매장안내</a><a href="#why">왜 복만당</a><a href="#franchise">창업안내</a><a href="#contact">가맹문의</a>
         <a href="privacy.html" class="pp">개인정보처리방침</a>
       </div>
     </div>
@@ -507,8 +688,8 @@
   <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M8 14V2M3 7l5-5 5 5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
 </button>
 
-<script src="assets/js/config.js?v=20260902a"></script>
-<script src="assets/data/stores.js?v=20260902a"></script>
-<script src="assets/js/main.js?v=20260902a"></script>
+<script src="assets/js/config.js?v=20260902b"></script>
+<script src="assets/data/stores.js?v=20260902b"></script>
+<script src="assets/js/main.js?v=20260902b"></script>
 </body>
 </html>
