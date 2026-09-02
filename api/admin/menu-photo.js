@@ -12,7 +12,9 @@
  */
 import { guard, readBody } from '../_lib.js';
 
-const BUCKET = 'menu-photos';
+/* 메뉴와 팝업이 같은 방식으로 올리므로 버킷만 갈아 끼웁니다.
+   목록에 없는 이름은 받지 않습니다 — 임의의 버킷에 쓰게 두면 안 됩니다. */
+const BUCKETS = { menu: 'menu-photos', popup: 'popup-photos' };
 const MAX_BYTES = 3 * 1024 * 1024;      // 줄여서 보내므로 3MB 면 넉넉합니다
 
 /* 파일 이름에 한글·공백이 들어가면 URL 이 지저분해지고 인코딩 사고가 납니다.
@@ -35,6 +37,8 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Supabase 설정이 없습니다.' });
 
   const body = readBody(req);
+  const BUCKET = BUCKETS[body.bucket || 'menu'];
+  if (!BUCKET) return res.status(400).json({ error: '알 수 없는 저장 위치입니다.' });
   const raw = String(body.data || '');
   const m = raw.match(/^data:image\/(jpeg|jpg|png|webp);base64,(.+)$/);
   if (!m) return res.status(400).json({ error: '이미지 형식을 알 수 없습니다. JPG·PNG·WebP 만 올릴 수 있습니다.' });
@@ -64,7 +68,7 @@ export default async function handler(req, res) {
       const text = await up.text();
       console.error('사진 업로드 실패', up.status, text);
       if (up.status === 404)
-        return res.status(502).json({ error: 'menu-photos 버킷이 없습니다. Supabase → Storage 에서 만들어 주세요(Public).' });
+        return res.status(502).json({ error: `${BUCKET} 버킷이 없습니다. Supabase → Storage 에서 만들어 주세요(Public).` });
       return res.status(502).json({ error: '사진을 올리지 못했습니다.' });
     }
     return res.status(200).json({

@@ -729,6 +729,57 @@ header.hide{transform:translateY(-104%)}
 .srow .sep-d{margin:0 8px;color:var(--line-2)}
 .srow .off{display:block;margin-top:4px;font-size:12px;color:var(--mute-2)}
 
+/* ══════ 팝업 (관리자에서 만든 공지) ══════
+   띠배너는 헤더 위에 얹히므로 헤더의 top 을 그만큼 내려 줍니다.
+   모달은 인트로 커튼이 끝난 뒤에 뜹니다 (main.js afterIntro). */
+/* 다시 그릴 수 있게 감싸개로 두되 배치에는 영향이 없게 둡니다.
+   id 선택자가 [hidden]{display:none} 보다 세서 숨김 규칙을 따로 적어 둡니다. */
+#kitshop{display:contents}
+#kitshop[hidden],#ext[hidden]{display:none !important}
+
+.pop-band{position:fixed;top:0;left:0;right:0;z-index:220;background:var(--ink);color:var(--bg)}
+.pop-band .pb-in{max-width:var(--maxw);margin:0 auto;padding:11px var(--pad);
+  display:flex;align-items:center;gap:14px;min-height:44px}
+.pop-band p{flex:1 1 auto;min-width:0;font-size:13.5px;line-height:1.5;letter-spacing:-.02em}
+.pop-band b{font-weight:700}
+.pop-band p span{color:rgba(250,248,244,.72);margin-left:10px}
+.pop-band .pb-go{flex:none;font-size:12.5px;font-weight:600;letter-spacing:-.02em;
+  color:var(--gold-l);border-bottom:1px solid rgba(198,166,103,.5);padding-bottom:1px;
+  transition:color .25s,border-color .25s}
+.pop-band .pb-go:hover{color:#FAF8F4;border-bottom-color:#FAF8F4}
+.pop-band .pb-x{flex:none;width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;color:rgba(250,248,244,.6);transition:background .22s,color .22s}
+.pop-band .pb-x:hover{background:rgba(250,248,244,.12);color:#FAF8F4}
+.pop-band .pb-x:focus-visible{outline:2px solid var(--gold-l);outline-offset:2px}
+/* 띠배너가 뜨면 고정 헤더를 그만큼 내리고, 본문도 함께 밀어 겹치지 않게 합니다 */
+body.has-band header{top:var(--band-h,46px)}
+body.has-band{padding-top:var(--band-h,46px)}
+body.has-band .prog{top:var(--band-h,46px)}
+@media (max-width:760px){
+  .pop-band p span{display:block;margin-left:0;margin-top:2px}
+}
+
+.pop-modal{position:fixed;inset:0;z-index:260;background:rgba(20,18,15,.62);
+  backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px}
+.pm-card{position:relative;width:100%;max-width:420px;max-height:88dvh;overflow:auto;
+  background:var(--card);border-radius:14px;box-shadow:0 40px 90px rgba(20,18,15,.34)}
+.pm-x{position:absolute;top:10px;right:10px;z-index:2;width:36px;height:36px;border-radius:50%;
+  background:rgba(250,248,244,.9);color:var(--ink);font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(20,18,15,.14);transition:background .22s}
+.pm-x:hover{background:#fff}
+.pm-x:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.pm-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.pm-body{padding:26px 26px 8px}
+.pm-body h2{font-size:21px;letter-spacing:-.045em;margin-bottom:12px;text-wrap:balance}
+.pm-body p{font-size:14px;color:var(--mute);line-height:1.85;margin-bottom:20px;text-wrap:pretty}
+.pm-body .btn{width:100%;justify-content:center}
+.pm-off{display:flex;align-items:center;gap:8px;padding:16px 26px 20px;
+  font-size:12.5px;color:var(--mute-2);cursor:pointer}
+.pm-off input{accent-color:var(--gold);width:15px;height:15px}
+.pm-off:focus-within{outline:2px solid var(--gold);outline-offset:-2px;border-radius:6px}
+
 /* ══════ 10. 관리자 화면 (admin.html) ══════
    사이트와 같은 토큰·같은 서체(Pretendard Variable / Cormorant)를 씁니다.
    다만 읽는 페이지가 아니라 다루는 도구라 여백을 줄이고 밀도를 올렸습니다.
@@ -970,6 +1021,41 @@ label.adm-btn{cursor:pointer}
 .adm-store .hr .sub{display:block;margin-top:3px;font-size:var(--fs-sm);color:var(--mute-2);
   font-variant-numeric:tabular-nums}
 
+/* ── 팝업 관리 ───────────────────────────────────────── */
+.adm-pop{max-width:none;width:100%;display:grid;
+  grid-template-columns:108px 86px minmax(220px,2fr) minmax(190px,1fr) 110px 128px;
+  gap:14px;align-items:center;padding:11px 20px;border-top:1px solid var(--line);
+  font-size:var(--fs-md);transition:background .2s}
+.adm-pop:not(.thead):not(.editing):hover{background:var(--bg)}
+.adm-pop .nm{font-weight:600;letter-spacing:-.03em}
+.adm-pop .nm .ds{display:block;font-weight:400;font-size:var(--fs-sm);color:var(--mute);
+  line-height:1.6;margin-top:3px}
+.adm-pop .rg{color:var(--mute)}
+.adm-pop .hr{color:var(--mute);font-variant-numeric:tabular-nums;font-size:var(--fs-sm)}
+.adm-pop .bdgs{display:flex;flex-wrap:wrap;gap:4px}
+.adm-pop.editing{display:block;padding:0;background:var(--bg);box-shadow:inset 3px 0 0 var(--gold)}
+.eg input[type=date]{width:100%;height:var(--ctl);padding:0 12px;border-radius:8px;
+  border:1px solid var(--line-2);background:var(--card);
+  font-family:inherit;font-size:var(--fs-md);color:var(--ink);font-variant-numeric:tabular-nums}
+.eg input[type=date]:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 3px rgba(165,131,75,.14)}
+
+/* ── 홈페이지 문구 ───────────────────────────────────── */
+.adm-txt{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));
+  gap:18px 20px;padding:24px 20px}
+.adm-txt .tf{display:block;min-width:0}
+.adm-txt .tf > span{display:block;font-size:var(--fs-lbl);letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;color:var(--mute-2);margin-bottom:7px}
+.adm-txt .tf > span i{font-style:normal;margin-left:6px;padding:1px 6px;border-radius:4px;
+  background:var(--th);color:var(--ink-2);letter-spacing:.04em}
+.adm-txt input,.adm-txt textarea{width:100%;padding:11px 12px;border-radius:8px;
+  border:1px solid var(--line-2);background:var(--card);
+  font-family:inherit;font-size:var(--fs-md);letter-spacing:-.02em;color:var(--ink);line-height:1.7}
+.adm-txt input{height:var(--ctl);padding:0 12px}
+.adm-txt textarea{resize:vertical;min-height:76px}
+.adm-txt input::placeholder,.adm-txt textarea::placeholder{color:var(--mute-2)}
+.adm-txt input:focus,.adm-txt textarea:focus{border-color:var(--gold);outline:none;
+  box-shadow:0 0 0 3px rgba(165,131,75,.14)}
+
 /* ── 매장 편집 폼 ────────────────────────────────────── */
 .adm-store.editing{display:block;padding:0;background:var(--bg);
   box-shadow:inset 3px 0 0 var(--gold)}
@@ -1048,11 +1134,12 @@ label.adm-btn{cursor:pointer}
   .adm-hd h1{display:none}
   .adm-tab{margin-left:0;order:3;width:100%}
   .adm-tab button{flex:1}
-  .adm-row,.adm-store:not(.editing),.adm-menu:not(.editing){grid-template-columns:1fr;gap:10px}
-  .adm-row.thead,.adm-store.thead,.adm-menu.thead{display:none}
+  .adm-row,.adm-store:not(.editing),.adm-menu:not(.editing),.adm-pop:not(.editing){grid-template-columns:1fr;gap:10px}
+  .adm-row.thead,.adm-store.thead,.adm-menu.thead,.adm-pop.thead{display:none}
   .adm-row{padding:20px}
   .adm-act{justify-content:flex-start}
-  .adm-store:not(.editing),.adm-menu:not(.editing){padding:18px 20px}
+  .adm-store:not(.editing),.adm-menu:not(.editing),.adm-pop:not(.editing){padding:18px 20px}
+  .adm-txt{grid-template-columns:1fr}
   .pho{flex-direction:column}
   .adm-store .ord{justify-content:flex-start}
   .ib{width:44px;height:44px;font-size:11px}   /* 손가락으로 누를 크기 */

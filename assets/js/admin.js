@@ -35,7 +35,7 @@ function show(which) {
 
 /* ── 로그인 ─────────────────────────────────────────────────────────── */
 /* 로그인 성공 후 공통 처리 */
-function enter() { show('app'); loadInq(); loadStr(); loadMenus(); }
+function enter() { show('app'); loadInq(); loadStr(); loadMenus(); loadPopups(); loadTexts(); }
 
 /* 구글에서 받은 ID 토큰을 서버로 보냅니다. 검증은 전부 서버가 합니다. */
 async function onGoogle(resp) {
@@ -95,6 +95,8 @@ document.querySelectorAll('.adm-tab button').forEach(b => b.onclick = () => {
   $('#view-inq').hidden = b.dataset.view !== 'inq';
   $('#view-str').hidden = b.dataset.view !== 'str';
   $('#view-men').hidden = b.dataset.view !== 'men';
+  $('#view-pop').hidden = b.dataset.view !== 'pop';
+  $('#view-txt').hidden = b.dataset.view !== 'txt';
 });
 
 /* ── 상담 접수 ──────────────────────────────────────────────────────── */
@@ -822,6 +824,298 @@ $('#addMenu').onclick = () => {
   const el = $('#menList').querySelector('.editing');
   el.scrollIntoView({ block: 'center', behavior: 'smooth' });
   el.querySelector('[data-f=name]').focus();
+};
+
+/* ── 팝업 ───────────────────────────────────────────────────────────────
+   메뉴·매장과 같은 방식입니다 — 평소엔 읽기 전용, [수정] 으로 열고 [저장] 으로 확정.
+   형태는 두 가지뿐입니다: 화면 맨 위 띠배너 / 화면 가운데 모달. */
+const KINDS = { banner: '띠배너', modal: '모달' };
+let popups = [];
+let pEditing = null;
+
+const dateText = p => {
+  const a = p.starts_at || '', b = p.ends_at || '';
+  if (!a && !b) return '<span class="dim">기간 제한 없음</span>';
+  return `${a || '지금부터'} <span class="dim">~</span> ${b || '계속'}`;
+};
+
+/* 기간이 끝났는지 화면에서 바로 알 수 있게 표시합니다 */
+function popState(p) {
+  const today = new Date().toISOString().slice(0, 10);
+  if (!p.published) return '<span class="bdg off">비공개</span>';
+  if (p.ends_at && p.ends_at < today) return '<span class="bdg off">기간 종료</span>';
+  if (p.starts_at && p.starts_at > today) return '<span class="bdg">대기 중</span>';
+  return '<span class="bdg new">노출 중</span>';
+}
+
+function popView(p, i, last) {
+  return `
+    <div class="adm-pop" data-id="${p.id}">
+      <div class="ord">
+        <span class="n">${i + 1}</span>
+        <span class="mv">
+          <button class="ib" data-pup ${i === 0 ? 'disabled' : ''} title="위로" aria-label="${esc(p.title)} 위로">▲</button>
+          <button class="ib" data-pdown ${last ? 'disabled' : ''} title="아래로" aria-label="${esc(p.title)} 아래로">▼</button>
+        </span>
+      </div>
+      <div class="rg">${KINDS[p.kind] || p.kind}</div>
+      <div class="nm">${esc(p.title)}
+        <span class="ds">${esc(p.body) || '<span class="dim">내용 없음</span>'}</span></div>
+      <div class="hr">${dateText(p)}</div>
+      <div class="bdgs">${popState(p)}</div>
+      <div class="adm-act">
+        <button class="adm-btn" data-pedit>수정</button>
+        <button class="adm-btn danger" data-pdel>삭제</button>
+      </div>
+    </div>`;
+}
+
+function popEdit(p) {
+  const isNew = p.id === NEW;
+  return `
+    <div class="adm-pop editing" data-id="${p.id}">
+      <div class="adm-edit">
+        <div class="eh">${isNew ? '새 팝업' : esc(p.title) + ' 수정'}</div>
+        <div class="eg">
+          <label class="f"><span>형태</span>
+            <select data-f="kind">${Object.entries(KINDS).map(([v, l]) =>
+              `<option value="${v}"${v === p.kind ? ' selected' : ''}>${l}</option>`).join('')}</select></label>
+          <label class="f"><span>제목</span>
+            <input type="text" data-f="title" value="${esc(p.title)}" placeholder="예) 서판교점 오픈" maxlength="80"></label>
+          <label class="f f-addr"><span>내용</span>
+            <input type="text" data-f="body" value="${esc(p.body)}"
+                   placeholder="띠배너는 한 줄로 짧게 · 모달은 조금 길어도 됩니다" maxlength="400"></label>
+          <label class="f"><span>노출 시작</span>
+            <input type="date" data-f="starts_at" value="${esc(p.starts_at || '')}"></label>
+          <label class="f"><span>노출 종료</span>
+            <input type="date" data-f="ends_at" value="${esc(p.ends_at || '')}"></label>
+          <label class="f"><span>링크 주소</span>
+            <input type="text" data-f="link_url" value="${esc(p.link_url)}"
+                   placeholder="https://... 또는 #store (비워도 됩니다)" maxlength="500"></label>
+          <label class="f"><span>링크 문구</span>
+            <input type="text" data-f="link_label" value="${esc(p.link_label || '자세히 보기')}" maxlength="30"></label>
+
+          <div class="f f-addr" data-img${p.kind === 'banner' ? ' hidden' : ''}><span>모달 이미지</span>
+            <div class="pho">
+              <div class="pv" data-pv>${p.image_url ? `<img src="${esc(p.image_url)}" alt="">` : '<span class="no">사진 없음</span>'}</div>
+              <div class="pa">
+                <label class="adm-btn lg" tabindex="0">사진 고르기
+                  <input type="file" accept="image/*" data-ppick hidden></label>
+                <p class="ehint" data-pmsg>모달 위쪽에 <span class="num">4</span>:<span class="num">3</span> 으로 들어갑니다. 없어도 됩니다.</p>
+              </div>
+            </div>
+            <input type="hidden" data-f="image_url" value="${esc(p.image_url)}">
+          </div>
+
+          <div class="f"><span>표시 설정</span>
+            <div class="adm-flags">
+              <label><input type="checkbox" data-f="published"${p.published ? ' checked' : ''}>사이트에 게시</label>
+            </div>
+          </div>
+        </div>
+        <div class="ea">
+          <button type="button" class="adm-btn primary lg" data-psave>저장</button>
+          <button type="button" class="adm-btn lg" data-pcancel>취소</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderPopups() {
+  const box = $('#popList');
+  if (!popups.length) {
+    box.innerHTML = empty('—', '만들어 둔 팝업이 없습니다',
+      '오른쪽 위 “+ 팝업 추가”로 공지나 이벤트를 올리세요. 게시를 켜야 사이트에 나타납니다.');
+    return;
+  }
+  box.innerHTML = popups.map((p, i) =>
+    String(p.id) === String(pEditing) ? popEdit(p) : popView(p, i, i === popups.length - 1)
+  ).join('');
+}
+
+async function loadPopups() {
+  const box = $('#popList');
+  box.innerHTML = skeleton(2);
+  try {
+    const { rows } = await api('/api/admin/popups');
+    popups = rows; pEditing = null;
+    renderPopups();
+  } catch (ex) {
+    box.innerHTML = empty('!', '팝업을 불러오지 못했습니다', esc(ex.message));
+  }
+}
+
+async function savePopup(row) {
+  const g = f => row.querySelector(`[data-f="${f}"]`);
+  const body = {
+    kind:       g('kind').value,
+    title:      g('title').value.trim(),
+    body:       g('body').value.trim(),
+    starts_at:  g('starts_at').value,
+    ends_at:    g('ends_at').value,
+    link_url:   g('link_url').value.trim(),
+    link_label: g('link_label').value.trim() || '자세히 보기',
+    image_url:  g('image_url').value.trim(),
+    published:  g('published').checked
+  };
+  if (!body.title) { toast('팝업 제목을 입력해 주세요.', true); g('title').focus(); return; }
+
+  const btn = row.querySelector('[data-psave]');
+  btn.disabled = true; btn.textContent = '저장 중…';
+  try {
+    if (row.dataset.id === NEW) {
+      body.sort = popups.length;
+      await api('/api/admin/popups', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    } else {
+      await api('/api/admin/popups', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: row.dataset.id, ...body })
+      });
+    }
+    toast('저장했습니다.');
+    await loadPopups();
+  } catch (ex) {
+    toast(ex.message, true);
+    btn.disabled = false; btn.textContent = '저장';
+  }
+}
+
+async function movePopup(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= popups.length) return;
+  [popups[i], popups[j]] = [popups[j], popups[i]];
+  renderPopups();
+  const changed = popups.filter((p, k) => p.id !== NEW && p.sort !== k + 1);
+  try {
+    await Promise.all(changed.map(p => {
+      const k = popups.indexOf(p) + 1;
+      return api('/api/admin/popups', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: p.id, sort: k })
+      }).then(() => { p.sort = k; });
+    }));
+    toast('순서를 바꿨습니다.');
+  } catch (ex) { toast(ex.message, true); loadPopups(); }
+}
+
+$('#popList').addEventListener('change', async e => {
+  const row = e.target.closest('.adm-pop'); if (!row) return;
+  /* 띠배너에는 이미지를 쓰지 않으므로 형태를 바꾸면 사진 칸을 숨깁니다 */
+  if (e.target.matches('[data-f=kind]')) {
+    const box = row.querySelector('[data-img]');
+    if (box) box.hidden = e.target.value === 'banner';
+    return;
+  }
+  if (!e.target.matches('[data-ppick]')) return;
+  const input = e.target, file = input.files && input.files[0];
+  input.value = '';
+  if (!file) return;
+  const msg = row.querySelector('[data-pmsg]');
+  msg.textContent = '사진을 줄이는 중…';
+  try {
+    const data = await shrink(file);
+    msg.textContent = '올리는 중…';
+    const r = await api('/api/admin/menu-photo', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bucket: 'popup', name: row.querySelector('[data-f=title]').value || 'popup', data })
+    });
+    row.querySelector('[data-f=image_url]').value = r.url;
+    row.querySelector('[data-pv]').innerHTML = `<img src="${r.url}" alt="">`;
+    msg.textContent = '올렸습니다. 저장을 눌러야 반영됩니다.';
+  } catch (ex) { msg.textContent = ex.message; toast(ex.message, true); }
+});
+
+$('#popList').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const lb = e.target.closest('label.adm-btn'); if (!lb) return;
+  e.preventDefault(); lb.querySelector('input[type=file]').click();
+});
+
+$('#popList').addEventListener('click', async e => {
+  const btn = e.target.closest('button'); if (!btn) return;
+  const row = btn.closest('.adm-pop'); if (!row) return;
+  const id = row.dataset.id;
+  const i = popups.findIndex(p => String(p.id) === id);
+
+  if (btn.hasAttribute('data-pup'))   return movePopup(i, -1);
+  if (btn.hasAttribute('data-pdown')) return movePopup(i, 1);
+  if (btn.hasAttribute('data-psave')) return savePopup(row);
+
+  if (btn.hasAttribute('data-pedit')) {
+    if (pEditing === NEW) popups = popups.filter(p => p.id !== NEW);
+    pEditing = popups[i].id; renderPopups();
+    $('#popList').querySelector('.editing [data-f=title]').focus();
+    return;
+  }
+  if (btn.hasAttribute('data-pcancel')) {
+    if (id === NEW) popups = popups.filter(p => p.id !== NEW);
+    pEditing = null; renderPopups();
+    return;
+  }
+  if (btn.hasAttribute('data-pdel')) {
+    const nm = popups[i] ? popups[i].title : '이 팝업';
+    if (!confirm(`${nm} 을(를) 삭제합니다.\n\n되돌릴 수 없습니다. 계속할까요?`)) return;
+    try {
+      await api('/api/admin/popups?id=' + encodeURIComponent(id), { method: 'DELETE' });
+      toast('삭제했습니다.'); loadPopups();
+    } catch (ex) { toast(ex.message, true); }
+  }
+});
+
+$('#addPop').onclick = () => {
+  if (popups.some(p => p.id === NEW)) return;
+  popups.push({ id: NEW, kind: 'banner', title: '', body: '', image_url: '',
+                link_url: '', link_label: '자세히 보기',
+                starts_at: '', ends_at: '', published: false });
+  pEditing = NEW; renderPopups();
+  const el = $('#popList').querySelector('.editing');
+  el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  el.querySelector('[data-f=title]').focus();
+};
+
+/* ── 홈페이지 문구 ──────────────────────────────────────────────────────
+   어떤 문구를 열어 둘지는 서버(api/admin/settings.js 의 ALLOWED)가 정합니다.
+   화면은 받은 목록을 그대로 그리므로, 항목을 늘려도 여기는 고칠 게 없습니다. */
+async function loadTexts() {
+  const box = $('#txtList');
+  box.innerHTML = skeleton(4);
+  try {
+    const { fields } = await api('/api/admin/settings');
+    box.innerHTML = `<div class="adm-txt">` + fields.map(f => `
+      <label class="tf">
+        <span>${esc(f.label)}${f.url ? '<i>주소</i>' : ''}</span>
+        ${f.multiline
+          ? `<textarea data-k="${esc(f.key)}" maxlength="${f.max}" rows="3"
+                       placeholder="비우면 사이트의 원래 문구가 나옵니다">${esc(f.value)}</textarea>`
+          : `<input type="text" data-k="${esc(f.key)}" maxlength="${f.max}" value="${esc(f.value)}"
+                    placeholder="${f.url ? 'https://…' : '비우면 사이트의 원래 문구가 나옵니다'}">`}
+      </label>`).join('') + `</div>`;
+  } catch (ex) {
+    box.innerHTML = empty('!', '문구를 불러오지 못했습니다', esc(ex.message));
+  }
+}
+
+$('#saveTxt').onclick = async () => {
+  const btn = $('#saveTxt');
+  const fields = [...document.querySelectorAll('#txtList [data-k]')];
+  if (!fields.length) { toast('저장할 문구가 없습니다.', true); return; }
+  btn.disabled = true; btn.textContent = '저장 중…';
+  try {
+    const body = {};
+    fields.forEach(el => { body[el.dataset.k] = el.value; });
+    await api('/api/admin/settings', {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    toast('문구를 저장했습니다. 사이트를 새로고침하면 보입니다.');
+  } catch (ex) {
+    toast(ex.message, true);
+  } finally {
+    btn.disabled = false; btn.innerHTML = '문구 저장';
+  }
 };
 
 /* ── 시작 ───────────────────────────────────────────────────────────── */

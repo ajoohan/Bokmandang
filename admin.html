@@ -21,7 +21,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260902b">
+<link rel="stylesheet" href="assets/css/style.css?v=20260902c">
 </head>
 <body class="adm">
 
@@ -61,6 +61,8 @@
         <button class="on" data-view="inq" role="tab">상담 접수</button>
         <button data-view="str" role="tab">매장 목록</button>
         <button data-view="men" role="tab">메뉴 관리</button>
+        <button data-view="pop" role="tab">팝업</button>
+        <button data-view="txt" role="tab">문구</button>
       </div>
       <div class="sp">
         <a class="adm-btn" href="index.html" target="_blank" rel="noopener">사이트 보기</a>
@@ -124,6 +126,37 @@
       </div>
       <p class="adm-note">가격은 숫자만 넣으면 됩니다. 사진을 바꾸지 않으면 기존 사진이 그대로 쓰입니다.</p>
     </section>
+
+    <!-- 팝업 -->
+    <section id="view-pop" hidden>
+      <div class="adm-bar adm-bar-str">
+        <p class="adm-lead"><strong>띠배너</strong>는 화면 맨 위에 한 줄로 얹히고,
+          <strong>모달</strong>은 인트로가 끝난 뒤 화면 가운데에 뜹니다.
+          기간이 지나거나 <strong>게시</strong>를 끄면 사이트에서 사라집니다.</p>
+        <button class="adm-btn primary lg" id="addPop">
+          <span class="ico" aria-hidden="true">+</span>팝업 추가</button>
+      </div>
+      <div class="adm-card">
+        <div class="adm-pop thead" role="row"><div>순서</div><div>형태</div><div>제목 · 내용</div>
+          <div>노출 기간</div><div>표시</div><div class="adm-act">관리</div></div>
+        <div id="popList"></div>
+      </div>
+      <p class="adm-note">같은 형태의 팝업이 여러 개면 <strong>순서가 앞선 것 하나만</strong> 뜹니다 —
+        한 번에 여러 개가 겹치면 아무것도 읽히지 않습니다.
+        방문자가 “오늘 하루 보지 않기”를 누르면 그날은 다시 뜨지 않습니다.</p>
+    </section>
+
+    <!-- 홈페이지 문구 -->
+    <section id="view-txt" hidden>
+      <div class="adm-bar adm-bar-str">
+        <p class="adm-lead">자주 바뀌는 문구만 열어 두었습니다. 비워 두면 사이트에 적힌 원래 문구가 그대로 나옵니다.
+          외부 채널 주소는 넣은 것만 버튼으로 생깁니다.</p>
+        <button class="adm-btn primary lg" id="saveTxt">문구 저장</button>
+      </div>
+      <div class="adm-card"><div id="txtList"></div></div>
+      <p class="adm-note">여기에 없는 문구를 고쳐야 하면 개발자에게 요청하세요 —
+        아무 문구나 열어 두면 줄바꿈 하나로 화면이 틀어질 수 있어 항목을 정해 두었습니다.</p>
+    </section>
   </main>
 </div>
 
@@ -132,6 +165,6 @@
 <div class="adm-toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="assets/js/admin.js?v=20260902b"></script>
+<script src="assets/js/admin.js?v=20260902c"></script>
 </body>
 </html>

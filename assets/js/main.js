@@ -558,12 +558,16 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
 /* ══════ 외부 채널 · 주소 복사 ══════
    config.js 의 BOKMANDANG.links 에 주소가 들어 있는 항목만 버튼으로 그립니다.
    비어 있으면 아무것도 그리지 않아 빈 버튼이 남지 않습니다. */
-(function(){
+/* 관리자에서 주소를 고치면 다시 그려야 하므로 함수로 둡니다.
+   예전에는 비었을 때 요소를 remove() 해 버려서, 나중에 값이 와도 그릴 자리가 없었습니다.
+   이제는 비우고 감추기만 합니다. */
+function drawLinks(){
   const L=(window.BOKMANDANG&&window.BOKMANDANG.links)||{};
   const url=k=>((L[k]||'')+'').trim();
 
   const box=document.getElementById('ext');
   if(box){
+    box.innerHTML='';
     [['naverPlace','네이버 플레이스'],['reserve','네이버 예약'],
      ['baemin','배달의민족'],['coupangeats','쿠팡이츠'],['yogiyo','요기요']]
       .forEach(([k,label])=>{
@@ -574,18 +578,21 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
         a.setAttribute('aria-label', label+' (새 창)');
         box.appendChild(a);
       });
-    if(!box.children.length) box.remove();
+    box.hidden=!box.children.length;
   }
 
   const kit=document.getElementById('kitshop'), ku=url('kitShop');
   if(kit){
-    if(ku){
-      const a=document.createElement('a');
-      a.className='btn btn-brass'; a.href=ku; a.target='_blank'; a.rel='noopener';
-      a.innerHTML='밀키트 구매하기 <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>';
-      kit.replaceWith(a);
-    } else kit.remove();
+    kit.innerHTML = ku
+      ? `<a class="btn btn-brass" href="${ku}" target="_blank" rel="noopener">밀키트 구매하기 `
+        + `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>`
+      : '';
+    kit.hidden=!ku;
   }
+}
+drawLinks();
+
+(function(){
 
   /* 주소 복사 — clipboard API 는 https/localhost 에서만 동작합니다.
      막힌 환경에서는 안내 문구를 바꿔 직접 복사하도록 유도합니다. */
@@ -976,4 +983,149 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
   // 모바일에서는 무거운 스크럽 패럴랙스 축소
   if(mq.matches){ PX.length=0; }
   mq.addEventListener('change',e=>{ if(e.matches) PX.length=0; });
+})();
+
+/* ══════ 홈페이지 문구 · 팝업 ══════
+   /api/site 한 번으로 둘 다 받습니다. 실패하면 아무 일도 일어나지 않고
+   HTML 에 적힌 원래 문구가 그대로 남습니다. */
+(function(){
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  /* 문구를 갈아 끼웁니다.
+     주의 — 히어로 제목은 이미 splitLines() 가 줄 단위 <span> 으로 쪼개 놓았습니다.
+     그냥 textContent 를 바꾸면 그 구조가 날아가 애니메이션이 깨지므로,
+     쪼개진 요소는 다시 쪼개고 곧바로 보이게 둡니다(응답이 늦게 오므로 등장 연출은 생략). */
+  function setText(el, text){
+    const html = esc(text).replace(/\n/g, '<br>');
+    if (el.dataset.split){
+      el.innerHTML = html;
+      delete el.dataset.split;
+      splitLines(el).forEach(l => { l.style.opacity='1'; l.style.transform='none'; });
+      return;
+    }
+    if (el.querySelector('.mo-ch')){
+      el.innerHTML = [...String(text)].map(c =>
+        `<span class="mo-ch">${c===' '?'&nbsp;':esc(c)}</span>`).join('');
+      return;
+    }
+    el.innerHTML = html;
+  }
+
+  /* ── 팝업 ────────────────────────────────────────────────────────
+     '오늘 하루 보지 않기' 는 이 브라우저에만 남습니다(localStorage).
+     막힌 환경(시크릿 모드 등)에서는 그냥 매번 보이게 둡니다. */
+  const today = () => new Date().toISOString().slice(0,10);
+  const seenKey = id => `bm.pop.${id}`;
+  function hidden(id){
+    try { return localStorage.getItem(seenKey(id)) === today(); } catch(e){ return false; }
+  }
+  function hideToday(id){
+    try { localStorage.setItem(seenKey(id), today()); } catch(e){}
+  }
+
+  /* 모달은 흰 카드 위라 btn-line(어두운 섹션용)을 쓰면 글자가 안 보입니다 */
+  const linkHTML = p => p.link_url
+    ? `<a class="btn btn-dark" href="${esc(p.link_url)}"${/^https?:/i.test(p.link_url)?' target="_blank" rel="noopener"':''}>${esc(p.link_label||'자세히 보기')}</a>`
+    : '';
+
+  function showBand(p){
+    const el = document.getElementById('popBand');
+    if (!el) return;
+    el.innerHTML = `<div class="pb-in">
+        <p><b>${esc(p.title)}</b>${p.body?`<span>${esc(p.body)}</span>`:''}</p>
+        ${p.link_url?`<a class="pb-go" href="${esc(p.link_url)}"${/^https?:/i.test(p.link_url)?' target="_blank" rel="noopener"':''}>${esc(p.link_label||'자세히 보기')}</a>`:''}
+        <button type="button" class="pb-x" aria-label="공지 닫기">✕</button>
+      </div>`;
+    el.hidden = false;
+    document.body.classList.add('has-band');
+    /* 실제 높이를 재서 헤더·본문을 정확히 그만큼만 내립니다 (문구가 길면 두 줄이 됩니다) */
+    const setH = () => document.documentElement.style.setProperty('--band-h', el.offsetHeight + 'px');
+    setH(); addEventListener('resize', setH);
+    el.querySelector('.pb-x').onclick = () => {
+      el.hidden = true;
+      document.body.classList.remove('has-band');
+      document.documentElement.style.removeProperty('--band-h');
+      hideToday(p.id);
+    };
+  }
+
+  function showModal(p){
+    const el = document.getElementById('popModal');
+    if (!el) return;
+    el.innerHTML = `<div class="pm-card" role="document">
+        <button type="button" class="pm-x" aria-label="닫기">✕</button>
+        ${p.image_url?`<img class="pm-img" src="${esc(p.image_url)}" alt="">`:''}
+        <div class="pm-body">
+          <h2 id="popTitle">${esc(p.title)}</h2>
+          ${p.body?`<p>${esc(p.body).replace(/\n/g,'<br>')}</p>`:''}
+          ${linkHTML(p)}
+        </div>
+        <label class="pm-off"><input type="checkbox"> 오늘 하루 보지 않기</label>
+      </div>`;
+    el.hidden = false;
+
+    const off = el.querySelector('.pm-off input');
+    const prev = document.activeElement;
+    const close = () => {
+      if (off.checked) hideToday(p.id);
+      el.hidden = true;
+      document.body.style.overflow = '';
+      lockBg(false);
+      el.removeEventListener('keydown', trap);
+      if (prev && prev.focus) prev.focus();
+    };
+    /* 열려 있는 동안 Tab 이 뒤 배경으로 새어 나가지 않게 잠급니다 (라이트박스와 같은 방식) */
+    lockBg(true);
+    const trap = cycle(() => [...el.querySelectorAll(FOCUSABLE)]);
+    el.addEventListener('keydown', trap);
+    document.body.style.overflow = 'hidden';
+    el.querySelector('.pm-x').onclick = close;
+    el.addEventListener('click', e => { if (e.target === el) close(); });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !el.hidden) close(); });
+    setTimeout(() => el.querySelector('.pm-x').focus(), 60);
+    anim(el, {opacity:[0,1]}, {d:240, ease:E.soft, clear:'opacity'});
+    anim(el.querySelector('.pm-card'), {opacity:[0,1], transform:['translateY(18px) scale(.97)','none']},
+         {d:520, ease:E.back, clear:'opacity,transform'});
+  }
+
+  /* 모달은 인트로 커튼이 끝난 뒤에 띄웁니다 — 커튼 위에 겹치면 둘 다 안 읽힙니다.
+     인트로가 없거나 이미 끝났으면 바로 띄웁니다. */
+  function afterIntro(fn){
+    if (document.body.classList.contains('loaded')) return fn();
+    const mo = new MutationObserver(() => {
+      if (document.body.classList.contains('loaded')) { mo.disconnect(); setTimeout(fn, 260); }
+    });
+    mo.observe(document.body, {attributes:true, attributeFilter:['class']});
+    setTimeout(() => { mo.disconnect(); fn(); }, 5000);   // 인트로가 멈춰도 팝업은 뜨게
+  }
+
+  fetch('/api/site', {headers:{'Accept':'application/json'}})
+    .then(r => r.ok ? r.json() : null)
+    .then(j => {
+      if (!j) return;
+
+      /* 문구 */
+      const st = j.settings || {};
+      document.querySelectorAll('[data-t]').forEach(el => {
+        const v = st[el.dataset.t];
+        if (typeof v === 'string' && v.trim()) setText(el, v);
+      });
+      /* 외부 채널 주소도 같은 곳에서 관리합니다 — config.js 값보다 우선합니다 */
+      const L = (window.BOKMANDANG && window.BOKMANDANG.links) || {};
+      let changed = false;
+      for (const k of Object.keys(L)) {
+        const v = st['links.' + k];
+        if (typeof v === 'string' && v.trim() && v !== L[k]) { L[k] = v.trim(); changed = true; }
+      }
+      if (changed && typeof drawLinks === 'function') drawLinks();
+
+      /* 팝업 — 종류별로 하나씩만 띄웁니다. 여러 개 겹치면 읽히지 않습니다. */
+      const list = (j.popups || []).filter(p => !hidden(p.id));
+      const band = list.find(p => p.kind === 'banner');
+      const modal = list.find(p => p.kind === 'modal');
+      if (band) showBand(band);
+      if (modal) afterIntro(() => showModal(modal));
+    })
+    .catch(() => {});
 })();
