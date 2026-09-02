@@ -161,6 +161,75 @@ document.querySelectorAll('.adm-chip').forEach(c => c.onclick = () => {
 });
 let qT; $('#q').oninput = e => { clearTimeout(qT); qT = setTimeout(() => { q = e.target.value.trim(); loadInq(); }, 250); };
 
+/* ── 엑셀(CSV) 내려받기 ────────────────────────────────────────────────
+   지금 고른 상태·검색어가 그대로 반영됩니다. 화면에 보이는 것을 그대로 받는 셈입니다.
+
+   엑셀에서 깨지지 않게 두 가지를 맞춥니다.
+     · UTF-8 BOM 을 붙입니다 — 없으면 한글이 전부 깨져 보입니다.
+     · 연락처를 010-0000-0000 꼴로 만듭니다 — 숫자만 있으면 엑셀이 수로 읽어
+       앞자리 0 을 없애 버립니다. */
+const CSV_MAX = 500;                       // API 가 한 번에 주는 최대치
+
+const csvCell = v => {
+  const t = String(v ?? '').replace(/\r?\n/g, ' ').trim();
+  return /[",;]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
+};
+
+function csvPhone(v) {
+  const d = String(v ?? '').replace(/[^0-9]/g, '');
+  // 서울은 국번이 두 자리입니다 — 세 자리로 끊으면 021-234-5678 처럼 엉뚱해집니다
+  if (d.startsWith('02')) {
+    if (d.length === 10) return `02-${d.slice(2,6)}-${d.slice(6)}`;
+    if (d.length === 9)  return `02-${d.slice(2,5)}-${d.slice(5)}`;
+  }
+  if (d.length === 11) return `${d.slice(0,3)}-${d.slice(3,7)}-${d.slice(7)}`;
+  if (d.length === 10) return `${d.slice(0,3)}-${d.slice(3,6)}-${d.slice(6)}`;
+  return String(v ?? '');                  // 형식을 모르면 원본 그대로
+}
+
+const stamp = () => {
+  const d = new Date();
+  return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+};
+
+$('#dlCsv').onclick = async () => {
+  const btn = $('#dlCsv');
+  btn.disabled = true;
+  const label = btn.innerHTML;
+  btn.textContent = '만드는 중…';
+  try {
+    const p = new URLSearchParams({ limit: String(CSV_MAX) });
+    if (filter) p.set('status', filter);
+    if (q) p.set('q', q);
+    const { rows } = await api('/api/admin/inquiries?' + p);
+    if (!rows.length) { toast('내려받을 상담이 없습니다.', true); return; }
+
+    const head = ['접수일시','신청자','연락처','희망 지역','예산','문의 내용','진행 상태','담당자 메모'];
+    const body = rows.map(r => [
+      fmt(r.created_at), r.name, csvPhone(r.phone), r.region, r.budget,
+      r.message, STATUS[r.status] || r.status, r.memo
+    ].map(csvCell).join(','));
+
+    // ﻿ = BOM. 엑셀이 UTF-8 로 읽게 하는 표시입니다.
+    const blob = new Blob(['﻿' + [head.join(','), ...body].join('\r\n')],
+                          { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `복만당-가맹상담-${stamp()}.csv`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    toast(rows.length >= CSV_MAX
+      ? `${rows.length}건을 받았습니다. 최대치라 더 있을 수 있으니 상태로 나눠 받으세요.`
+      : `${rows.length}건을 내려받았습니다.`);
+  } catch (ex) {
+    toast(ex.message, true);
+  } finally {
+    btn.disabled = false; btn.innerHTML = label;
+  }
+};
+
 /* 상태 변경 · 메모 저장 — 행이 다시 그려져도 붙어 있도록 위임합니다 */
 $('#inqList').addEventListener('change', async e => {
   const row = e.target.closest('.adm-row'); if (!row) return;
