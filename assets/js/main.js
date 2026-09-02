@@ -135,15 +135,20 @@ const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate'
 const IMGDIR='assets/img/';
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 /* AVIF → WebP → JPEG 순으로 고르는 <picture> 마크업 */
-function picHTML(base, alt, sizes){
+function picHTML(base, alt, sizes, wide){
+  /* wide=true 면 800px 사본을 함께 알려 줍니다. 카드는 화면의 22% 남짓이라
+     1600px 원본을 받을 이유가 없습니다 (사진을 크게 볼 때만 원본을 씁니다). */
+  const set = ext => wide
+    ? `${IMGDIR}${base}-800.${ext} 800w, ${IMGDIR}${base}.${ext} 1600w`
+    : `${IMGDIR}${base}.${ext}`;
   return `<picture>
-      <source type="image/avif" sizes="${sizes}" srcset="${IMGDIR}${base}.avif">
-      <source type="image/webp" sizes="${sizes}" srcset="${IMGDIR}${base}.webp">
+      <source type="image/avif" sizes="${sizes}" srcset="${set('avif')}">
+      <source type="image/webp" sizes="${sizes}" srcset="${set('webp')}">
       <img src="${IMGDIR}${base}.jpg" alt="${alt}" loading="lazy" decoding="async">
     </picture>`;
 }
 const MENU=[
- {c:'tang',n:'곰탕',d:'맑은 한우 육수에 양지 수육을 넉넉히. 복만당의 기본이자 기준.',p:'11,000',u:'원',img:'g',tag:'BEST'},
+ {c:'tang',n:'곰탕',d:'맑은 한우 육수에 양지 수육을 넉넉히. 복만당의 기본이자 기준.',p:'10,000',u:'원',img:'g',tag:'BEST'},
  {c:'tang',n:'수육곰탕',d:'한우 수육을 두 배로 올린 구성. 깍두기 한 점과 함께.',p:'19,000',u:'원',img:'s',tag:'SIGNATURE',brass:1},
  {c:'tang',n:'특곰탕',d:'고기 양을 늘린 구성. 한 그릇으로 든든하게 드시고 싶을 때.',p:'13,000',u:'원',img:'b'},
  {c:'tang',n:'우설곰탕',d:'부드럽게 삶아낸 우설을 얹은 별미. 수량 한정으로 준비합니다.',p:'16,000',u:'원',img:'u'},
@@ -161,14 +166,15 @@ function render(f, first){
       const el=document.createElement('div');
       el.className='mcard';
       el.innerHTML=`<div class="ph">${m.tag?`<span class="tag${m.brass?' brass':''}">${m.tag}</span>`:''}
-        ${picHTML(IMG[m.img], m.n, MENU_SIZES)}
+        ${picHTML(IMG[m.img], m.n, MENU_SIZES, true)}
         <button type="button" class="zoom" aria-label="${m.n} 사진 크게 보기"></button></div>
         <div class="body-w"><h3>${m.n}</h3><p>${m.d}</p>
         <div class="price"><b>${m.p}</b><span>${m.u}</span></div></div>`;
       /* 카드 아무 데나 클릭해도 열리지만(마우스), 키보드 조작은 사진 위 버튼이 담당합니다.
          버튼이 stopPropagation 하므로 사진을 직접 눌러도 두 번 열리지 않습니다. */
       const zoom=el.querySelector('.zoom');
-      zoom.onclick=e=>{ e.stopPropagation(); openLB(el.querySelector('img'),m.n,m.d+'  ·  '+m.p+m.u); };
+      zoom.onclick=e=>{ e.stopPropagation();
+        openLB(el.querySelector('img'),m.n,m.d+'  ·  '+m.p+m.u, IMGDIR+IMG[m.img]+'-2.jpg'); };
       el.onclick=()=>zoom.click();
       grid.appendChild(el);
       anim(el,{opacity:[0,1],transform:['translateY(22px) scale(.97)','none']},{d:620,delay:i*65,ease:E.back,clear:'opacity,transform'});
@@ -235,9 +241,38 @@ function cycle(els){
 /* 라이트박스 — layoutId(공유 요소) 전환: 썸네일 위치에서 확대 */
 const lb=document.getElementById('lb'), lbi=document.getElementById('lbi');
 let origin=null;
-function openLB(srcEl,t,p){
+/* shots: 두 번째 컷 주소. 있으면 ‹ › 로 넘겨 볼 수 있습니다. */
+/* ── 사진 넘기기 ──────────────────────────────────────────────────────
+   두 번째 컷이 없는 사진(매장 갤러리 등)도 같은 함수를 쓰므로
+   파일이 실제로 있을 때만 버튼을 띄웁니다. */
+const lbnav=document.getElementById('lbnav');
+let shots=[], shot=0;
+function paintShot(){
+  lbi.src=shots[shot];
+  const n=document.getElementById('lbn'); if(n) n.textContent=`${shot+1} / ${shots.length}`;
+}
+function setShots(first, second){
+  shots=[first]; shot=0;
+  if(!lbnav) return;
+  lbnav.hidden=true;
+  if(!second) return;
+  const probe=new Image();
+  probe.onload=()=>{ shots.push(second); lbnav.hidden=false;
+    const n=document.getElementById('lbn'); if(n) n.textContent=`1 / ${shots.length}`; };
+  probe.src=second;
+}
+if(lbnav){
+  const step=d=>{ if(shots.length<2) return; shot=(shot+d+shots.length)%shots.length; paintShot(); };
+  document.getElementById('lbp1').onclick=e=>{ e.stopPropagation(); step(-1); };
+  document.getElementById('lbn1').onclick=e=>{ e.stopPropagation(); step(1); };
+  addEventListener('keydown',e=>{ if(!lb.classList.contains('on')) return;
+    if(e.key==='ArrowLeft') step(-1); else if(e.key==='ArrowRight') step(1); });
+}
+
+function openLB(srcEl,t,p,second){
   // currentSrc: 브라우저가 실제로 내려받은 사본(avif/webp). 재다운로드를 막습니다.
   const src = typeof srcEl==='string'? srcEl : (srcEl.currentSrc||srcEl.src);
+  setShots(src, second);
   origin = typeof srcEl==='string'? null : srcEl.getBoundingClientRect();
   lbi.src=src; document.getElementById('lbt').textContent=t; document.getElementById('lbp').textContent=p;
   lb.__prev=document.activeElement;
@@ -736,12 +771,13 @@ function countUp(el){
   if(RM) return;
   const raw=el.textContent.replace(/,/g,''), end=+raw;
   if(!end) return;
-  const t0=performance.now(), dur=900;
+  const t0=performance.now(), dur=900, done=end.toLocaleString('ko-KR');
   (function tick(t){
     const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
     el.textContent=Math.round(end*e).toLocaleString('ko-KR');
     if(p<1) requestAnimationFrame(tick);
   })(t0);
+  setTimeout(()=>{ el.textContent=done; }, dur+200);   // 프레임이 안 돌아도 숫자는 남깁니다
 }
 
 /* 9) 스크롤 스크럽 대상 등록 ------------------------------ */
@@ -828,10 +864,14 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
       ? `매장 ${rows.length}곳이 검색되었습니다.`
       : '검색 결과가 없습니다.';
     const target=rows.length;
+    cnt.textContent=target;          // 애니메이션이 안 돌아도 숫자는 맞아야 합니다
     if(!RM){ const t0=performance.now();
       (function tk(t){const p=Math.min(1,(t-t0)/600);cnt.textContent=Math.round(target*(1-Math.pow(1-p,3)));
         if(p<1)requestAnimationFrame(tk);})(t0);
-    } else cnt.textContent=target;
+      /* rAF 가 멈춘 채로 끝나면(탭이 뒤에 있거나 브라우저가 프레임을 아낄 때)
+         0 에서 굳습니다. 시간이 지나면 무조건 최종값으로 맞춰 둡니다. */
+      setTimeout(()=>{ cnt.textContent=target; }, 900);
+    }
   }
   rgn.querySelectorAll('button').forEach(b=>b.onclick=()=>{
     rgn.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
@@ -840,6 +880,14 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
   let deb; q.addEventListener('input',()=>{clearTimeout(deb);deb=setTimeout(()=>{kw=q.value.trim().toLowerCase();draw();},160);});
   draw(false);
   { const st=document.getElementById('sstatus'); if(st) st.textContent=''; }
+
+  /* 히어로의 '전국 N개 매장' — 오픈예정은 빼고 실제 영업 중인 곳만 셉니다 */
+  function syncHeroCount(){
+    const h=document.getElementById('hcnt'); if(!h) return;
+    const open=STORES.filter(s=>!s.soon).length;
+    if(open) h.textContent=open;
+  }
+  syncHeroCount();
 
   /* 관리자 화면에서 고친 매장 목록을 받아옵니다.
      assets/data/stores.js 로 먼저 그린 뒤라, API 가 없거나 실패해도 화면은 정상입니다.
@@ -852,7 +900,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
         j.rows.every((s,i)=>s.n===STORES[i].n&&s.a===STORES[i].a&&s.t===STORES[i].t&&s.r===STORES[i].r);
       if(same) return;                       // 바뀐 게 없으면 다시 그리지 않습니다
       STORES.length=0; STORES.push(...j.rows);
-      draw(false);
+      draw(false); syncHeroCount();
     })
     .catch(()=>{});                          // 오프라인·차단 등 — 정적 목록 유지
   inView(list,()=>{ [...list.children].forEach((el,i)=>{

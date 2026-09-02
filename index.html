@@ -30,7 +30,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260901f">
+<link rel="stylesheet" href="assets/css/style.css?v=20260902a">
 <!-- LCP — 히어로 사진. AVIF 미지원 브라우저는 이 preload 를 건너뜁니다. -->
 <link rel="preload" as="image" href="assets/img/hero-gomtang.avif" type="image/avif" fetchpriority="high">
 
@@ -180,7 +180,7 @@
 <section class="hero" id="top">
   <div class="wrap">
     <div class="rv">
-      <p class="lbl lbl-g">SINCE 2024 — 서울 · 경기 7개 매장</p>
+      <p class="lbl lbl-g">SINCE 2024 — 전국 <span id="hcnt" class="num">12</span>개 매장</p>
       <h1 class="d1">맑은 국물에<br>깊은 맛을 담다</h1>
       <p class="hero-lock"><em>복만당</em> 한우곰탕</p>
       <p class="body">한우를 정성껏 우려, 맑고 깊은 맛을 담았습니다. 따뜻한 마음과 정성으로 완성한 곰탕에 복만당의 또 하나의 시그니처, 이북식 손만두를 곁들이면 담백하고 깊은 맛을 한층 더 풍성하게 즐기실 수 있습니다.</p>
@@ -194,25 +194,26 @@
       <picture>
         <source type="image/avif" srcset="assets/img/hero-gomtang.avif">
         <source type="image/webp" srcset="assets/img/hero-gomtang.webp">
-        <img src="assets/img/hero-gomtang.jpg" alt="놋그릇에 담긴 복만당 한우곰탕" width="820" height="930" fetchpriority="high" decoding="async">
+        <img src="assets/img/hero-gomtang.jpg" alt="방짜유기 그릇에 담긴 복만당 한우곰탕" width="500" height="500" fetchpriority="high" decoding="async">
       </picture>
       <div class="price-card">
-        <p class="lbl" lang="en">SIGNATURE</p><b>한우곰탕</b><i><span class="num">11,000</span>원 · 본점 기준</i>
+        <p class="lbl" lang="en">SIGNATURE</p><b>한우곰탕</b><i><span class="num">10,000</span>원부터</i>
       </div>
     </div>
   </div>
   <div class="scroll-ind" aria-hidden="true" lang="en"><span class="ln"></span>SCROLL</div>
   <div class="stats"><div class="stats-in">
+    <div><b>1++</b><span>한우</span></div>
     <div><b>14시간</b><span>약탕기 저온 추출</span></div>
-    <div><b>100%</b><span>국내산 원재료</span></div>
+    <div><b>매일</b><span>매장에서 직접 조리</span></div>
   </div></div>
 </section>
 
 
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track" id="mq">
-    <span>한우<i></i>약탕기 14시간 저온 추출<i></i>이북식 손만두<i></i>국내산 100%<i></i>오픈키친 조리<i></i>맑은 곰탕<i></i></span>
-    <span>한우<i></i>약탕기 14시간 저온 추출<i></i>이북식 손만두<i></i>국내산 100%<i></i>오픈키친 조리<i></i>맑은 곰탕<i></i></span>
+    <span>1++ 한우<i></i>약탕기 14시간 저온 추출<i></i>매장에서 매일 직접<i></i>이북식 손만두<i></i>오픈키친 조리<i></i>맑은 곰탕<i></i></span>
+    <span>1++ 한우<i></i>약탕기 14시간 저온 추출<i></i>매장에서 매일 직접<i></i>이북식 손만두<i></i>오픈키친 조리<i></i>맑은 곰탕<i></i></span>
   </div>
 </div>
 
@@ -339,7 +340,7 @@
           <div class="info-row"><span class="k">대표문의</span><span class="num">02-565-5288</span></div>
           <div class="info-row"><span class="k">영업</span><span><span class="num">15:40</span> 라스트오더<br><small style="color:var(--mute-2)">지점별 영업시간 상이 · 아래 목록 참조</small></span></div>
           <div class="info-row"><span class="k">주차</span><span>지하주차장 이용</span></div>
-          <p class="note">현재 서울·경기 수도권 중심으로 매장을 운영하고 있습니다.<br>전체 매장은 아래 목록에서 확인하세요.</p>
+          <p class="note">서울·경기를 넘어 전국으로 매장을 확대하고 있습니다.<br>전체 매장은 아래 목록에서 확인하세요.</p>
           <!-- 손님용 동선. 가맹 상담(#contact)과 목적이 달라 분리했습니다.
                네이버 플레이스·예약·배달앱 버튼은 config.js 의 links 에 주소를 넣으면 자동으로 붙습니다. -->
           <div class="store-act">
@@ -365,7 +366,7 @@
           <div class="rgn" id="rgn" role="group" aria-label="지역 필터">
             <button class="on" data-r="all">전체</button>
             <button data-r="서울">서울</button>
-            <button data-r="경기">경기·인천</button>
+            <button data-r="경기">경기</button>
             <button data-r="지방">그 외 지역</button>
           </div>
         </div>
@@ -462,7 +463,14 @@
 <!-- 라이트박스 — 배경(#main)을 inert 로 잠그므로 <main> 밖에 두어야 합니다 -->
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="메뉴 사진 크게 보기">
   <button class="x" id="lbx" aria-label="닫기"><span lang="en" aria-hidden="true">CLOSE</span></button>
-  <div><img id="lbi" alt=""><div class="cap"><h3 id="lbt"></h3><p id="lbp"></p></div></div>
+  <div><img id="lbi" alt="">
+    <!-- 메뉴마다 사진이 두 장이라, 있을 때만 넘기기 버튼이 붙습니다 -->
+    <div class="lbnav" id="lbnav" hidden>
+      <button type="button" id="lbp1" aria-label="이전 사진">‹</button>
+      <span id="lbn" aria-live="polite">1 / 2</span>
+      <button type="button" id="lbn1" aria-label="다음 사진">›</button>
+    </div>
+    <div class="cap"><h3 id="lbt"></h3><p id="lbp"></p></div></div>
 </div>
 
 <footer>
@@ -499,8 +507,8 @@
   <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M8 14V2M3 7l5-5 5 5" stroke="currentColor" stroke-width="1.3" fill="none"/></svg>
 </button>
 
-<script src="assets/js/config.js?v=20260901f"></script>
-<script src="assets/data/stores.js?v=20260901f"></script>
-<script src="assets/js/main.js?v=20260901f"></script>
+<script src="assets/js/config.js?v=20260902a"></script>
+<script src="assets/data/stores.js?v=20260902a"></script>
+<script src="assets/js/main.js?v=20260902a"></script>
 </body>
 </html>

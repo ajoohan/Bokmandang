@@ -183,7 +183,8 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .mcard .zoom{position:absolute;inset:0;width:100%;height:100%;background:none;border:0;
   border-radius:inherit;cursor:zoom-in}
 .mcard .zoom:focus-visible{outline:2px solid var(--gold);outline-offset:-4px}
-.mcard img{width:100%;aspect-ratio:5/4;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+/* 발주처 사진이 모두 정사각이라 카드도 1:1 로 둡니다 — 잘라내지 않고 찍힌 그대로 보입니다 */
+.mcard img{width:100%;aspect-ratio:1/1;object-fit:cover;transition:transform .8s cubic-bezier(.16,1,.3,1)}
 .mcard:hover img{transform:scale(1.07)}
 .tag{position:absolute;top:0;left:0;background:var(--ink);color:#FAF8F4;font-size:10px;font-weight:600;
   letter-spacing:.16em;padding:8px 13px}
@@ -932,3 +933,13 @@ header.hide{transform:translateY(-104%)}
   .addr{flex-wrap:wrap}
   .addr .adm-btn{width:100%}
 }
+
+/* ── 사진 크게 보기 — 두 번째 컷 넘기기 ─────────────── */
+.lbnav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px;
+  font-size:12px;letter-spacing:.14em;color:rgba(250,248,244,.62);font-variant-numeric:tabular-nums}
+.lbnav button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(250,248,244,.28);
+  background:none;color:rgba(250,248,244,.82);font-size:19px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .22s,border-color .22s,color .22s}
+.lbnav button:hover{background:rgba(250,248,244,.14);border-color:rgba(250,248,244,.5);color:#FAF8F4}
+.lbnav button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
