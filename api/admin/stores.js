@@ -7,7 +7,7 @@
 import { sb, guard, readBody } from '../_lib.js';
 
 const REGIONS = ['서울', '경기', '지방'];
-const LIMITS = { name: 60, address: 200, hours: 80 };
+const LIMITS = { name: 60, address: 200, hours: 80, phone: 40, closed: 60, map_url: 500 };
 
 function shape(body, { partial = false } = {}) {
   const out = {};
@@ -24,6 +24,14 @@ function shape(body, { partial = false } = {}) {
   }
   if (body.address !== undefined) put('address', String(body.address).trim().slice(0, LIMITS.address));
   if (body.hours   !== undefined) put('hours',   String(body.hours).trim().slice(0, LIMITS.hours));
+  if (body.phone   !== undefined) put('phone',   String(body.phone).trim().slice(0, LIMITS.phone));
+  if (body.closed  !== undefined) put('closed',  String(body.closed).trim().slice(0, LIMITS.closed));
+  if (body.map_url !== undefined) {
+    const v = String(body.map_url).trim().slice(0, LIMITS.map_url);
+    // 지도 링크에 javascript: 같은 게 들어가면 사이트에서 그대로 클릭됩니다
+    if (v && !/^https?:\/\//i.test(v)) return { error: '지도 링크는 http:// 또는 https:// 로 시작해야 합니다.' };
+    out.map_url = v;
+  }
   for (const k of ['is_main', 'is_new', 'is_soon', 'published'])
     if (body[k] !== undefined) out[k] = !!body[k];
   if (body.sort !== undefined) {

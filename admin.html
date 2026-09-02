@@ -21,7 +21,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260901f">
+<link rel="stylesheet" href="assets/css/style.css?v=20260902b">
 </head>
 <body class="adm">
 
@@ -60,6 +60,7 @@
       <div class="adm-tab" role="tablist">
         <button class="on" data-view="inq" role="tab">상담 접수</button>
         <button data-view="str" role="tab">매장 목록</button>
+        <button data-view="men" role="tab">메뉴 관리</button>
       </div>
       <div class="sp">
         <a class="adm-btn" href="index.html" target="_blank" rel="noopener">사이트 보기</a>
@@ -98,11 +99,27 @@
           <span class="ico" aria-hidden="true">+</span>매장 추가</button>
       </div>
       <div class="adm-card">
-        <div class="adm-store thead" role="row"><div>순서</div><div>지점명</div><div>지역</div><div>주소</div><div>영업 정보</div><div>표시</div><div class="adm-act">관리</div></div>
+        <div class="adm-store thead" role="row"><div>순서</div><div>지점명</div><div>지역</div><div>주소</div><div>영업 · 연락</div><div>표시</div><div class="adm-act">관리</div></div>
         <div id="strList"></div>
       </div>
       <p class="adm-note">지역은 <strong>주소를 넣으면 자동으로</strong> 정해지고, 사이트의 지역 필터 버튼과 연결됩니다.
         삭제는 되돌릴 수 없습니다.</p>
+    </section>
+
+    <!-- 메뉴 관리 -->
+    <section id="view-men" hidden>
+      <div class="adm-bar adm-bar-str">
+        <p class="adm-lead">사이트 메뉴 섹션에 바로 반영됩니다. 사진은 올리는 즉시 줄여서 저장하므로
+          원본 그대로 골라도 됩니다. <strong>게시</strong>를 끄면 사이트에서 숨겨집니다.</p>
+        <button class="adm-btn primary lg" id="addMenu">
+          <span class="ico" aria-hidden="true">+</span>메뉴 추가</button>
+      </div>
+      <div class="adm-card">
+        <div class="adm-menu thead" role="row"><div>순서</div><div>사진</div><div>메뉴명</div>
+          <div>분류</div><div>가격</div><div>표시</div><div class="adm-act">관리</div></div>
+        <div id="menList"></div>
+      </div>
+      <p class="adm-note">가격은 숫자만 넣으면 됩니다. 사진을 바꾸지 않으면 기존 사진이 그대로 쓰입니다.</p>
     </section>
   </main>
 </div>
@@ -112,6 +129,6 @@
 <div class="adm-toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="assets/js/admin.js?v=20260901f"></script>
+<script src="assets/js/admin.js?v=20260902b"></script>
 </body>
 </html>

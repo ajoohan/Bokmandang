@@ -35,7 +35,7 @@ function show(which) {
 
 /* ── 로그인 ─────────────────────────────────────────────────────────── */
 /* 로그인 성공 후 공통 처리 */
-function enter() { show('app'); loadInq(); loadStr(); }
+function enter() { show('app'); loadInq(); loadStr(); loadMenus(); }
 
 /* 구글에서 받은 ID 토큰을 서버로 보냅니다. 검증은 전부 서버가 합니다. */
 async function onGoogle(resp) {
@@ -94,6 +94,7 @@ document.querySelectorAll('.adm-tab button').forEach(b => b.onclick = () => {
   b.classList.add('on');
   $('#view-inq').hidden = b.dataset.view !== 'inq';
   $('#view-str').hidden = b.dataset.view !== 'str';
+  $('#view-men').hidden = b.dataset.view !== 'men';
 });
 
 /* ── 상담 접수 ──────────────────────────────────────────────────────── */
@@ -230,7 +231,9 @@ function viewRow(s, i, last) {
       <div class="nm">${esc(s.name)}</div>
       <div class="rg">${esc(s.region) || '<span class="dim">—</span>'}</div>
       <div class="ad">${esc(s.address) || '<span class="dim">주소 미입력</span>'}</div>
-      <div class="hr">${esc(s.hours) || '<span class="dim">—</span>'}</div>
+      <div class="hr">${esc(s.hours) || '<span class="dim">—</span>'}
+        ${s.phone ? `<span class="sub">${esc(s.phone)}</span>` : ''}
+        ${s.closed ? `<span class="sub">${esc(s.closed)} 휴무</span>` : ''}</div>
       <div class="bdgs">${badge(s.is_main, 'main', '본점') + badge(s.is_new, 'new', 'NEW') +
         badge(s.is_soon, '', '예정') + badge(!s.published, 'off', '비공개')
         || '<span class="dim">—</span>'}</div>
@@ -264,6 +267,13 @@ function editRow(s) {
             <p class="ehint"><b data-region>${esc(s.region) || '—'}</b>지역은 주소에서 자동으로 정해집니다.
               사이트의 지역 필터 버튼과 연결됩니다.</p>
           </div>
+          <label class="f"><span>전화번호</span>
+            <input type="text" data-f="phone" value="${esc(s.phone)}" placeholder="예) 02-565-5288" maxlength="40"></label>
+          <label class="f"><span>휴무일</span>
+            <input type="text" data-f="closed" value="${esc(s.closed)}" placeholder="예) 매주 일요일" maxlength="60"></label>
+          <label class="f f-addr"><span>지도 링크</span>
+            <input type="text" data-f="map_url" value="${esc(s.map_url)}"
+                   placeholder="네이버·카카오 지도 주소. 비우면 지점명으로 검색을 엽니다" maxlength="500"></label>
           <div class="f f-flag"><span>표시 설정</span>
             <div class="adm-flags">
               ${flag(s, 'is_main', '본점')}${flag(s, 'is_new', 'NEW')}
@@ -365,6 +375,9 @@ async function saveStore(row) {
     name:    g('name').value.trim(),
     address: g('address').value.trim(),
     hours:   g('hours').value.trim(),
+    phone:   g('phone').value.trim(),
+    closed:  g('closed').value.trim(),
+    map_url: g('map_url').value.trim(),
     is_main: g('is_main').checked, is_new: g('is_new').checked,
     is_soon: g('is_soon').checked, published: g('published').checked
   };
@@ -457,10 +470,287 @@ $('#strList').addEventListener('input', e => {
 $('#addStore').onclick = () => {
   if (stores.some(s => s.id === NEW)) return;
   stores.push({ id: NEW, name: '', region: '서울', address: '', hours: '',
+                phone: '', closed: '', map_url: '',
                 is_main: false, is_new: false, is_soon: false, published: false });
   editing = NEW; render();
   loadDaum().catch(() => {});
   const el = $('#strList').querySelector('.editing');
+  el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  el.querySelector('[data-f=name]').focus();
+};
+
+/* ── 메뉴 관리 ──────────────────────────────────────────────────────────
+   매장 목록과 같은 방식입니다 — 평소엔 읽기 전용, [수정]으로 폼을 열고 [저장]으로 확정.
+
+   사진은 브라우저에서 줄여 올립니다. 서버에서 이미지를 다루려면 sharp 같은
+   의존성이 필요한데 이 프로젝트는 의존성 없이 굴러가는 게 원칙이라,
+   캔버스로 1600px JPEG 을 만들어 보냅니다. 원본을 그대로 골라도 됩니다. */
+const CATS = { tang: '곰탕', side: '사이드', kit: '밀키트' };
+let menus = [];
+let mEditing = null;
+
+const won = n => Number(n || 0).toLocaleString('ko-KR');
+
+/* 사진 미리보기 — 올린 사진이 있으면 그것, 없으면 저장소의 기본 사진 */
+const menuThumb = m =>
+  m.image_url ? m.image_url
+  : m.image_key ? `assets/img/${m.image_key}-800.webp`
+  : '';
+
+function menuView(m, i, last) {
+  const th = menuThumb(m);
+  return `
+    <div class="adm-menu" data-id="${m.id}">
+      <div class="ord">
+        <span class="n">${i + 1}</span>
+        <span class="mv">
+          <button class="ib" data-mup ${i === 0 ? 'disabled' : ''} title="위로" aria-label="${esc(m.name)} 위로">▲</button>
+          <button class="ib" data-mdown ${last ? 'disabled' : ''} title="아래로" aria-label="${esc(m.name)} 아래로">▼</button>
+        </span>
+      </div>
+      <div class="th">${th ? `<img src="${esc(th)}" alt="" loading="lazy">` : '<span class="no">사진 없음</span>'}</div>
+      <div class="nm">${esc(m.name)}${m.tag ? `<span class="bdg new">${esc(m.tag)}</span>` : ''}
+        <span class="ds">${esc(m.description) || '<span class="dim">설명 없음</span>'}</span></div>
+      <div class="rg">${CATS[m.category] || m.category}</div>
+      <div class="pr">${won(m.price)}<small>${esc(m.unit)}</small></div>
+      <div class="bdgs">${m.published ? '<span class="dim">—</span>' : '<span class="bdg off">비공개</span>'}</div>
+      <div class="adm-act">
+        <button class="adm-btn" data-medit>수정</button>
+        <button class="adm-btn danger" data-mdel>삭제</button>
+      </div>
+    </div>`;
+}
+
+function menuEdit(m) {
+  const isNew = m.id === NEW;
+  const th = menuThumb(m);
+  return `
+    <div class="adm-menu editing" data-id="${m.id}">
+      <div class="adm-edit">
+        <div class="eh">${isNew ? '새 메뉴 추가' : esc(m.name) + ' 수정'}</div>
+        <div class="eg">
+          <label class="f"><span>메뉴명</span>
+            <input type="text" data-f="name" value="${esc(m.name)}" placeholder="예) 우설곰탕" maxlength="60"></label>
+          <label class="f"><span>가격</span>
+            <input type="text" data-f="price" value="${won(m.price)}" placeholder="숫자만" inputmode="numeric"></label>
+          <label class="f"><span>분류</span>
+            <select data-f="category">${Object.entries(CATS).map(([v, l]) =>
+              `<option value="${v}"${v === m.category ? ' selected' : ''}>${l}</option>`).join('')}</select></label>
+          <label class="f"><span>단위</span>
+            <input type="text" data-f="unit" value="${esc(m.unit || '원')}" placeholder="원 / 원 · 1알" maxlength="20"></label>
+          <label class="f f-addr"><span>설명</span>
+            <input type="text" data-f="description" value="${esc(m.description)}"
+                   placeholder="메뉴 카드에 한 줄로 들어갑니다" maxlength="300"></label>
+          <label class="f"><span>배지</span>
+            <input type="text" data-f="tag" value="${esc(m.tag)}" placeholder="BEST · SIGNATURE (비워도 됩니다)" maxlength="20"></label>
+          <div class="f"><span>표시 설정</span>
+            <div class="adm-flags">
+              <label><input type="checkbox" data-f="published"${m.published ? ' checked' : ''}>사이트에 게시</label>
+            </div>
+          </div>
+
+          <div class="f f-addr"><span>사진</span>
+            <div class="pho">
+              <div class="pv" data-pv>${th ? `<img src="${esc(th)}" alt="">` : '<span class="no">사진 없음</span>'}</div>
+              <div class="pa">
+                <label class="adm-btn lg" tabindex="0">대표 사진 고르기
+                  <input type="file" accept="image/*" data-pick="1" hidden></label>
+                <label class="adm-btn lg" tabindex="0">두 번째 컷
+                  <input type="file" accept="image/*" data-pick="2" hidden></label>
+                <p class="ehint" data-pmsg>JPG · PNG · WebP. 올리면 <span class="num">1600</span>px 로 줄여 저장합니다.
+                  ${m.image_url2 ? '두 번째 컷이 등록돼 있습니다.' : ''}</p>
+              </div>
+            </div>
+            <input type="hidden" data-f="image_url"  value="${esc(m.image_url)}">
+            <input type="hidden" data-f="image_url2" value="${esc(m.image_url2)}">
+          </div>
+        </div>
+        <div class="ea">
+          <button type="button" class="adm-btn primary lg" data-msave>저장</button>
+          <button type="button" class="adm-btn lg" data-mcancel>취소</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderMenus() {
+  const box = $('#menList');
+  if (!menus.length) {
+    box.innerHTML = empty('—', '등록된 메뉴가 없습니다',
+      '오른쪽 위 “+ 메뉴 추가”로 메뉴를 만드세요. 만들기 전까지는 사이트에 기본 메뉴가 그대로 보입니다.');
+    return;
+  }
+  box.innerHTML = menus.map((m, i) =>
+    String(m.id) === String(mEditing) ? menuEdit(m) : menuView(m, i, i === menus.length - 1)
+  ).join('');
+}
+
+async function loadMenus() {
+  const box = $('#menList');
+  box.innerHTML = skeleton(3);
+  try {
+    const { rows } = await api('/api/admin/menu');
+    menus = rows; mEditing = null;
+    renderMenus();
+  } catch (ex) {
+    box.innerHTML = empty('!', '메뉴를 불러오지 못했습니다', esc(ex.message));
+  }
+}
+
+/* 캔버스로 줄여 data URL 로 만듭니다 — 원본 4MB 를 그대로 올리면 함수가 막습니다 */
+function shrink(file, max = 1600) {
+  return new Promise((ok, no) => {
+    const fr = new FileReader();
+    fr.onerror = () => no(new Error('사진을 읽지 못했습니다.'));
+    fr.onload = () => {
+      const im = new Image();
+      im.onerror = () => no(new Error('사진 형식을 알 수 없습니다.'));
+      im.onload = () => {
+        let { width: w, height: h } = im;
+        if (Math.max(w, h) > max) { const r = max / Math.max(w, h); w = Math.round(w * r); h = Math.round(h * r); }
+        const cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(im, 0, 0, w, h);
+        ok(cv.toDataURL('image/jpeg', 0.85));
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+async function pickPhoto(row, input) {
+  const file = input.files && input.files[0];
+  input.value = '';                       // 같은 파일을 다시 골라도 change 가 나도록
+  if (!file) return;
+  const slot = input.dataset.pick;        // '1' 대표 · '2' 두 번째 컷
+  const msg = row.querySelector('[data-pmsg]');
+  const name = (row.querySelector('[data-f=name]').value || 'menu').trim();
+  msg.textContent = '사진을 줄이는 중…';
+  try {
+    const data = await shrink(file);
+    msg.textContent = '올리는 중…';
+    const r = await api('/api/admin/menu-photo', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: slot === '2' ? name + '-2' : name, data })
+    });
+    row.querySelector(slot === '2' ? '[data-f=image_url2]' : '[data-f=image_url]').value = r.url;
+    if (slot === '1') {
+      const pv = row.querySelector('[data-pv]');
+      pv.innerHTML = `<img src="${r.url}" alt="">`;
+    }
+    msg.textContent = slot === '2'
+      ? '두 번째 컷을 올렸습니다. 저장을 눌러야 반영됩니다.'
+      : '대표 사진을 올렸습니다. 저장을 눌러야 반영됩니다.';
+  } catch (ex) {
+    msg.textContent = ex.message;
+    toast(ex.message, true);
+  }
+}
+
+async function saveMenu(row) {
+  const g = f => row.querySelector(`[data-f="${f}"]`);
+  const body = {
+    name:        g('name').value.trim(),
+    description: g('description').value.trim(),
+    price:       g('price').value,
+    unit:        g('unit').value.trim() || '원',
+    category:    g('category').value,
+    tag:         g('tag').value.trim(),
+    image_url:   g('image_url').value.trim(),
+    image_url2:  g('image_url2').value.trim(),
+    published:   g('published').checked
+  };
+  if (!body.name) { toast('메뉴명을 입력해 주세요.', true); g('name').focus(); return; }
+
+  const btn = row.querySelector('[data-msave]');
+  btn.disabled = true; btn.textContent = '저장 중…';
+  try {
+    if (row.dataset.id === NEW) {
+      body.sort = menus.length;
+      await api('/api/admin/menu', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    } else {
+      await api('/api/admin/menu', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: row.dataset.id, ...body })
+      });
+    }
+    toast('저장했습니다.');
+    await loadMenus();
+  } catch (ex) {
+    toast(ex.message, true);
+    btn.disabled = false; btn.textContent = '저장';
+  }
+}
+
+async function moveMenu(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= menus.length) return;
+  [menus[i], menus[j]] = [menus[j], menus[i]];
+  renderMenus();
+  const changed = menus.filter((m, k) => m.id !== NEW && m.sort !== k + 1);
+  try {
+    await Promise.all(changed.map(m => {
+      const k = menus.indexOf(m) + 1;
+      return api('/api/admin/menu', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: m.id, sort: k })
+      }).then(() => { m.sort = k; });
+    }));
+    toast('순서를 바꿨습니다.');
+  } catch (ex) { toast(ex.message, true); loadMenus(); }
+}
+
+$('#menList').addEventListener('change', e => {
+  if (e.target.matches('[data-pick]')) pickPhoto(e.target.closest('.adm-menu'), e.target);
+});
+/* 파일 고르기 버튼은 label 이라 Enter 로 안 열립니다 — 키보드에서도 열리게 합니다 */
+$('#menList').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const lb = e.target.closest('label.adm-btn'); if (!lb) return;
+  e.preventDefault(); lb.querySelector('input[type=file]').click();
+});
+
+$('#menList').addEventListener('click', async e => {
+  const btn = e.target.closest('button'); if (!btn) return;
+  const row = btn.closest('.adm-menu'); if (!row) return;
+  const id = row.dataset.id;
+  const i = menus.findIndex(m => String(m.id) === id);
+
+  if (btn.hasAttribute('data-mup'))    return moveMenu(i, -1);
+  if (btn.hasAttribute('data-mdown'))  return moveMenu(i, 1);
+  if (btn.hasAttribute('data-msave'))  return saveMenu(row);
+
+  if (btn.hasAttribute('data-medit')) {
+    if (mEditing === NEW) menus = menus.filter(m => m.id !== NEW);
+    mEditing = menus[i].id; renderMenus();
+    $('#menList').querySelector('.editing [data-f=name]').focus();
+    return;
+  }
+  if (btn.hasAttribute('data-mcancel')) {
+    if (id === NEW) menus = menus.filter(m => m.id !== NEW);
+    mEditing = null; renderMenus();
+    return;
+  }
+  if (btn.hasAttribute('data-mdel')) {
+    const nm = menus[i] ? menus[i].name : '이 메뉴';
+    if (!confirm(`${nm} 을(를) 메뉴에서 삭제합니다.\n\n되돌릴 수 없습니다. 계속할까요?`)) return;
+    try {
+      await api('/api/admin/menu?id=' + encodeURIComponent(id), { method: 'DELETE' });
+      toast('삭제했습니다.'); loadMenus();
+    } catch (ex) { toast(ex.message, true); }
+  }
+});
+
+$('#addMenu').onclick = () => {
+  if (menus.some(m => m.id === NEW)) return;
+  menus.push({ id: NEW, name: '', category: 'tang', description: '', price: 0, unit: '원',
+               tag: '', image_key: '', image_url: '', image_url2: '', published: false });
+  mEditing = NEW; renderMenus();
+  const el = $('#menList').querySelector('.editing');
   el.scrollIntoView({ block: 'center', behavior: 'smooth' });
   el.querySelector('[data-f=name]').focus();
 };

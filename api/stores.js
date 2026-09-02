@@ -6,10 +6,11 @@ export default async function handler(req, res) {
   const db = sb();
   if (!db) return res.status(200).json({ rows: null });   // 미설정 — 사이트는 정적 목록 사용
   try {
-    const r = await db.get('stores?select=name,region,address,hours,is_main,is_new,is_soon&published=is.true&order=sort.asc,id.asc');
+    const r = await db.get('stores?select=name,region,address,hours,phone,closed,map_url,is_main,is_new,is_soon&published=is.true&order=sort.asc,id.asc');
     if (!r.ok) return res.status(200).json({ rows: null });
     const rows = (await r.json()).map(s => ({
       n: s.name, r: s.region, a: s.address, t: s.hours,
+      tel: s.phone || undefined, off: s.closed || undefined, map: s.map_url || undefined,
       main: s.is_main || undefined, new: s.is_new || undefined, soon: s.is_soon || undefined
     }));
     res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600');

@@ -166,7 +166,8 @@ function render(f, first){
       const el=document.createElement('div');
       el.className='mcard';
       el.innerHTML=`<div class="ph">${m.tag?`<span class="tag${m.brass?' brass':''}">${m.tag}</span>`:''}
-        ${picHTML(IMG[m.img], m.n, MENU_SIZES, true)}
+        ${m.src ? `<img src="${m.src}" alt="${m.n}" loading="lazy" decoding="async">`
+                : picHTML(IMG[m.img], m.n, MENU_SIZES, true)}
         <button type="button" class="zoom" aria-label="${m.n} 사진 크게 보기"></button></div>
         <div class="body-w"><h3>${m.n}</h3><p>${m.d}</p>
         <div class="price"><b>${m.p}</b><span>${m.u}</span></div></div>`;
@@ -174,7 +175,8 @@ function render(f, first){
          버튼이 stopPropagation 하므로 사진을 직접 눌러도 두 번 열리지 않습니다. */
       const zoom=el.querySelector('.zoom');
       zoom.onclick=e=>{ e.stopPropagation();
-        openLB(el.querySelector('img'),m.n,m.d+'  ·  '+m.p+m.u, IMGDIR+IMG[m.img]+'-2.jpg'); };
+        const second = m.src2 || (m.img ? IMGDIR+IMG[m.img]+'-2.jpg' : '');
+        openLB(el.querySelector('img'),m.n,m.d+'  ·  '+m.p+m.u, second); };
       el.onclick=()=>zoom.click();
       grid.appendChild(el);
       anim(el,{opacity:[0,1],transform:['translateY(22px) scale(.97)','none']},{d:620,delay:i*65,ease:E.back,clear:'opacity,transform'});
@@ -189,6 +191,23 @@ function render(f, first){
   });
 }
 render('all',true);
+
+/* 관리자 화면에서 고친 메뉴를 받아옵니다.
+   매장 목록과 같은 방식입니다 — 위의 기본 메뉴로 먼저 그려 두었으므로
+   API 가 없거나 실패해도 화면은 그대로입니다. */
+let curFilter='all';
+fetch('/api/menu', {headers:{'Accept':'application/json'}})
+  .then(r=>r.ok?r.json():null)
+  .then(j=>{
+    if(!j||!Array.isArray(j.rows)||!j.rows.length) return;
+    const same = j.rows.length===MENU.length &&
+      j.rows.every((m,i)=>m.n===MENU[i].n&&m.p===MENU[i].p&&m.d===MENU[i].d&&m.src===MENU[i].src);
+    if(same) return;
+    MENU.length=0; MENU.push(...j.rows);
+    render(curFilter, true);
+  })
+  .catch(()=>{});
+
 const ti=document.getElementById('ti');
 function moveInd(t){
   if(!ti) return;
@@ -203,7 +222,7 @@ function moveInd(t){
 }
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
-  t.classList.add('on'); moveInd(t); render(t.dataset.f);
+  t.classList.add('on'); moveInd(t); curFilter=t.dataset.f; render(curFilter);
 });
 addEventListener('load',()=>{const on=document.querySelector('.tab.on'); if(on) setTimeout(()=>moveInd(on),400);});
 addEventListener('resize',()=>{const on=document.querySelector('.tab.on'); if(on) moveInd(on);});
@@ -859,13 +878,16 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
     rows.forEach((s,i)=>{
       const el=document.createElement('div');
       el.className='srow'; el.setAttribute('role','listitem');
+      /* 지도 링크는 관리자에서 넣은 주소를 우선합니다. 비어 있으면 지점명으로 검색을 엽니다.
+         값은 서버에서 http(s) 인지 검사한 뒤에만 저장됩니다. */
+      const tel = s.tel ? `<a class="ph" href="tel:${String(s.tel).replace(/[^0-9+]/g,'')}">${s.tel}</a>` : '';
       el.innerHTML=`<div class="nm">${s.n}
           ${s.main?'<span class="badge">본점</span>':''}
           ${s.new?'<span class="badge">NEW</span>':''}
           ${s.soon?'<span class="badge soon">오픈예정</span>':''}</div>
-        <div class="ad">${s.a}</div>
-        <div class="tel">${s.t}</div>
-        <a class="go" href="${nmap(s.n)}" target="_blank" rel="noopener">지도 보기
+        <div class="ad">${s.a}${tel?'<span class="sep-d">·</span>'+tel:''}</div>
+        <div class="tel">${s.t}${s.off?`<span class="off">${s.off} 휴무</span>`:''}</div>
+        <a class="go" href="${s.map||nmap(s.n)}" target="_blank" rel="noopener">지도 보기
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5"/></svg></a>`;
       list.appendChild(el);
       if(animate!==false) anim(el,{opacity:[0,1],transform:['translateY(14px)','none']},
@@ -906,7 +928,8 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
     .then(j=>{
       if(!j||!Array.isArray(j.rows)||!j.rows.length) return;
       const same = j.rows.length===STORES.length &&
-        j.rows.every((s,i)=>s.n===STORES[i].n&&s.a===STORES[i].a&&s.t===STORES[i].t&&s.r===STORES[i].r);
+        j.rows.every((s,i)=>s.n===STORES[i].n&&s.a===STORES[i].a&&s.t===STORES[i].t&&s.r===STORES[i].r
+                            &&s.tel===STORES[i].tel&&s.off===STORES[i].off&&s.map===STORES[i].map);
       if(same) return;                       // 바뀐 게 없으면 다시 그리지 않습니다
       STORES.length=0; STORES.push(...j.rows);
       draw(false); heroStoreLabel(STORES);
