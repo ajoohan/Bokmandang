@@ -7,7 +7,7 @@
 import { sb } from './_lib.js';
 
 export default async function handler(req, res) {
-  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
   const db = sb();
   if (!db) return res.status(200).json({ rows: null });
   try {

@@ -13,7 +13,9 @@ export default async function handler(req, res) {
       tel: s.phone || undefined, off: s.closed || undefined, map: s.map_url || undefined,
       main: s.is_main || undefined, new: s.is_new || undefined, soon: s.is_soon || undefined
     }));
-    res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=3600');
+    /* 관리자에서 고친 내용이 1분 안에 보이도록. 예전에는 5분 캐시에 최대 1시간까지
+       오래된 값을 흘려보내, 매장을 고쳐도 한참 반영되지 않았습니다. */
+    res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
     return res.status(200).json({ rows });
   } catch (e) {
     console.error('공개 매장 목록 조회 실패', e);

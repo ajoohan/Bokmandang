@@ -19,6 +19,7 @@ const clean = (v, limit) =>
 const digits = s => (s || '').replace(/[^0-9]/g, '');
 
 export default async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store');   // 접수 응답이 캐시되면 안 됩니다
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'POST 만 허용합니다.' });

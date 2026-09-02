@@ -10,7 +10,8 @@ import { sb } from './_lib.js';
 const EMPTY = { settings: {}, popups: [] };
 
 export default async function handler(req, res) {
-  res.setHeader('Cache-Control', 'no-store');
+  /* 공지는 매장·메뉴보다 급합니다(임시 휴무 등) — 더 짧게 잡습니다 */
+  res.setHeader('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=60');
   const db = sb();
   if (!db) return res.status(200).json(EMPTY);
 
