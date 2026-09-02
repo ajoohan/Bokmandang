@@ -654,6 +654,21 @@ document.querySelectorAll('.d1, .head .d2, .band h2, .cta-in .d2').forEach(h=>{
   },{amount:0.05});
 });
 
+/* 히어로의 '전국 N개 매장' — 매장을 늘려도 문구가 어긋나지 않게 데이터에서 채웁니다.
+   바로 아래 라벨 스태거가 글자를 하나씩 span 으로 쪼개 버리므로,
+   그 전에 한 번 채우고, 나중에 값이 바뀌면 쪼개진 형태로 다시 씁니다. */
+function heroStoreLabel(list){
+  const el=document.getElementById('hlbl'); if(!el) return;
+  const open=(list||[]).filter(s=>!s.soon).length;
+  if(!open || el.dataset.n===String(open)) return;
+  el.dataset.n=String(open);
+  const txt=`SINCE 2024 — 전국 ${open}개 매장`;
+  if(el.querySelector('.mo-ch'))
+    el.innerHTML=[...txt].map(c=>'<span class="mo-ch">'+(c===' '?'&nbsp;':c)+'</span>').join('');
+  else el.textContent=txt;
+}
+heroStoreLabel(window.STORES);
+
 /* 2) 라벨 글자 스태거 ------------------------------------- */
 document.querySelectorAll('.hero .lbl, .rail .lbl, .band .sig').forEach(el=>{
   if(RM) return;
@@ -881,13 +896,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
   draw(false);
   { const st=document.getElementById('sstatus'); if(st) st.textContent=''; }
 
-  /* 히어로의 '전국 N개 매장' — 오픈예정은 빼고 실제 영업 중인 곳만 셉니다 */
-  function syncHeroCount(){
-    const h=document.getElementById('hcnt'); if(!h) return;
-    const open=STORES.filter(s=>!s.soon).length;
-    if(open) h.textContent=open;
-  }
-  syncHeroCount();
+  heroStoreLabel(STORES);
 
   /* 관리자 화면에서 고친 매장 목록을 받아옵니다.
      assets/data/stores.js 로 먼저 그린 뒤라, API 가 없거나 실패해도 화면은 정상입니다.
@@ -900,7 +909,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
         j.rows.every((s,i)=>s.n===STORES[i].n&&s.a===STORES[i].a&&s.t===STORES[i].t&&s.r===STORES[i].r);
       if(same) return;                       // 바뀐 게 없으면 다시 그리지 않습니다
       STORES.length=0; STORES.push(...j.rows);
-      draw(false); syncHeroCount();
+      draw(false); heroStoreLabel(STORES);
     })
     .catch(()=>{});                          // 오프라인·차단 등 — 정적 목록 유지
   inView(list,()=>{ [...list.children].forEach((el,i)=>{

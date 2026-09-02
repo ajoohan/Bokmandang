@@ -475,6 +475,8 @@ footer p{line-height:2;letter-spacing:-.01em}
 .biz dd{color:rgba(250,248,244,.72)}
 .biz dd a{display:inline-block;padding:5px 0;transition:color .3s}
 .biz dd a:hover{color:var(--gold-l)}
+.ft-k{display:inline-block;margin-right:6px;font-weight:600;color:rgba(250,248,244,.55);
+  font-size:11px;letter-spacing:.1em}
 .copy{margin-top:22px;font-size:11.5px;text-align:center;
   color:rgba(250,248,244,.5);letter-spacing:.04em}
 
