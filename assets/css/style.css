@@ -145,13 +145,41 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:42px}
 .hero-img{position:relative}
 .hero-img img{width:100%;aspect-ratio:15/17;object-fit:cover;border-radius:10px 0 0 10px}
-.hero-img::after{content:'';position:absolute;left:-1px;top:0;bottom:0;width:1px;background:var(--line)}
-.price-card{position:absolute;left:-34px;bottom:44px;background:var(--card);border-radius:10px;padding:22px 28px;
-  box-shadow:0 24px 60px rgba(20,18,15,.14);border:1px solid var(--line)}
+
+/* ── 히어로 가격 카드 ─────────────────────────────
+   사진 안쪽에 얹습니다. 예전에는 사진 왼쪽 가장자리에 걸쳐 두고 그 자리에
+   1px 세로선(.hero-img::after)을 그었는데, 카드 옆으로 선이 삐져나왔습니다.
+   사진 아래쪽은 그릇·나무 상판이라 어둡습니다. 그래도 글자 대비가 사진에
+   좌우되지 않도록 바탕을 90% 불투명하게 깔았습니다. */
+.price-card{position:absolute;left:clamp(18px,3vw,32px);bottom:clamp(18px,3vw,32px);
+  padding:19px 26px 17px;border-radius:3px;
+  background:color-mix(in srgb, var(--card) 90%, transparent);
+  -webkit-backdrop-filter:blur(16px) saturate(1.1);
+          backdrop-filter:blur(16px) saturate(1.1);
+  box-shadow:0 18px 46px rgba(20,18,15,.20)}
+/* color-mix 를 모르는 브라우저는 위 줄을 버리므로 불투명 카드로 남습니다 */
+@supports not (background:color-mix(in srgb,#fff 90%,transparent)){
+  .price-card{background:var(--card)}
+}
 .price-card .lbl{font-size:10px}
 .price-card b{display:block;font-size:19px;font-weight:700;margin:6px 0 2px;letter-spacing:-.04em}
 .price-card i{font-style:normal;font-size:13px;color:var(--mute)}
 .price-card i .num{font-size:15px}
+
+/* 테두리 — 네 변을 따로 그려 차례로 그어집니다. 한 번에 그리는 border 로는
+   '그려지는' 느낌이 안 납니다. transform 만 움직여 레이아웃을 건드리지 않습니다. */
+.pc-fr{position:absolute;inset:0;pointer-events:none}
+.pc-fr i{position:absolute;background:var(--gold);opacity:.5}
+.pc-fr i:nth-child(1){top:0;left:0;width:100%;height:1px;transform-origin:left}
+.pc-fr i:nth-child(2){top:0;right:0;width:1px;height:100%;transform-origin:top}
+.pc-fr i:nth-child(3){bottom:0;right:0;width:100%;height:1px;transform-origin:right}
+.pc-fr i:nth-child(4){bottom:0;left:0;width:1px;height:100%;transform-origin:bottom}
+
+/* 글은 한 줄씩 아래에서 올라옵니다 — 넘치는 부분을 잘라야 '올라오는' 게 보입니다.
+   자르는 상자는 JS 가 끼웁니다(i18n 이 글을 바꾼 뒤여야 하기 때문입니다).
+   JS 가 안 돌면 이 규칙은 아무 데도 안 붙어 카드가 그대로 보입니다. */
+.price-card .pc-t{overflow:hidden}
+.price-card .pc-t > .pc-in{display:block}
 .stats{border-top:1px solid var(--line);margin-top:clamp(56px,7vw,96px)}
 .stats-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}
 .stats div{padding:clamp(26px,3vw,42px) 0;border-right:1px solid var(--line)}
@@ -647,8 +675,6 @@ header.hide{transform:translateY(-104%)}
   .rail .bar{display:none}
   .hero .wrap{grid-template-columns:1fr;gap:44px;padding-right:var(--pad)}
   .hero-img{order:-1;max-width:560px}
-  .hero-img::after{display:none}
-  .price-card{left:auto;right:-14px}
   .menu-grid{grid-template-columns:repeat(2,1fr)}
   .support{grid-template-columns:repeat(2,1fr)}
   .why-cmp,.cmp{grid-template-columns:1fr}
@@ -682,7 +708,7 @@ header.hide{transform:translateY(-104%)}
   .d2{font-size:clamp(27px,7.6vw,38px)}
   .hero{padding-top:calc(var(--hdr) + 26px)}
   .hero-img img{border-radius:10px;aspect-ratio:4/5}
-  .price-card{right:8px;bottom:14px;padding:16px 20px}
+  .price-card{padding:15px 19px 13px}
   .price-card b{font-size:17px}
   .stats-in{grid-template-columns:1fr}
   .stats b{font-size:40px}

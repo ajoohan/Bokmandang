@@ -95,6 +95,68 @@ const PX=[];
 function px(sel,amt){document.querySelectorAll(sel).forEach(el=>PX.push([el,amt]));}
 px('.band .bg',-70); px('.hero-img img',-26); px('.promise-img img',-34); px('.kit-img img',-22);
 
+/* 3-1) 히어로 가격 카드 — 테두리가 그어지고 글이 올라옵니다 -----
+   사진 커튼이 내려간 뒤에 시작해야 카드만 먼저 떠 있지 않습니다.
+   i18n 이 글을 이미 바꿔 놓은 뒤라서, 여기서 자르는 상자를 끼워도 안전합니다. */
+(function(){
+  const card = document.getElementById('pcard');
+  if(!card) return;
+
+  const lines = [...card.querySelectorAll('.pc-t')];
+  /* 글을 상자에 넣어야 넘치는 부분이 잘려 '올라오는' 게 보입니다 */
+  lines.forEach(el => {
+    const inner = document.createElement('span');
+    inner.className = 'pc-in';
+    while (el.firstChild) inner.appendChild(el.firstChild);
+    el.appendChild(inner);
+  });
+  const inners = lines.map(el => el.firstElementChild);
+  const bars   = [...card.querySelectorAll('.pc-fr i')];
+
+  if (RM) return;                      // 움직임을 줄여 달라고 했으면 그대로 둡니다
+
+  card.style.opacity = '0';
+  bars.forEach((b,i) => b.style.transform = (i % 2 ? 'scaleY(0)' : 'scaleX(0)'));
+  inners.forEach(s => s.style.transform = 'translateY(110%)');
+
+  /* 관찰자가 어떤 이유로든 안 뜨면 카드가 영영 안 보입니다(처음 상태가 숨김이라).
+     3초가 지나도 소식이 없으면 그냥 보여 줍니다 — 모션보다 보이는 게 먼저입니다. */
+  let played = false;
+  const guard = setTimeout(() => {
+    if (played) return;
+    played = true;
+    card.style.opacity = '';
+    bars.forEach(b => b.style.transform = '');
+    inners.forEach(s => s.style.transform = '');
+  }, 3000);
+
+  inView(card.parentElement || card, () => {
+    if (played) return;
+    played = true; clearTimeout(guard);
+    /* 사진 와이프가 1.05초라, 카드는 그게 끝날 즈음 시작합니다 */
+    const t0 = 620;
+    card.style.opacity = '';
+    anim(card, {opacity:[0,1]}, {d:420, delay:t0, ease:E.soft, clear:'opacity'});
+
+    bars.forEach((b,i) => {
+      const ax = i % 2 ? 'scaleY' : 'scaleX';
+      b.style.transform = '';
+      anim(b, {transform:[ax+'(0)', ax+'(1)']},
+           {d:460, delay:t0 + 90 + i*110, ease:E.out, clear:'transform'});
+    });
+
+    inners.forEach((s,i) => {
+      s.style.transform = '';
+      anim(s, {transform:['translateY(110%)','translateY(0)'], opacity:[0,1]},
+           {d:640, delay:t0 + 300 + i*90, ease:E.out, clear:'transform,opacity'});
+    });
+
+    /* 가격은 마지막에 올라갑니다 — 카드에서 가장 늦게 눈이 가야 하는 값입니다 */
+    const num = card.querySelector('.num');
+    if (num) setTimeout(() => countUp(num), t0 + 520);
+  }, {amount:0.12});
+})();
+
 /* 4) 숫자 카운트업 (안내 지표) ------------------------------- */
 document.querySelectorAll('.stats-in b').forEach(b=>{
   const raw=b.textContent.trim(), m=raw.match(/^(\d+)(.*)$/);
@@ -142,7 +204,7 @@ const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate'
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260903p';
+const IMGVER='20260903s';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 
@@ -800,7 +862,9 @@ function heroStoreLabel(list){
 heroStoreLabel(window.STORES);
 
 /* 2) 라벨 글자 스태거 ------------------------------------- */
-document.querySelectorAll('.hero .lbl, .rail .lbl, .band .sig').forEach(el=>{
+/* 가격 카드의 라벨은 뺍니다 — 카드가 자기 모션을 갖고 있는데, 여기서
+   innerHTML 을 글자 단위로 다시 쓰면 그 구조가 통째로 날아갑니다. */
+document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEach(el=>{
   if(RM) return;
   const txt=el.textContent;
   el.innerHTML=[...txt].map(c=>'<span class="mo-ch">'+(c===' '?'&nbsp;':c)+'</span>').join('');
