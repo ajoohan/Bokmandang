@@ -138,18 +138,22 @@ const esc = v => String(v ?? '').replace(/[&<>"']/g, c =>
 
 const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate',b:'menu-teuk',k:'kit-package',u:'menu-useol'};
 const IMGDIR='assets/img/';
+/* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
+   이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
+const IMGVER='20260903b';
+const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 /* AVIF → WebP → JPEG 순으로 고르는 <picture> 마크업 */
 function picHTML(base, alt, sizes, wide){
   /* wide=true 면 800px 사본을 함께 알려 줍니다. 카드는 화면의 22% 남짓이라
      1600px 원본을 받을 이유가 없습니다 (사진을 크게 볼 때만 원본을 씁니다). */
   const set = ext => wide
-    ? `${IMGDIR}${base}-800.${ext} 800w, ${IMGDIR}${base}.${ext} 1600w`
-    : `${IMGDIR}${base}.${ext}`;
+    ? `${iv(IMGDIR + base + '-800.' + ext)} 800w, ${iv(IMGDIR + base + '.' + ext)} 1600w`
+    : iv(IMGDIR + base + '.' + ext);
   return `<picture>
       <source type="image/avif" sizes="${sizes}" srcset="${set('avif')}">
       <source type="image/webp" sizes="${sizes}" srcset="${set('webp')}">
-      <img src="${IMGDIR}${base}.jpg" alt="${alt}" loading="lazy" decoding="async">
+      <img src="${iv(IMGDIR + base + '.jpg')}" alt="${alt}" loading="lazy" decoding="async">
     </picture>`;
 }
 /* 사진 이름 풀이 —
@@ -193,7 +197,7 @@ function render(f, first){
       const zoom=el.querySelector('.zoom');
       zoom.onclick=e=>{ e.stopPropagation();
         const img=el.querySelector('img'); if(!img) return;   // 사진이 없는 메뉴는 열지 않습니다
-        const second = m.src2 || (base ? IMGDIR+base+'-2.jpg' : '');
+        const second = m.src2 || (base ? iv(IMGDIR+base+'-2.jpg') : '');
         openLB(img,m.n,m.d+'  ·  '+m.p+m.u, second); };
       el.onclick=()=>zoom.click();
       grid.appendChild(el);
