@@ -140,7 +140,7 @@ const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate'
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260903b';
+const IMGVER='20260903c';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 /* AVIF → WebP → JPEG 순으로 고르는 <picture> 마크업 */
