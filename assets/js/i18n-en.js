@@ -362,4 +362,10 @@ window.I18N.en = {
     'Bokmandang · Hanwoo Gomtang | Brand · Menu · Stores · Franchise',
   '1++ 한우를 약탕기에 14시간 저온으로 우려내, 매장에서 매일 직접 끓이는 맑은 한우곰탕. 브랜드 이야기와 메뉴, 전국 매장 안내, 가맹점 창업 상담을 안내합니다.':
     'Clear hanwoo gomtang drawn from 1++ Korean beef for 14 hours at low temperature, cooked fresh in every store each day. Brand story, menu, nationwide store guide and franchise enquiries.',
+
+  /* ── 관리자 문구 관리가 넣는 조각 (주소·전화번호는 일부러 뺐습니다) ── */
+  '15:40 라스트오더': '15:40 last order',
+  '지하주차장 이용': 'Underground parking available',
+  '원산지 — 소고기(국내산), 쌀(국내산), 돼지고기(국내산), 무(국내산), 고춧가루(국내산·중국산)':
+    'Origin — beef (Korea), rice (Korea), pork (Korea), radish (Korea), chilli powder (Korea · China)',
 };

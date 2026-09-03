@@ -142,7 +142,7 @@ const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate'
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260903f';
+const IMGVER='20260903g';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 /* AVIF → WebP → JPEG 순으로 고르는 <picture> 마크업 */
@@ -1187,9 +1187,11 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
 
       /* 문구 */
       const st = j.settings || {};
+      /* 관리자 문구는 i18n 이 지나간 뒤에 도착합니다 — 그대로 쓰면 번역이 한국어로
+         되돌아갑니다. 사전에서 찾아 보고, 관리자가 새로 쓴 문장이면 원문 그대로 둡니다. */
       document.querySelectorAll('[data-t]').forEach(el => {
         const v = st[el.dataset.t];
-        if (typeof v === 'string' && v.trim()) setText(el, v);
+        if (typeof v === 'string' && v.trim()) setText(el, T(v));
       });
       /* 외부 채널 주소도 같은 곳에서 관리합니다 — config.js 값보다 우선합니다 */
       const L = (window.BOKMANDANG && window.BOKMANDANG.links) || {};
