@@ -352,10 +352,9 @@ function editRow(s) {
             <input type="text" data-f="phone" value="${esc(s.phone)}" placeholder="예) 02-565-5288" maxlength="40"></label>
           <label class="f"><span>휴무일</span>
             <input type="text" data-f="closed" value="${esc(s.closed)}" placeholder="예) 매주 일요일" maxlength="60"></label>
-          <div class="f f-addr">
-            <label><span>네이버 지도 링크</span>
-              <input type="text" data-f="map_url" value="${esc(s.map_url)}"
-                     placeholder="네이버 지도에서 이 지점을 열고 주소창을 복사해 붙여넣으세요" maxlength="500"></label>
+          <div class="f f-addr"><span>네이버 지도 링크</span>
+            <input type="text" data-f="map_url" value="${esc(s.map_url)}"
+                   placeholder="네이버 지도에서 이 지점을 열고 주소창을 복사해 붙여넣으세요" maxlength="500">
             <p class="ehint">손님이 <b>‘지도 보기’</b>를 누르면 여기로 갑니다.
               영업시간을 안 채운 지점은 <b>‘지도에서 영업시간 확인’</b>으로 안내되니,
               시간이 바뀌어도 지도만 최신이면 됩니다.

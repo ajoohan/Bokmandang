@@ -177,8 +177,11 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 
 /* 글은 한 줄씩 아래에서 올라옵니다 — 넘치는 부분을 잘라야 '올라오는' 게 보입니다.
    자르는 상자는 JS 가 끼웁니다(i18n 이 글을 바꾼 뒤여야 하기 때문입니다).
-   JS 가 안 돌면 이 규칙은 아무 데도 안 붙어 카드가 그대로 보입니다. */
-.price-card .pc-t{overflow:hidden}
+   JS 가 안 돌면 이 규칙은 아무 데도 안 붙어 카드가 그대로 보입니다.
+
+   display:block 이 꼭 있어야 합니다. 가격 줄은 <i> 라 기본이 inline 인데,
+   inline 에는 overflow 가 안 먹어서 글이 카드 밖으로 흘러나옵니다. */
+.price-card .pc-t{display:block;overflow:hidden}
 .price-card .pc-t > .pc-in{display:block}
 .stats{border-top:1px solid var(--line);margin-top:clamp(56px,7vw,96px)}
 .stats-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));max-width:var(--maxw);margin:0 auto;padding:0 var(--pad)}

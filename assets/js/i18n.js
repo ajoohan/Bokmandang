@@ -52,9 +52,27 @@
   var HAS_KO = /[가-힣]/;
   var NL = String.fromCharCode(10);
 
-  function esc(v) {
-    return String(v).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  /* 번역문을 요소에 넣습니다. 줄바꿈은 <br>, 숫자는 필요하면 <span class="num">.
+     innerHTML 대신 DOM 으로 짓습니다 — 글자를 이스케이프할 일이 없어지고
+     (textContent 는 그 자체로 안전합니다), 숫자를 감쌀 때 &#39; 같은 엔티티의
+     숫자까지 잘못 잡는 문제도 생기지 않습니다. */
+  var NUM = /\d[\d,]*(?:\.\d+)?/g;
+  function setLines(el, text, wrapNums) {
+    el.textContent = '';
+    String(text).split(NL).forEach(function (line, i) {
+      if (i) el.appendChild(document.createElement('br'));
+      if (!wrapNums) { el.appendChild(document.createTextNode(line)); return; }
+      var last = 0, m;
+      NUM.lastIndex = 0;
+      while ((m = NUM.exec(line))) {
+        if (m.index > last) el.appendChild(document.createTextNode(line.slice(last, m.index)));
+        var s = document.createElement('span');
+        s.className = 'num';
+        s.textContent = m[0];
+        el.appendChild(s);
+        last = m.index + m[0].length;
+      }
+      if (last < line.length) el.appendChild(document.createTextNode(line.slice(last)));
     });
   }
 
@@ -101,7 +119,11 @@
       if (isLeaf(el) && HAS_KO.test(el.textContent)) {
         var t = tr(keyOf(el));
         if (t !== null) {
-          el.innerHTML = esc(t).split(NL).join('<br>');
+          /* 원문이 숫자를 .num 으로 감싸고 있었으면 번역문에서도 감쌉니다.
+             .num 은 숫자를 세리프로 쓰는 사이트 전체 규칙이고, 가격 카운트업도
+             이걸 찾습니다. 통째로 갈아 끼우면서 놓치면 번역 화면에서만
+             숫자 서체가 달라지고 카운트업이 안 돕니다. */
+          setLines(el, t, !!el.querySelector('.num'));
           return;
         }
       }
