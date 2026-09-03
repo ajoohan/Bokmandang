@@ -33,8 +33,15 @@ function shape(body, { partial = false } = {}) {
   str('unit', LIMITS.unit);
   str('tag', LIMITS.tag);
   str('image_key', LIMITS.image_key);
-  str('image_url', LIMITS.image_url);
-  str('image_url2', LIMITS.image_url2);
+  /* 사진 주소는 공개 사이트의 <img src> 로 그대로 나갑니다.
+     업로드가 돌려준 https 주소만 받습니다 — 팝업의 link_url 과 같은 기준입니다. */
+  for (const k of ['image_url', 'image_url2']) {
+    if (body[k] === undefined) continue;
+    const v = String(body[k]).trim().slice(0, LIMITS[k]);
+    if (v && !/^https:\/\//i.test(v))
+      return { error: '사진 주소는 https:// 로 시작해야 합니다. 사진 고르기로 올려 주세요.' };
+    out[k] = v;
+  }
 
   if (body.price !== undefined) {
     // '13,000' 처럼 들어와도 받아 줍니다

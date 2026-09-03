@@ -49,8 +49,9 @@ export default async function handler(req, res) {
       const body = readBody(req) || {};
       const rows = [];
       for (const [key, raw] of Object.entries(body)) {
+        /* ALLOWED[key] 로만 보면 'constructor' 같은 프로토타입 속성이 truthy 로 통과합니다 */
+        if (!Object.hasOwn(ALLOWED, key)) continue;   // 모르는 키는 조용히 버립니다
         const meta = ALLOWED[key];
-        if (!meta) continue;                       // 모르는 키는 조용히 버립니다
         let v = String(raw ?? '').slice(0, meta.max);
         if (!meta.multiline) v = v.replace(/[\r\n]+/g, ' ');
         v = v.trim();

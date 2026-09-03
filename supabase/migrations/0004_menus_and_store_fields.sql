@@ -59,11 +59,15 @@ on conflict (name) do nothing;
 
 -- ── 3) 메뉴 사진 버킷 ────────────────────────────────────────────────
 -- 사진은 누구나 볼 수 있어야 하므로 public 입니다. 올리는 것은 서버만 합니다.
+commit;
+
+-- 버킷 생성은 트랜잭션 밖에서 합니다.
+-- 안에 두면 권한 부족 등으로 실패했을 때 위의 테이블 생성까지 통째로 되돌아가는데,
+-- 화면에는 버킷 오류만 보여 원인을 찾기 어렵습니다.
+-- 이 문장이 실패하면 대시보드 → Storage → New bucket 에서 직접 만드세요(Public).
 insert into storage.buckets (id, name, public)
 values ('menu-photos', 'menu-photos', true)
 on conflict (id) do update set public = true;
-
-commit;
 
 -- 확인용
 -- select sort, category, name, price, image_key, image_url from public.menus order by sort;

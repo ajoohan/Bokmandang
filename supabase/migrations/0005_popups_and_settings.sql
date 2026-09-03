@@ -57,11 +57,15 @@ insert into public.settings (key, value) values
 on conflict (key) do nothing;
 
 -- ── 3) 팝업 이미지 버킷 ──────────────────────────────────────────────
+commit;
+
+-- 버킷 생성은 트랜잭션 밖에서 합니다.
+-- 안에 두면 권한 부족 등으로 실패했을 때 위의 테이블 생성까지 통째로 되돌아가는데,
+-- 화면에는 버킷 오류만 보여 원인을 찾기 어렵습니다.
+-- 이 문장이 실패하면 대시보드 → Storage → New bucket 에서 직접 만드세요(Public).
 insert into storage.buckets (id, name, public)
 values ('popup-photos', 'popup-photos', true)
 on conflict (id) do update set public = true;
-
-commit;
 
 -- 확인용
 -- select id, kind, title, published, starts_at, ends_at from public.popups order by sort;

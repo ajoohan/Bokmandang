@@ -37,8 +37,11 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Supabase 설정이 없습니다.' });
 
   const body = readBody(req);
-  const BUCKET = BUCKETS[body.bucket || 'menu'];
-  if (!BUCKET) return res.status(400).json({ error: '알 수 없는 저장 위치입니다.' });
+  const want = body.bucket || 'menu';
+  /* BUCKETS[want] 로만 보면 'constructor' 같은 프로토타입 속성이 함수로 잡힙니다 */
+  if (!Object.hasOwn(BUCKETS, want))
+    return res.status(400).json({ error: '알 수 없는 저장 위치입니다.' });
+  const BUCKET = BUCKETS[want];
   const raw = String(body.data || '');
   const m = raw.match(/^data:image\/(jpeg|jpg|png|webp);base64,(.+)$/);
   if (!m) return res.status(400).json({ error: '이미지 형식을 알 수 없습니다. JPG·PNG·WebP 만 올릴 수 있습니다.' });

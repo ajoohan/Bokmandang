@@ -6,6 +6,11 @@
  */
 import { sb } from './_lib.js';
 
+/* toLocaleString 은 런타임의 로케일 데이터에 기대므로 환경에 따라 '10000' 이 됩니다.
+   천 단위 구분은 직접 넣습니다. */
+const won = n => String(Math.max(0, Math.round(Number(n) || 0)))
+  .replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
   const db = sb();
@@ -19,7 +24,7 @@ export default async function handler(req, res) {
       c: m.category,
       n: m.name,
       d: m.description,
-      p: Number(m.price || 0).toLocaleString('ko-KR'),
+      p: won(m.price),
       u: m.unit,
       tag: m.tag || undefined,
       img: m.image_key || undefined,

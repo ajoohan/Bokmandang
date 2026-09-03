@@ -47,6 +47,13 @@ function shape(body, { partial = false } = {}) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return { error: '날짜는 YYYY-MM-DD 형식이어야 합니다.' };
     out[k] = v;
   }
+  /* 한쪽만 보내면 DB 의 반대쪽 값과 비교할 수 없어, 종료일이 시작일보다 앞선
+     팝업이 만들어질 수 있습니다. 그런 팝업은 기간 필터를 영영 통과하지 못하는데
+     목록에는 '게시' 로 보여 원인을 찾기 어렵습니다. 둘 다 받도록 강제합니다.
+     (관리자 화면은 항상 두 칸을 함께 보냅니다) */
+  const hasS = out.starts_at !== undefined, hasE = out.ends_at !== undefined;
+  if (hasS !== hasE)
+    return { error: '노출 시작일과 종료일은 함께 보내야 합니다.' };
   if (out.starts_at && out.ends_at && out.starts_at > out.ends_at)
     return { error: '종료일이 시작일보다 빠릅니다.' };
 

@@ -131,6 +131,11 @@ document.querySelectorAll('.stats-in b').forEach(b=>{
 /* 메뉴 필터 + layoutId 방식 탭 인디케이터 */
 /* 파일명 베이스만 적습니다. 확장자별 사본(.avif/.webp)은 tools/optimize-images.py 가 만듭니다.
    메뉴 사진을 교체하면 같은 이름으로 .jpg 를 넣고 스크립트를 한 번 돌리세요. */
+/* 관리자·DB 에서 온 값을 innerHTML 로 넣기 전에 반드시 통과시킵니다.
+   메뉴명에 따옴표 하나만 있어도 속성이 깨지고, 꺾쇠가 있으면 마크업이 무너집니다. */
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
 const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate',b:'menu-teuk',k:'kit-package',u:'menu-useol'};
 const IMGDIR='assets/img/';
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
@@ -146,6 +151,13 @@ function picHTML(base, alt, sizes, wide){
       <source type="image/webp" sizes="${sizes}" srcset="${set('webp')}">
       <img src="${IMGDIR}${base}.jpg" alt="${alt}" loading="lazy" decoding="async">
     </picture>`;
+}
+/* 사진 이름 풀이 —
+   하드코딩 MENU 는 짧은 키('g')를, DB(menus.image_key)는 파일명('menu-gomtang')을 씁니다.
+   IMG 로만 찾으면 DB 값이 undefined 가 되어 사진이 전부 깨집니다. 둘 다 받습니다. */
+function imgBase(m){
+  if(!m.img) return '';
+  return IMG[m.img] || (/^[a-z0-9-]+$/i.test(m.img) ? m.img : '');
 }
 const MENU=[
  {c:'tang',n:'곰탕',d:'맑은 한우 육수에 양지 수육을 넉넉히. 복만당의 기본이자 기준.',p:'10,000',u:'원',img:'g',tag:'BEST'},
@@ -165,18 +177,24 @@ function render(f, first){
     MENU.filter(m=>f==='all'||m.c===f).forEach((m,i)=>{
       const el=document.createElement('div');
       el.className='mcard';
-      el.innerHTML=`<div class="ph">${m.tag?`<span class="tag${m.brass?' brass':''}">${m.tag}</span>`:''}
-        ${m.src ? `<img src="${m.src}" alt="${m.n}" loading="lazy" decoding="async">`
-                : picHTML(IMG[m.img], m.n, MENU_SIZES, true)}
-        <button type="button" class="zoom" aria-label="${m.n} 사진 크게 보기"></button></div>
-        <div class="body-w"><h3>${m.n}</h3><p>${m.d}</p>
-        <div class="price"><b>${m.p}</b><span>${m.u}</span></div></div>`;
+      const base = imgBase(m);
+      /* brass 는 DB 에 없는 값이라, API 로 교체되면 놋쇠 배지가 사라집니다.
+         SIGNATURE 배지는 원래 놋쇠였으므로 태그로도 판단합니다. */
+      const brass = m.brass || m.tag === 'SIGNATURE';
+      el.innerHTML=`<div class="ph">${m.tag?`<span class="tag${brass?' brass':''}">${esc(m.tag)}</span>`:''}
+        ${m.src ? `<img src="${esc(m.src)}" alt="${esc(m.n)}" loading="lazy" decoding="async">`
+                : base ? picHTML(base, esc(m.n), MENU_SIZES, true)
+                       : '<div class="ph-none" aria-hidden="true">사진 준비 중</div>'}
+        <button type="button" class="zoom" aria-label="${esc(m.n)} 사진 크게 보기"></button></div>
+        <div class="body-w"><h3>${esc(m.n)}</h3><p>${esc(m.d)}</p>
+        <div class="price"><b>${esc(m.p)}</b><span>${esc(m.u)}</span></div></div>`;
       /* 카드 아무 데나 클릭해도 열리지만(마우스), 키보드 조작은 사진 위 버튼이 담당합니다.
          버튼이 stopPropagation 하므로 사진을 직접 눌러도 두 번 열리지 않습니다. */
       const zoom=el.querySelector('.zoom');
       zoom.onclick=e=>{ e.stopPropagation();
-        const second = m.src2 || (m.img ? IMGDIR+IMG[m.img]+'-2.jpg' : '');
-        openLB(el.querySelector('img'),m.n,m.d+'  ·  '+m.p+m.u, second); };
+        const img=el.querySelector('img'); if(!img) return;   // 사진이 없는 메뉴는 열지 않습니다
+        const second = m.src2 || (base ? IMGDIR+base+'-2.jpg' : '');
+        openLB(img,m.n,m.d+'  ·  '+m.p+m.u, second); };
       el.onclick=()=>zoom.click();
       grid.appendChild(el);
       anim(el,{opacity:[0,1],transform:['translateY(22px) scale(.97)','none']},{d:620,delay:i*65,ease:E.back,clear:'opacity,transform'});
@@ -270,13 +288,18 @@ function paintShot(){
   lbi.src=shots[shot];
   const n=document.getElementById('lbn'); if(n) n.textContent=`${shot+1} / ${shots.length}`;
 }
+let shotSeq=0;
 function setShots(first, second){
   shots=[first]; shot=0;
+  const my=++shotSeq;                    // 나중에 연 사진이 이기도록
   if(!lbnav) return;
   lbnav.hidden=true;
   if(!second) return;
   const probe=new Image();
-  probe.onload=()=>{ shots.push(second); lbnav.hidden=false;
+  /* 프리로드가 늦게 끝나면 그 사이 다른 사진이 열려 있을 수 있습니다.
+     내 차례가 아니면 버립니다 — 안 그러면 엉뚱한 사진이 목록에 섞입니다. */
+  probe.onload=()=>{ if(my!==shotSeq) return;
+    shots.push(second); lbnav.hidden=false;
     const n=document.getElementById('lbn'); if(n) n.textContent=`1 / ${shots.length}`; };
   probe.src=second;
 }
@@ -584,7 +607,7 @@ function drawLinks(){
   const kit=document.getElementById('kitshop'), ku=url('kitShop');
   if(kit){
     kit.innerHTML = ku
-      ? `<a class="btn btn-brass" href="${ku}" target="_blank" rel="noopener">밀키트 구매하기 `
+      ? `<a class="btn btn-brass" href="${esc(ku)}" target="_blank" rel="noopener">밀키트 구매하기 `
         + `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>`
       : '';
     kit.hidden=!ku;
@@ -876,7 +899,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
   const list=document.getElementById('slist'), empty=document.getElementById('sempty'),
         cnt=document.getElementById('scnt'), q=document.getElementById('sq'), rgn=document.getElementById('rgn');
   if(!list) return;
-  let region='all', kw='';
+  let region='all', kw='', cntT;
   const nmap=s=>'https://map.naver.com/p/search/'+encodeURIComponent('복만당 '+s);
   function draw(animate){
     const rows=STORES.filter(s=>(region==='all'||s.r===region) &&
@@ -887,14 +910,14 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
       el.className='srow'; el.setAttribute('role','listitem');
       /* 지도 링크는 관리자에서 넣은 주소를 우선합니다. 비어 있으면 지점명으로 검색을 엽니다.
          값은 서버에서 http(s) 인지 검사한 뒤에만 저장됩니다. */
-      const tel = s.tel ? `<a class="ph" href="tel:${String(s.tel).replace(/[^0-9+]/g,'')}">${s.tel}</a>` : '';
-      el.innerHTML=`<div class="nm">${s.n}
+      const tel = s.tel ? `<a class="ph" href="tel:${String(s.tel).replace(/[^0-9+]/g,'')}">${esc(s.tel)}</a>` : '';
+      el.innerHTML=`<div class="nm">${esc(s.n)}
           ${s.main?'<span class="badge">본점</span>':''}
           ${s.new?'<span class="badge">NEW</span>':''}
           ${s.soon?'<span class="badge soon">오픈예정</span>':''}</div>
-        <div class="ad">${s.a}${tel?'<span class="sep-d">·</span>'+tel:''}</div>
-        <div class="tel">${s.t}${s.off?`<span class="off">${s.off} 휴무</span>`:''}</div>
-        <a class="go" href="${s.map||nmap(s.n)}" target="_blank" rel="noopener">지도 보기
+        <div class="ad">${esc(s.a)}${tel?'<span class="sep-d">·</span>'+tel:''}</div>
+        <div class="tel">${esc(s.t)}${s.off?`<span class="off">${esc(s.off)} 휴무</span>`:''}</div>
+        <a class="go" href="${esc(s.map||nmap(s.n))}" target="_blank" rel="noopener">지도 보기
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5"/></svg></a>`;
       list.appendChild(el);
       if(animate!==false) anim(el,{opacity:[0,1],transform:['translateY(14px)','none']},
@@ -913,8 +936,10 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
       (function tk(t){const p=Math.min(1,(t-t0)/600);cnt.textContent=Math.round(target*(1-Math.pow(1-p,3)));
         if(p<1)requestAnimationFrame(tk);})(t0);
       /* rAF 가 멈춘 채로 끝나면(탭이 뒤에 있거나 브라우저가 프레임을 아낄 때)
-         0 에서 굳습니다. 시간이 지나면 무조건 최종값으로 맞춰 둡니다. */
-      setTimeout(()=>{ cnt.textContent=target; }, 900);
+         0 에서 굳습니다. 시간이 지나면 무조건 최종값으로 맞춰 둡니다.
+         필터를 연달아 바꾸면 이전 타이머가 옛 숫자로 되돌리므로 매번 취소합니다. */
+      clearTimeout(cntT);
+      cntT = setTimeout(()=>{ cnt.textContent=target; }, 900);
     }
   }
   rgn.querySelectorAll('button').forEach(b=>b.onclick=()=>{
@@ -989,9 +1014,6 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
    /api/site 한 번으로 둘 다 받습니다. 실패하면 아무 일도 일어나지 않고
    HTML 에 적힌 원래 문구가 그대로 남습니다. */
 (function(){
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
-    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
   /* 문구를 갈아 끼웁니다.
      주의 — 히어로 제목은 이미 splitLines() 가 줄 단위 <span> 으로 쪼개 놓았습니다.
      그냥 textContent 를 바꾸면 그 구조가 날아가 애니메이션이 깨지므로,
@@ -1092,12 +1114,16 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
   /* 모달은 인트로 커튼이 끝난 뒤에 띄웁니다 — 커튼 위에 겹치면 둘 다 안 읽힙니다.
      인트로가 없거나 이미 끝났으면 바로 띄웁니다. */
   function afterIntro(fn){
-    if (document.body.classList.contains('loaded')) return fn();
+    /* 옵저버와 5초 폴백이 둘 다 fn 을 부르면 모달이 두 번 그려집니다.
+       어느 쪽이 먼저 오든 한 번만 실행되게 잠급니다. */
+    let done = false;
+    const once = () => { if (done) return; done = true; fn(); };
+    if (document.body.classList.contains('loaded')) return once();
     const mo = new MutationObserver(() => {
-      if (document.body.classList.contains('loaded')) { mo.disconnect(); setTimeout(fn, 260); }
+      if (document.body.classList.contains('loaded')) { mo.disconnect(); setTimeout(once, 260); }
     });
     mo.observe(document.body, {attributes:true, attributeFilter:['class']});
-    setTimeout(() => { mo.disconnect(); fn(); }, 5000);   // 인트로가 멈춰도 팝업은 뜨게
+    setTimeout(() => { mo.disconnect(); once(); }, 5000);   // 인트로가 멈춰도 팝업은 뜨게
   }
 
   fetch('/api/site', {headers:{'Accept':'application/json'}})
