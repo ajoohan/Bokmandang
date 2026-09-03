@@ -5,8 +5,12 @@
  *   RESEND_API_KEY    Resend(resend.com) API 키. 없으면 메일을 보내지 않고 조용히 넘어갑니다
  *   NOTIFY_TO         받는 주소. 기본 bokmandang.mkt@gmail.com (쉼표로 여러 개 가능)
  *   NOTIFY_FROM       보내는 주소. 기본 onboarding@resend.dev
- *                     ↳ 자체 도메인을 Resend 에 인증하면 noreply@도메인 으로 바꾸세요.
- *                       인증 전에는 Resend 계정 주인의 주소로만 발송됩니다.
+ *                     지금은 '복만당 <alert@send.bokmandang.co.kr>' 로 넣어 두었습니다.
+ *                     send.bokmandang.co.kr 은 Resend 에 인증된 발신 도메인입니다
+ *                     (DKIM·SPF·MX·DMARC 를 가비아 DNS 에 등록해 두었습니다).
+ *                     ↳ 기본값(onboarding@resend.dev)으로 돌아가면 Resend 계정 주인의
+ *                       주소로만 배달됩니다. 받는 사람을 늘리려면 NOTIFY_FROM 이 필요합니다.
+ *                     ⚠️ 환경변수를 고치면 새로 배포해야 반영됩니다 (빌드 시점에 박힙니다).
  *
  * ★ 메일 전송이 실패해도 접수는 성공입니다.
  *   손님 입장에서 신청은 이미 저장됐는데 메일 때문에 실패로 보이면 안 됩니다.
