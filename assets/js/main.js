@@ -142,9 +142,39 @@ const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate'
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260903i';
+const IMGVER='20260903p';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
+
+/* 이 브라우저가 받아 갈 수 있는 가장 가벼운 형식.
+   <picture> 안에서는 브라우저가 알아서 고르지만, 라이트박스의 두 번째 컷처럼
+   <picture> 가 없는 자리에서는 우리가 골라야 합니다.
+
+   브라우저는 <source type=...> 을 '받아 보기 전에' 지원 여부로 거릅니다.
+   그래서 실제로 존재하지 않는 주소를 넣어 두고 어느 쪽이 뽑혔는지만 읽으면,
+   한 바이트도 안 받고 알 수 있습니다. (1×1 이미지를 디코드해 보는 방법도 있지만
+   base64 한 글자만 틀려도 조용히 jpg 로 떨어져서 이쪽이 안전합니다.)
+
+   currentSrc 는 붙이자마자 바로 채워지지 않습니다. 그래서 프로브를 지우지 않고
+   놔뒀다가 '쓸 때' 읽습니다 — 사진을 누르는 시점이면 이미 정해져 있습니다. */
+const imgFmt = (function(){
+  let fmt = '', probe = null;
+  try {
+    probe = document.createElement('picture');
+    probe.innerHTML = '<source type="image/avif" srcset="data:,avif">' +
+                      '<source type="image/webp" srcset="data:,webp">' +
+                      '<img alt="" aria-hidden="true" src="data:,jpg">';
+    probe.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none';
+    (document.body || document.documentElement).appendChild(probe);
+  } catch(e){ probe = null; }
+  return function(){
+    if (fmt) return fmt;                              // 한 번 정해지면 그대로 씁니다
+    const cs = (probe && probe.querySelector('img').currentSrc) || '';
+    if (!cs) return 'jpg';                            // 아직 못 정했으면 어디서나 열리는 쪽으로
+    return (fmt = /avif/.test(cs) ? 'avif' : /webp/.test(cs) ? 'webp' : 'jpg');
+  };
+})();
+
 /* AVIF → WebP → JPEG 순으로 고르는 <picture> 마크업 */
 function picHTML(base, alt, sizes, wide){
   /* wide=true 면 800px 사본을 함께 알려 줍니다. 카드는 화면의 22% 남짓이라
@@ -199,8 +229,18 @@ function render(f, first){
       const zoom=el.querySelector('.zoom');
       zoom.onclick=e=>{ e.stopPropagation();
         const img=el.querySelector('img'); if(!img) return;   // 사진이 없는 메뉴는 열지 않습니다
-        const second = m.src2 || (base ? iv(IMGDIR+base+'-2.jpg') : '');
-        openLB(img,T(m.n),T(m.d)+'  ·  '+m.p+T(m.u), second); };
+        /* 두 번째 컷은 <picture> 가 없어서 형식을 우리가 골라야 합니다.
+           예전엔 무조건 .jpg 라 431KB 를 받았습니다.
+           currentSrc 는 사진이 아직 안 받아졌으면 비어 있어서 믿을 수 없습니다 —
+           그래서 못 읽으면 imgFmt() 로 판정합니다. */
+        const ext = (String(img.currentSrc).match(/\.(avif|webp|jpg)(\?|$)/)||[,imgFmt()])[1];
+        const second = m.src2 || (base ? iv(IMGDIR+base+'-2.'+ext) : '');
+        /* 있는지 확인만 하는 데 원본을 받을 이유가 없습니다 — 800px 사본으로 두드립니다.
+           800px 사본은 avif·webp 만 만들어 두었으니, jpg 로 떨어지면 원본을 씁니다. */
+        const probe  = m.src2 || (base
+          ? iv(IMGDIR+base+'-2' + (ext === 'jpg' ? '' : '-800') + '.' + ext) : '');
+        const first  = m.src || (base ? iv(IMGDIR+base+'.'+ext) : '');
+        openLB(img,T(m.n),T(m.d)+'  ·  '+m.p+T(m.u), second, probe, first); };
       el.onclick=()=>zoom.click();
       grid.appendChild(el);
       anim(el,{opacity:[0,1],transform:['translateY(22px) scale(.97)','none']},{d:620,delay:i*65,ease:E.back,clear:'opacity,transform'});
@@ -297,7 +337,7 @@ function paintShot(){
   const n=document.getElementById('lbn'); if(n) n.textContent=`${shot+1} / ${shots.length}`;
 }
 let shotSeq=0;
-function setShots(first, second){
+function setShots(first, second, probeUrl){
   shots=[first]; shot=0;
   const my=++shotSeq;                    // 나중에 연 사진이 이기도록
   if(!lbnav) return;
@@ -309,7 +349,8 @@ function setShots(first, second){
   probe.onload=()=>{ if(my!==shotSeq) return;
     shots.push(second); lbnav.hidden=false;
     const n=document.getElementById('lbn'); if(n) n.textContent=`1 / ${shots.length}`; };
-  probe.src=second;
+  probe.onerror=()=>{};            // 800px 사본이 없으면 버튼만 안 뜹니다
+  probe.src=probeUrl||second;
 }
 if(lbnav){
   const step=d=>{ if(shots.length<2) return; shot=(shot+d+shots.length)%shots.length; paintShot(); };
@@ -319,12 +360,26 @@ if(lbnav){
     if(e.key==='ArrowLeft') step(-1); else if(e.key==='ArrowRight') step(1); });
 }
 
-function openLB(srcEl,t,p,second){
+function openLB(srcEl,t,p,second,probeUrl,firstUrl){
   // currentSrc: 브라우저가 실제로 내려받은 사본(avif/webp). 재다운로드를 막습니다.
-  const src = typeof srcEl==='string'? srcEl : (srcEl.currentSrc||srcEl.src);
-  setShots(src, second);
+  /* currentSrc 는 지연 로딩 사진이 아직 안 받아졌으면 비어 있습니다. 그때 .src 로
+     떨어지면 1600px jpg 를 받게 되므로, 부르는 쪽이 알려 준 최선 형식을 먼저 씁니다. */
+  const src = typeof srcEl==='string'? srcEl : (srcEl.currentSrc || firstUrl || srcEl.src);
+  setShots(src, second, probeUrl);
   origin = typeof srcEl==='string'? null : srcEl.getBoundingClientRect();
   lbi.src=src; document.getElementById('lbt').textContent=t; document.getElementById('lbp').textContent=p;
+
+  /* 카드가 받아 둔 사본은 800px 이라 크게 보면 조금 무릅니다. 먼저 그걸 띄워
+     기다림 없이 열고(이미 캐시에 있습니다), 원본이 준비되면 조용히 갈아 끼웁니다.
+     여는 순간 원본을 기다리면 확대 애니메이션이 빈 칸에서 시작합니다. */
+  if (firstUrl && firstUrl !== src){
+    const my = shotSeq, full = new Image();
+    full.onload = () => {
+      if (my !== shotSeq || shot !== 0) return;   // 그 사이 다른 사진으로 넘어갔으면 그만둡니다
+      shots[0] = firstUrl; lbi.src = firstUrl;
+    };
+    full.src = firstUrl;
+  }
   lb.__prev=document.activeElement;
   lb.classList.add('on'); document.body.style.overflow='hidden';
   lockBg(true);
