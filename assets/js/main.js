@@ -142,7 +142,7 @@ const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate'
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260903g';
+const IMGVER='20260903h';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 /* AVIF → WebP → JPEG 순으로 고르는 <picture> 마크업 */
@@ -943,13 +943,21 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
       /* 지도 링크는 관리자에서 넣은 주소를 우선합니다. 비어 있으면 지점명으로 검색을 엽니다.
          값은 서버에서 http(s) 인지 검사한 뒤에만 저장됩니다. */
       const tel = s.tel ? `<a class="ph" href="tel:${String(s.tel).replace(/[^0-9+]/g,'')}">${esc(s.tel)}</a>` : '';
+      /* 영업시간을 아직 못 받은 지점은 옛날에 '영업시간 확인 중' 이라고 적어 뒀는데,
+         채워 넣을 계획이 없으면 지키지 않을 약속이 됩니다. 바로 옆 '지도 보기' 로
+         넘겨 두면 영업시간이 바뀌어도 손볼 게 없습니다. */
+      /* 영업시간 값은 '15:40 라스트오더' 처럼 숫자 + 낱말입니다. 통째로는 사전에
+         없으니 낱말만 갈아 끼웁니다 — 시간은 어느 나라 말이든 그대로입니다. */
+      const hrs = (!s.t || /확인\s*중/.test(s.t))
+        ? `<span class="h-none">${esc(T('지도에서 영업시간 확인'))}</span>`
+        : esc(String(s.t).replace(/라스트오더|브레이크타임|영업 종료|오픈 준비 중/g, m => T(m)));
       el.innerHTML=`<div class="nm">${esc(s.n)}
-          ${s.main?'<span class="badge">본점</span>':''}
+          ${s.main?`<span class="badge">${esc(T('본점'))}</span>`:''}
           ${s.new?'<span class="badge">NEW</span>':''}
-          ${s.soon?'<span class="badge soon">오픈예정</span>':''}</div>
+          ${s.soon?`<span class="badge soon">${esc(T('오픈예정'))}</span>`:''}</div>
         <div class="ad">${esc(s.a)}${tel?'<span class="sep-d">·</span>'+tel:''}</div>
-        <div class="tel">${esc(s.t)}${s.off?`<span class="off">${esc(s.off)} 휴무</span>`:''}</div>
-        <a class="go" href="${esc(s.map||nmap(s.n))}" target="_blank" rel="noopener">지도 보기
+        <div class="tel">${hrs}${s.off?`<span class="off">${esc(s.off)} ${esc(T('휴무'))}</span>`:''}</div>
+        <a class="go" href="${esc(s.map||nmap(s.n))}" target="_blank" rel="noopener">${esc(T('지도 보기'))}
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5"/></svg></a>`;
       list.appendChild(el);
       if(animate!==false) anim(el,{opacity:[0,1],transform:['translateY(14px)','none']},

@@ -126,8 +126,6 @@ window.I18N.en = {
   '매장 검색': 'Search locations',
   '지역 필터': 'Region filter',
   '매장 목록 페이지': 'Location list pages',
-  '※ 지점명과 지역은 네이버 지도 검색 결과 기준입니다. 상세 주소와 지점 전화번호는 확인 후 보완 예정입니다.':
-    '※ Store names and regions follow Naver Map listings. Full addresses and branch phone numbers will be added once confirmed.',
   '복만당 본점 홀 전경': 'Bokmandang flagship store dining room',
   '본점 홀 전경': 'Flagship dining room',
   '본점 입구': 'Flagship entrance',
@@ -368,4 +366,18 @@ window.I18N.en = {
   '지하주차장 이용': 'Underground parking available',
   '원산지 — 소고기(국내산), 쌀(국내산), 돼지고기(국내산), 무(국내산), 고춧가루(국내산·중국산)':
     'Origin — beef (Korea), rice (Korea), pork (Korea), radish (Korea), chilli powder (Korea · China)',
+
+  /* ── 매장 목록 안의 UI 문구 (지점명·주소는 한국어로 둡니다) ── */
+  '지도 보기': 'View on map',
+  '오픈예정': 'Opening soon',
+  '휴무': 'closed',
+  '지도에서 영업시간 확인': 'See hours on map',
+  '※ 영업시간과 휴무일은 지점마다 다르고 바뀔 수 있습니다. 방문 전 ‘지도 보기’에서 확인해 주세요.':
+    'Note — opening hours and closing days vary by store and may change. Please check ‘View on map’ before visiting.',
+
+  /* ── 영업시간 값에 쓰이는 낱말 ── */
+  '라스트오더': 'last order',
+  '브레이크타임': 'break time',
+  '영업 종료': 'closing',
+  '오픈 준비 중': 'preparing to open',
 };
