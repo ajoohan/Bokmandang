@@ -45,7 +45,7 @@ window.BOKMANDANG = {
     baemin:      '',
     coupangeats: '',
     yogiyo:      '',
-    kitShop:     ''
+    kitShop:     'https://smartstore.naver.com/beflique'
   },
 
   /* ── 방문 통계 ──────────────────────────────────────────────────────────

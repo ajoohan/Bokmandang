@@ -53,7 +53,7 @@ insert into public.settings (key, value) values
   ('links.baemin',      ''),
   ('links.coupangeats', ''),
   ('links.yogiyo',      ''),
-  ('links.kitShop',     '')
+  ('links.kitShop',     'https://smartstore.naver.com/beflique')
 on conflict (key) do nothing;
 
 -- ── 3) 팝업 이미지 버킷 ──────────────────────────────────────────────

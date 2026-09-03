@@ -183,6 +183,9 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .band h2{color:#FAF8F4;font-size:clamp(23px,3.2vw,42px);line-height:1.58;font-weight:400;letter-spacing:-.035em}
 .band .sig{margin-top:34px;font-family:var(--serif);font-size:15px;letter-spacing:.2em;color:var(--gold-l)}
 .band .bar{width:1px;height:44px;background:var(--gold-l);opacity:.5;margin:0 auto 30px}
+/* 좁은 화면에서 글자가 크면 한 줄이 두 줄로 접혀 문장 중간이 끊깁니다.
+   세 줄 그대로 읽히도록 글자를 줄입니다. */
+@media (max-width:560px){ .band h2{font-size:19px;line-height:1.62} }
 
 /* ── 메뉴 ─────────────────────────────────────── */
 .tabs{position:relative;display:flex;gap:6px;flex-wrap:wrap;margin:clamp(36px,4vw,54px) 0 clamp(30px,3.5vw,44px)}
@@ -217,6 +220,36 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .mcard .price{display:flex;align-items:baseline;justify-content:space-between;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
 .mcard .price b{font-family:var(--serif);font-size:26px;font-weight:400;letter-spacing:0}
 .mcard .price span{font-size:11.5px;color:var(--mute-2);letter-spacing:.02em}
+/* ── 매장 목록 쪽 나누기 ─────────────────────────── */
+.pager{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;
+  margin-top:clamp(28px,3.4vw,44px)}
+.pager[hidden]{display:none !important}
+.pager button{min-width:40px;height:40px;padding:0 12px;border-radius:8px;
+  border:1px solid var(--line-2);background:var(--card);
+  font-family:inherit;font-size:14px;font-weight:600;letter-spacing:-.02em;color:var(--mute);
+  font-variant-numeric:tabular-nums;
+  transition:border-color .22s,background .22s,color .22s,transform .12s}
+.pager button:hover:not(:disabled){border-color:var(--ink);color:var(--ink)}
+.pager button:active:not(:disabled){transform:translateY(1px)}
+.pager button.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.pager button:disabled{opacity:.32;pointer-events:none}
+.pager button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.pager .pg-of{width:100%;text-align:center;margin-top:10px;
+  font-size:12.5px;color:var(--mute-2);font-variant-numeric:tabular-nums}
+
+/* ── 메뉴 섹션의 밀키트 구매 안내 ────────────────── */
+.menu-kit{margin-top:clamp(26px,3vw,38px);padding:18px 20px;border-radius:10px;
+  background:var(--bg-2);border:1px solid var(--line);
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+  font-size:14px;color:var(--ink-2);letter-spacing:-.02em}
+.menu-kit[hidden]{display:none !important}
+.menu-kit a{display:inline-flex;align-items:center;gap:7px;margin-left:auto;
+  font-weight:700;color:var(--gold-t);border-bottom:1px solid rgba(133,104,57,.4);
+  padding-bottom:1px;transition:color .25s,border-color .25s}
+.menu-kit a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+.menu-kit svg{width:12px;height:12px}
+@media (max-width:560px){ .menu-kit a{margin-left:0} }
+
 .origin{margin-top:clamp(34px,4vw,52px);padding-top:26px;border-top:1px solid var(--line);
   font-size:12.5px;color:var(--mute-2);line-height:2}
 .origin strong{color:var(--red);font-weight:600}
@@ -378,10 +411,12 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .fnote .small{display:block;margin-top:12px;font-size:12.5px;color:var(--mute-2);line-height:1.8}
 
 /* 홀 · 배달 · 밀키트 */
+/* ⚠️ 클래스 이름 주의 — .ch 는 인트로 커튼의 붓글씨 글자가 이미 쓰고 있습니다.
+   여기서 .ch 를 쓰면 인트로 로고에 배경·테두리가 씌워집니다. .cha 로 둡니다. */
 .chan{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.2vw,26px);margin-top:30px}
-.ch{padding:clamp(22px,2.6vw,30px);border-radius:11px;background:var(--bg-2);border:1px solid var(--line)}
-.ch b{display:block;font-size:19px;letter-spacing:-.045em;margin-bottom:12px}
-.ch p{font-size:13.5px;color:var(--mute);line-height:1.85;max-width:none}
+.cha{padding:clamp(22px,2.6vw,30px);border-radius:11px;background:var(--bg-2);border:1px solid var(--line)}
+.cha b{display:block;font-size:19px;letter-spacing:-.045em;margin-bottom:12px}
+.cha p{font-size:13.5px;color:var(--mute);line-height:1.85;max-width:none}
 
 .support{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2vw,32px);margin-top:clamp(44px,5vw,72px)}
 .scard{padding-top:24px;border-top:1px solid var(--line-2);transition:border-color .35s}

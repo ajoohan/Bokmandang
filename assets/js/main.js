@@ -612,6 +612,17 @@ function drawLinks(){
       : '';
     kit.hidden=!ku;
   }
+
+  /* 메뉴 섹션에도 구매처를 안내합니다 — 밀키트 카드를 본 사람이
+     어디서 사는지 바로 알 수 있게. 주소가 없으면 그리지 않습니다. */
+  const mk=document.getElementById('menuKit');
+  if(mk){
+    mk.innerHTML = ku
+      ? `밀키트는 온라인에서도 구매하실 수 있습니다 <a href="${esc(ku)}" target="_blank" rel="noopener">스마트스토어에서 구매하기`
+        + `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>`
+      : '';
+    mk.hidden=!ku;
+  }
 }
 drawLinks();
 
@@ -900,12 +911,18 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
         cnt=document.getElementById('scnt'), q=document.getElementById('sq'), rgn=document.getElementById('rgn');
   if(!list) return;
   let region='all', kw='', cntT;
+  const PER=10, pager=document.getElementById('spager');   // 한 화면에 10곳씩
+  let page=1;
   const nmap=s=>'https://map.naver.com/p/search/'+encodeURIComponent('복만당 '+s);
   function draw(animate){
     const rows=STORES.filter(s=>(region==='all'||s.r===region) &&
       (!kw||(s.n+s.a+s.r).toLowerCase().includes(kw)));
+    /* 걸러진 결과가 줄면 보고 있던 쪽수가 사라질 수 있어 범위 안으로 되돌립니다 */
+    const pages=Math.max(1, Math.ceil(rows.length/PER));
+    if(page>pages) page=pages;
+    const shown=rows.slice((page-1)*PER, page*PER);
     list.innerHTML='';
-    rows.forEach((s,i)=>{
+    shown.forEach((s,i)=>{
       const el=document.createElement('div');
       el.className='srow'; el.setAttribute('role','listitem');
       /* 지도 링크는 관리자에서 넣은 주소를 우선합니다. 비어 있으면 지점명으로 검색을 엽니다.
@@ -924,6 +941,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
         {d:560,delay:i*48,ease:E.out,clear:'opacity,transform'});
     });
     empty.style.display=rows.length?'none':'block';
+    drawPager(rows.length, pages);
     /* 필터·검색 결과를 스크린리더에 알립니다. 숫자는 카운트업 애니메이션과 별개로
        최종 값만 한 번 넣어야 읽는 도중에 계속 끊기지 않습니다. */
     const st=document.getElementById('sstatus');
@@ -942,11 +960,30 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
       cntT = setTimeout(()=>{ cnt.textContent=target; }, 900);
     }
   }
+  /* 쪽 버튼 — 결과가 한 쪽뿐이면 아예 그리지 않습니다 */
+  function drawPager(total, pages){
+    if(!pager) return;
+    if(pages<2){ pager.hidden=true; pager.innerHTML=''; return; }
+    pager.hidden=false;
+    const btn=(p,label,cur,dis)=>
+      `<button type="button" data-p="${p}"${cur?' class="on" aria-current="page"':''}${dis?' disabled':''}>${label}</button>`;
+    const nums=Array.from({length:pages},(_,i)=>btn(i+1,i+1,page===i+1,false)).join('');
+    pager.innerHTML =
+      btn(page-1,'‹',false,page===1) + nums + btn(page+1,'›',false,page===pages) +
+      `<span class="pg-of">${(page-1)*PER+1}–${Math.min(page*PER,total)} / ${total}곳</span>`;
+  }
+  if(pager) pager.onclick=e=>{
+    const b=e.target.closest('button[data-p]'); if(!b||b.disabled) return;
+    page=+b.dataset.p; draw();
+    /* 쪽을 넘기면 목록 맨 위가 보이게 — 안 그러면 화면 중간에 머물러 바뀐 걸 놓칩니다 */
+    list.scrollIntoView({block:'start', behavior:RM?'auto':'smooth'});
+  };
+
   rgn.querySelectorAll('button').forEach(b=>b.onclick=()=>{
     rgn.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on'); region=b.dataset.r; draw();
+    b.classList.add('on'); region=b.dataset.r; page=1; draw();
   });
-  let deb; q.addEventListener('input',()=>{clearTimeout(deb);deb=setTimeout(()=>{kw=q.value.trim().toLowerCase();draw();},160);});
+  let deb; q.addEventListener('input',()=>{clearTimeout(deb);deb=setTimeout(()=>{kw=q.value.trim().toLowerCase();page=1;draw();},160);});
   draw(false);
   { const st=document.getElementById('sstatus'); if(st) st.textContent=''; }
 
