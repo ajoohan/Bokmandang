@@ -169,6 +169,26 @@ python tools/set-site-url.py https://새주소
 `i18n.js` 의 `KO_HOST` · `INTL_HOST` 두 상수도 함께 고쳐야 합니다.
 스크립트는 거기까지 손대지 않습니다.
 
+⚠️ **도메인을 바꾸면 Google OAuth 원본도 함께 고쳐야 합니다.** 관리자 로그인은
+페이지를 연 주소를 검사해서, 등록되지 않은 주소면 `400 origin_mismatch` 로 막힙니다.
+사이트는 멀쩡한데 관리자만 안 들어가지므로 원인을 찾기 어렵습니다.
+
+Google Cloud Console → API 및 서비스 → 사용자 인증 정보 → OAuth 2.0 클라이언트 ID →
+**승인된 JavaScript 원본**. 리디렉션 URI 가 아닙니다. 경로와 끝 슬래시 없이 도메인만 넣습니다.
+현재 등록: `bokmandang.co.kr` · `www.bokmandang.co.kr` · `bokmandang.com` ·
+`www.bokmandang.com` · `bokmandang.vercel.app`
+
+### 관리자 로그인만 PLUSTONIC 조직에 있습니다
+
+나머지(GitHub · Vercel · Supabase · Resend · 가비아)는 모두 복만당 계정입니다.
+관리자 로그인의 OAuth 클라이언트만 **PLUSTONIC 조직의 Google Cloud 프로젝트**에
+있습니다(`jin@plustonic.com` 으로 관리). **2026-09-03 당분간 이대로 쓰기로 했습니다.**
+
+알아 둘 점 — 그 프로젝트가 없어지거나 계정 접근이 막히면 **관리자 로그인이 끊깁니다**
+(사이트와 상담 접수는 계속 돕니다). 옮기려면 복만당 Google 계정에서 OAuth 클라이언트를
+새로 만들고 위 원본들을 등록한 뒤, Vercel 의 `GOOGLE_CLIENT_ID` 만 바꾸면 됩니다.
+코드는 고칠 게 없습니다.
+
 ### 로컬 폴더 구조가 저장소와 다릅니다 ⚠️
 
 작업용 로컬 저장소는 한 단계 위(`D:okmandang`)에 있고 이 폴더는 그 하위입니다.
