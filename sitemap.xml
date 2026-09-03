@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ⚠️ 배포 도메인 확정 후: python tools/set-site-url.py https://실제도메인 -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<!-- 대표 도메인: bokmandang.co.kr(한국어) · bokmandang.com(외국어).
+     두 도메인이 같은 파일을 내려주므로 xhtml:link 로 서로가 번역본임을 알립니다.
+     이게 없으면 검색엔진이 중복으로 보고 한쪽만 남깁니다.
+     도메인이 바뀌면 tools/set-site-url.py 로 한 번에 바꾸세요.
+     (XML 주석 안에는 붙임표 두 개를 못 넣어서 명령을 그대로 적지 못합니다) -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://bokmandang.vercel.app/</loc>
-    <lastmod>2026-08-29</lastmod>
+    <loc>https://bokmandang.co.kr/</loc>
+    <xhtml:link rel="alternate" hreflang="ko-KR" href="https://bokmandang.co.kr/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://bokmandang.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bokmandang.com/?lang=cn"/>
+    <xhtml:link rel="alternate" hreflang="ja"    href="https://bokmandang.com/?lang=jp"/>
+    <lastmod>2026-09-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://bokmandang.vercel.app/privacy</loc>
+    <loc>https://bokmandang.co.kr/privacy</loc>
     <lastmod>2026-08-29</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.2</priority>

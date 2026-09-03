@@ -14,7 +14,7 @@ try: sys.stdout.reconfigure(encoding='utf-8')   # Windows 콘솔에서 한글 �
 except Exception: pass
 import sys, os, io, re
 
-DEFAULT_OLD = 'https://bokmandang.example.com'
+DEFAULT_OLD = 'https://bokmandang.co.kr'   # 현재 대표 도메인. 바꾸면 여기도 갱신하세요
 FILES = ['index.html', 'privacy.html', 'sitemap.xml', 'robots.txt']
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 

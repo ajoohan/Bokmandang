@@ -7,4 +7,4 @@ Disallow: /admin
 Disallow: /admin.html
 Disallow: /api/
 
-Sitemap: https://bokmandang.vercel.app/sitemap.xml
+Sitemap: https://bokmandang.co.kr/sitemap.xml

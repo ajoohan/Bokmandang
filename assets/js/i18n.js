@@ -164,15 +164,36 @@
     }
     /* og:* 는 그대로 둡니다 — 링크 미리보기를 긁는 쪽은 JS 를 돌리지 않습니다 */
 
+    /* 한국어는 .co.kr, 외국어는 .com 이 대표 주소입니다.
+       두 도메인이 같은 파일을 내려주므로, 각자 자기 주소를 canonical 로 가리키게
+       해야 합니다. .com 이 .co.kr 을 가리키면 중복으로 묶여 외국어가 색인에서 빠집니다.
+       로컬·미리보기(vercel.app 등)에서는 손대지 않습니다 — 엉뚱한 주소가 박힙니다. */
+    var KO_HOST = 'bokmandang.co.kr', INTL_HOST = 'bokmandang.com';
+    var host = location.hostname.replace(/^www\./i, '');
+    var live = (host === KO_HOST || host === INTL_HOST);
+
+    function urlFor(code) {
+      if (!live) {                          // 로컬에서는 지금 주소에 ?lang= 만 붙입니다
+        var u = new URL(location.href);
+        u.searchParams.set('lang', code);
+        return u.toString();
+      }
+      return 'https://' + (code === 'ko' ? KO_HOST : INTL_HOST) + '/' +
+             (code === 'ko' ? '' : '?lang=' + code);
+    }
+
+    if (live) {
+      var can = document.head.querySelector('link[rel=canonical]');
+      if (can) can.href = urlFor(lang);
+    }
+
     [].forEach.call(document.head.querySelectorAll('link[rel=alternate][hreflang]'),
       function (e) { e.remove(); });
     LANGS.forEach(function (l) {
-      var u = new URL(location.href);
-      u.searchParams.set('lang', l.code);
       var link = document.createElement('link');
       link.rel = 'alternate';
       link.hreflang = l.html;
-      link.href = u.toString();
+      link.href = urlFor(l.code);
       document.head.appendChild(link);
     });
   }
