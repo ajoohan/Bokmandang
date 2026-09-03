@@ -21,7 +21,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260902g">
+<link rel="stylesheet" href="assets/css/style.css?v=20260903a">
 </head>
 <body class="adm">
 
@@ -57,14 +57,17 @@
         <img src="assets/img/logo-black.png" alt="복만당 — 사이트로 이동"></a>
       <span class="sep"></span>
       <h1>관리자</h1>
+      <!-- 사이트 내용을 다루는 탭들. 자주 쓰는 순서로 둡니다. -->
       <div class="adm-tab" role="tablist">
-        <button class="on" data-view="inq" role="tab">상담 접수</button>
+        <button class="on" data-view="men" role="tab">메뉴 관리</button>
         <button data-view="str" role="tab">매장 목록</button>
-        <button data-view="men" role="tab">메뉴 관리</button>
-        <button data-view="pop" role="tab">팝업</button>
         <button data-view="txt" role="tab">문구</button>
+        <button data-view="pop" role="tab">팝업</button>
       </div>
       <div class="sp">
+        <!-- 상담 접수는 성격이 다릅니다(들어온 것을 처리하는 일) — 따로 빼고 눈에 띄게 뒀습니다.
+             새로 들어온 건수를 배지로 보여 주므로 눌러 보지 않아도 알 수 있습니다. -->
+        <button class="adm-inq" id="tabInq" data-view="inq">상담 접수<b id="inqBadge" hidden>0</b></button>
         <a class="adm-btn" href="index.html" target="_blank" rel="noopener">사이트 보기</a>
         <button class="adm-btn" id="logout">로그아웃</button>
       </div>
@@ -73,7 +76,7 @@
 
   <main class="adm-main">
     <!-- 상담 접수 -->
-    <section id="view-inq">
+    <section id="view-inq" hidden>
       <div class="adm-bar">
         <button class="adm-chip on" data-status="">전체 <b id="c-all">0</b></button>
         <button class="adm-chip" data-status="new">접수 <b id="c-new">0</b></button>
@@ -112,7 +115,7 @@
     </section>
 
     <!-- 메뉴 관리 -->
-    <section id="view-men" hidden>
+    <section id="view-men">
       <div class="adm-bar adm-bar-str">
         <p class="adm-lead">사이트 메뉴 섹션에 <strong>1분 안에</strong> 반영됩니다. 사진은 올리는 즉시 줄여서 저장하므로
           원본 그대로 골라도 됩니다. <strong>게시</strong>를 끄면 사이트에서 숨겨집니다.</p>
@@ -165,6 +168,6 @@
 <div class="adm-toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="assets/js/admin.js?v=20260902g"></script>
+<script src="assets/js/admin.js?v=20260903a"></script>
 </body>
 </html>

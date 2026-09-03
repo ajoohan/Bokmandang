@@ -88,16 +88,16 @@ $('#logout').onclick = async () => {
   show('login');
 };
 
-/* ── 탭 ─────────────────────────────────────────────────────────────── */
-document.querySelectorAll('.adm-tab button').forEach(b => b.onclick = () => {
-  document.querySelectorAll('.adm-tab button').forEach(x => x.classList.remove('on'));
-  b.classList.add('on');
-  $('#view-inq').hidden = b.dataset.view !== 'inq';
-  $('#view-str').hidden = b.dataset.view !== 'str';
-  $('#view-men').hidden = b.dataset.view !== 'men';
-  $('#view-pop').hidden = b.dataset.view !== 'pop';
-  $('#view-txt').hidden = b.dataset.view !== 'txt';
-});
+/* ── 탭 ───────────────────────────────────────────────────────────────
+   상담 접수는 탭 묶음 밖에 따로 있습니다(성격이 다릅니다) — 둘을 함께 다룹니다. */
+const VIEWS = ['inq', 'str', 'men', 'pop', 'txt'];
+const TABS = () => [...document.querySelectorAll('.adm-tab button, .adm-inq')];
+
+function showView(view) {
+  TABS().forEach(x => x.classList.toggle('on', x.dataset.view === view));
+  VIEWS.forEach(v => { $('#view-' + v).hidden = v !== view; });
+}
+TABS().forEach(b => b.onclick = () => showView(b.dataset.view));
 
 /* ── 상담 접수 ──────────────────────────────────────────────────────── */
 const STATUS = { new: '접수', contacted: '연락함', visiting: '상권검토', contracted: '계약', closed: '종료' };
@@ -123,6 +123,16 @@ async function loadInq() {
 
     for (const k of ['all', ...Object.keys(STATUS)])
       $('#c-' + k).textContent = counts[k] || 0;
+
+    /* 아직 손대지 않은 상담이 몇 건인지 헤더에 띄웁니다 —
+       탭을 눌러 보지 않아도 새 문의가 왔는지 알 수 있게. */
+    const badge = $('#inqBadge');
+    if (badge) {
+      const fresh = counts.new || 0;
+      badge.textContent = fresh;
+      badge.hidden = !fresh;
+      $('#tabInq').classList.toggle('has-new', !!fresh);
+    }
 
     if (!rows.length) {
       box.innerHTML = (q || filter)

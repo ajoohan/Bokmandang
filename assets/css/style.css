@@ -21,7 +21,10 @@
   --pad:clamp(22px,5.5vw,90px); --maxw:1400px; --hdr:78px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hdr) + 24px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--hdr) + 24px);
+  /* 스크롤바 자리를 늘 비워 둡니다 — 탭마다 내용 길이가 달라 스크롤바가
+     생겼다 사라지면 화면이 좌우로 튀어 메뉴 위치가 흔들립니다. */
+  scrollbar-gutter:stable}
 body{font-family:var(--f);background:var(--bg);color:var(--ink);line-height:1.72;letter-spacing:-.021em;
   font-weight:400;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;overflow-x:hidden}
@@ -823,6 +826,23 @@ body.has-band .prog{top:var(--band-h,46px)}
 .adm-hd .sep{width:1px;height:18px;background:var(--line-2);flex:none}
 .adm-hd h1{font-size:var(--fs-sm);font-weight:600;letter-spacing:-.02em;color:var(--mute);white-space:nowrap}
 .adm-hd .sp{margin-left:auto;display:flex;align-items:center;gap:8px}
+
+/* 상담 접수 — 사이트 내용을 고치는 탭들과 성격이 달라(들어온 것을 처리하는 일)
+   탭 묶음 밖으로 빼고 눈에 띄게 뒀습니다. 새 문의 수는 배지로 붙습니다. */
+.adm-inq{display:inline-flex;align-items:center;gap:8px;height:var(--ctl);padding:0 16px;
+  border-radius:9px;border:1px solid var(--gold);background:rgba(165,131,75,.10);
+  font-family:inherit;font-size:var(--fs-md);font-weight:700;letter-spacing:-.02em;
+  color:var(--gold-t);white-space:nowrap;margin-right:6px;
+  transition:background .22s,border-color .22s,color .22s,transform .12s}
+.adm-inq:hover{background:var(--gold-d);border-color:var(--gold-d);color:#fff}
+.adm-inq:active{transform:translateY(1px)}
+.adm-inq:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.adm-inq.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.adm-inq b{display:inline-flex;align-items:center;justify-content:center;
+  min-width:20px;height:20px;padding:0 6px;border-radius:100px;
+  background:var(--red);color:#fff;font-size:var(--fs-lbl);font-weight:700;
+  font-variant-numeric:tabular-nums}
+.adm-inq.on b{background:var(--gold-l);color:var(--ink)}
 
 /* 탭 — 세그먼트 컨트롤 */
 .adm-tab{display:flex;gap:2px;margin-left:10px;padding:3px;border-radius:9px;

@@ -11,6 +11,8 @@
  * 의존 패키지가 없습니다 — Node 내장 fetch 만 씁니다.
  */
 
+import { notifyInquiry } from './_notify.js';
+
 const MAX = { name: 40, phone: 30, region: 80, budget: 40, message: 2000 };
 
 const clean = (v, limit) =>
@@ -80,6 +82,14 @@ export default async function handler(req, res) {
       console.error('Supabase insert 실패', ins.status, await ins.text());
       return res.status(502).json({ error: '접수 처리 중 문제가 발생했습니다.' });
     }
+
+    /* 담당자에게 메일로 알립니다.
+       ★ 실패해도 접수는 성공으로 돌려줍니다 — 신청은 이미 저장됐는데
+       메일이 안 갔다고 손님에게 실패로 보이면 안 됩니다.
+       응답 전에 await 하는 이유: 서버리스 함수는 응답 직후 얼려질 수 있어
+       뒤로 미루면 메일이 안 나가는 일이 생깁니다. */
+    await notifyInquiry({ name, phone, region, budget, message }).catch(() => {});
+
     return res.status(200).json({ ok: true });
   } catch (e) {
     console.error('접수 처리 예외', e);
