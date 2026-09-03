@@ -136,11 +136,13 @@ document.querySelectorAll('.stats-in b').forEach(b=>{
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+/* 사전에서 찾아 바꿉니다. i18n 이 못 훑는 곳(속성 조합·라이트박스 캡션)에 씁니다. */
+const T = s => (window.BM_I18N && window.BM_I18N.t(s)) || s;
 const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate',b:'menu-teuk',k:'kit-package',u:'menu-useol'};
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260903c';
+const IMGVER='20260903f';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 /* AVIF → WebP → JPEG 순으로 고르는 <picture> 마크업 */
@@ -189,7 +191,7 @@ function render(f, first){
         ${m.src ? `<img src="${esc(m.src)}" alt="${esc(m.n)}" loading="lazy" decoding="async">`
                 : base ? picHTML(base, esc(m.n), MENU_SIZES, true)
                        : '<div class="ph-none" aria-hidden="true">사진 준비 중</div>'}
-        <button type="button" class="zoom" aria-label="${esc(m.n)} 사진 크게 보기"></button></div>
+        <button type="button" class="zoom" aria-label="${esc(T(m.n) + ' ' + T('사진 크게 보기'))}"></button></div>
         <div class="body-w"><h3>${esc(m.n)}</h3><p>${esc(m.d)}</p>
         <div class="price"><b>${esc(m.p)}</b><span>${esc(m.u)}</span></div></div>`;
       /* 카드 아무 데나 클릭해도 열리지만(마우스), 키보드 조작은 사진 위 버튼이 담당합니다.
@@ -198,11 +200,13 @@ function render(f, first){
       zoom.onclick=e=>{ e.stopPropagation();
         const img=el.querySelector('img'); if(!img) return;   // 사진이 없는 메뉴는 열지 않습니다
         const second = m.src2 || (base ? iv(IMGDIR+base+'-2.jpg') : '');
-        openLB(img,m.n,m.d+'  ·  '+m.p+m.u, second); };
+        openLB(img,T(m.n),T(m.d)+'  ·  '+m.p+T(m.u), second); };
       el.onclick=()=>zoom.click();
       grid.appendChild(el);
       anim(el,{opacity:[0,1],transform:['translateY(22px) scale(.97)','none']},{d:620,delay:i*65,ease:E.back,clear:'opacity,transform'});
       const pb=el.querySelector('.price b'); if(pb) setTimeout(()=>countUp(pb), 260+i*65);
+      /* 카드는 JS 가 그리므로 i18n 이 지나간 뒤입니다 — 여기서 한 번 더 통과시킵니다 */
+      if(window.BM_I18N) BM_I18N.apply(el);
     });
   };
   if(first||RM||!olds.length){ draw(); return; }
@@ -426,7 +430,7 @@ document.querySelectorAll('#th .thumb').forEach(btn=>{
   };
 });
 const galZoom=document.getElementById('galzoom');
-if(galZoom) galZoom.onclick=()=>openLB(gm,'복만당 본점','서울시 강남구 언주로 563, 원에디션강남 401동 116호');
+if(galZoom) galZoom.onclick=()=>openLB(gm,T('복만당 본점'),'서울시 강남구 언주로 563, 원에디션강남 401동 116호');
 
 /* FAQ — 높이 스프링 애니메이션 */
 document.querySelectorAll('#faq .qa').forEach(q=>{
@@ -626,7 +630,10 @@ function drawLinks(){
         + `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></a>`
       : '';
     mk.hidden=!ku;
+    if(window.BM_I18N) BM_I18N.apply(mk);
   }
+  if(window.BM_I18N){ var ex=document.getElementById('ext'); if(ex) BM_I18N.apply(ex);
+                      var ks=document.getElementById('kitshop'); if(ks) BM_I18N.apply(ks); }
 }
 drawLinks();
 
@@ -726,7 +733,11 @@ function heroStoreLabel(list){
   const open=(list||[]).filter(s=>!s.soon).length;
   if(!open || el.dataset.n===String(open)) return;
   el.dataset.n=String(open);
-  const txt=`SINCE 2024 — 전국 ${open}개 매장`;
+  /* i18n 이 이미 이 라벨을 번역해 두었는데 여기서 한국어 틀로 덮어쓰면 되돌아갑니다.
+     사전에서 같은 문장을 찾아 숫자만 갈아 끼웁니다. */
+  var tpl='SINCE 2024 — 전국 12개 매장';
+  var tr=(window.BM_I18N && window.BM_I18N.t && window.BM_I18N.t(tpl)) || tpl;
+  const txt=tr.replace(/12/, open);
   if(el.querySelector('.mo-ch'))
     el.innerHTML=[...txt].map(c=>'<span class="mo-ch">'+(c===' '?'&nbsp;':c)+'</span>').join('');
   else el.textContent=txt;
@@ -946,6 +957,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
     });
     empty.style.display=rows.length?'none':'block';
     drawPager(rows.length, pages);
+    if(window.BM_I18N && pager) BM_I18N.apply(pager);
     /* 필터·검색 결과를 스크린리더에 알립니다. 숫자는 카운트업 애니메이션과 별개로
        최종 값만 한 번 넣어야 읽는 도중에 계속 끊기지 않습니다. */
     const st=document.getElementById('sstatus');
@@ -974,7 +986,8 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
     const nums=Array.from({length:pages},(_,i)=>btn(i+1,i+1,page===i+1,false)).join('');
     pager.innerHTML =
       btn(page-1,'‹',false,page===1) + nums + btn(page+1,'›',false,page===pages) +
-      `<span class="pg-of">${(page-1)*PER+1}–${Math.min(page*PER,total)} / ${total}곳</span>`;
+      `<span class="pg-of">${(page-1)*PER+1}–${Math.min(page*PER,total)} / ${total}${
+        (window.BM_I18N && window.BM_I18N.t('곳')) || '곳'}</span>`;
   }
   if(pager) pager.onclick=e=>{
     const b=e.target.closest('button[data-p]'); if(!b||b.disabled) return;
