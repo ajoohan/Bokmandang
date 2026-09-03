@@ -32,15 +32,25 @@ const ROUTES = {
   'stores':      stores
 };
 
+/* 주소에서 마지막 조각을 꺼냅니다.
+   req.query.path 를 먼저 보되, 비어 있으면 req.url 에서 직접 읽습니다 —
+   catch-all 파라미터가 채워지는 방식이 런타임에 따라 다를 수 있어
+   주소 자체를 근거로 삼는 편이 확실합니다. */
+function routeName(req) {
+  const raw = req.query && req.query.path;
+  if (raw) return Array.isArray(raw) ? raw.join('/') : String(raw);
+  const url = String(req.url || '').split('?')[0].replace(/\/+$/, '');
+  const m = url.match(/\/api\/admin\/(.+)$/);
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
 export default function handler(req, res) {
-  /* [...path] 는 세그먼트 배열로 들어옵니다. /api/admin/stores → ['stores'] */
-  const raw = (req.query && req.query.path) || [];
-  const name = Array.isArray(raw) ? raw.join('/') : String(raw);
+  const name = routeName(req);
 
   /* ROUTES[name] 으로만 보면 'constructor' 같은 프로토타입 속성이 함수로 잡힙니다 */
   if (!Object.hasOwn(ROUTES, name)) {
     res.setHeader('Cache-Control', 'no-store');
-    return res.status(404).json({ error: '없는 주소입니다.' });
+    return res.status(404).json({ error: '없는 주소입니다.', path: name || null });
   }
   return ROUTES[name](req, res);
 }
