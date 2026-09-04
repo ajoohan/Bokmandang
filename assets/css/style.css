@@ -47,12 +47,21 @@ button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit
 
 /* ── 타이포 스케일 ─────────────────────────────── */
 h1,h2,h3,h4{font-weight:700;letter-spacing:-.045em;line-height:1.14}
+/* 제목은 줄을 고르게 나눕니다. 한국어는 원문에 줄바꿈을 넣어 두었지만
+   번역문은 길이가 달라, 그대로 두면 마지막 줄에 한 단어만 떨어집니다
+   (영어에서 '… we took away instead of / adding' 처럼). balance 는 줄 수를
+   유지하면서 길이만 고르게 맞춥니다. 모르는 브라우저는 이 줄을 버립니다.
+   .mo-line 은 등장 모션 때문에 줄마다 감싸는 상자라 거기에도 걸어 둡니다. */
+h1,h2,h3,h4,.d1,.d2,.d3,.mo-line{text-wrap:balance}
 .d1{font-size:clamp(44px,6.6vw,98px);line-height:1.04;letter-spacing:-.055em;font-weight:700}
 .d2{font-size:clamp(30px,4.4vw,62px);line-height:1.14;letter-spacing:-.05em}
 .d3{font-size:clamp(21px,1.9vw,27px);letter-spacing:-.04em}
 .lbl{font-size:11px;letter-spacing:.3em;font-weight:600;color:var(--mute-2);text-transform:uppercase}
 .lbl-g{color:var(--gold-t)}
-.body{font-size:clamp(15px,1.05vw,16.5px);color:var(--ink-2);line-height:1.98;font-weight:400;letter-spacing:-.015em}
+/* pretty 는 줄 수를 바꾸지 않고 마지막 줄에 한 단어만 남는 것만 막습니다.
+   본문은 balance 를 쓰면 안 됩니다 — 긴 글에서는 줄 길이를 맞추려다 되레 들쭉납니다. */
+.body{font-size:clamp(15px,1.05vw,16.5px);color:var(--ink-2);line-height:1.98;font-weight:400;letter-spacing:-.015em;
+  text-wrap:pretty}
 .body-s{font-size:14.5px;color:var(--mute);line-height:1.92}
 .hair{height:1px;background:var(--line);border:0}
 
