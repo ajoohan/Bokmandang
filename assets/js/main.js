@@ -200,11 +200,11 @@ const esc = v => String(v ?? '').replace(/[&<>"']/g, c =>
 
 /* 사전에서 찾아 바꿉니다. i18n 이 못 훑는 곳(속성 조합·라이트박스 캡션)에 씁니다. */
 const T = s => (window.BM_I18N && window.BM_I18N.t(s)) || s;
-const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate',b:'menu-teuk',k:'kit-package',u:'menu-useol'};
+const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate',b:'menu-teuk',k:'kit-package',u:'menu-useol',r:'menu-gonggibap'};
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260903v';
+const IMGVER='20260904a';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 
@@ -264,7 +264,7 @@ const MENU=[
  {c:'tang',n:'우설곰탕',d:'부드럽게 삶아낸 우설을 얹은 별미. 수량 한정으로 준비합니다.',p:'16,000',u:'원',img:'u'},
  {c:'side',n:'이북식 손만두',d:'얇은 피에 김치와 두부를 채워 매일 손으로 빚습니다.',p:'2,000',u:'원 / 1알',img:'m'},
  {c:'side',n:'한우수육',d:'250g. 곰탕과 함께 또는 단품으로. 소금장과 함께 드세요.',p:'35,000',u:'원',img:'t'},
- {c:'side',n:'공깃밥',d:'국내산 쌀로 매일 새로 짓습니다.',p:'1,000',u:'원',img:'g'},
+ {c:'side',n:'공깃밥',d:'국내산 쌀로 매일 새로 짓습니다.',p:'1,000',u:'원',img:'r'},
  {c:'kit',n:'곰탕 밀키트',d:'매장 육수 그대로. 600g 냉동 포장, 데우기만 하면 완성.',p:'9,000',u:'원',img:'k'}
 ];
 const grid=document.getElementById('mgrid');

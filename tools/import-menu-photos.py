@@ -33,6 +33,7 @@ MAP = {
   '수육곰탕':  'menu-sugyuk',
   '한우수육':  'menu-sugyuk-plate',
   '이북식만두':'menu-mandu',
+  '공기밥':    'menu-gonggibap',
   '밀키트':    'kit-package',
 }
 
