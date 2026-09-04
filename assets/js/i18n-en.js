@@ -24,11 +24,11 @@ window.I18N.en = {
   '전화 문의': 'Call us',
 
   /* ── 히어로 ── */
-  'SINCE 2024 – 전국 12개 매장': 'SINCE 2024 – 12 LOCATIONS',
+  'SINCE 2024 - 전국 12개 매장': 'SINCE 2024 - 12 LOCATIONS',
   '맑은 국물에\n깊은 맛을 담다': 'Clear broth,\ndeep flavour',
   '복만당 한우곰탕': 'Bokmandang Hanwoo Gomtang',
   '한우를 정성껏 우려, 맑고 깊은 맛을 담았습니다. 따뜻한 마음과 정성으로 완성한 곰탕에 복만당의 또 하나의 시그니처, 이북식 손만두를 곁들이면 담백하고 깊은 맛을 한층 더 풍성하게 즐기실 수 있습니다.':
-    'Hanwoo beef, simmered with care into a clear and deep broth. Pair it with our other signature – North Korean–style hand-folded dumplings – and the clean, deep flavour becomes richer still.',
+    'Hanwoo beef, simmered with care into a clear and deep broth. Pair it with our other signature - North Korean-style hand-folded dumplings - and the clean, deep flavour becomes richer still.',
   '가맹점 창업 안내': 'Franchise information',
   '메뉴 보기': 'View menu',
   '한우곰탕': 'Hanwoo Gomtang',
@@ -43,19 +43,19 @@ window.I18N.en = {
   /* ── 브랜드 ── */
   '매일 먹을 수 있는 가격에서,\n특별하게 즐기는 한 그릇까지':
     'From an everyday price\nto a bowl worth savouring',
-  '곰탕은 10,000원에서 시작합니다. 그렇다고 가격에 맞춰 덜어낸 한 그릇은 아닙니다.\n1++ 한우와 엄선한 식재료, 방짜유기 그릇, 정갈한 공간 – 부담 없이 자주 드시되\n경험은 가격 그 이상이 되도록 만들었습니다.':
-    'Gomtang starts at 10,000 KRW. That does not mean we cut corners to hit the price.\n1++ Hanwoo beef, carefully chosen ingredients, forged bronze bowls, a calm room – meant to be eaten often without hesitation,\nyet to feel like more than what you paid.',
+  '곰탕은 10,000원에서 시작합니다. 그렇다고 가격에 맞춰 덜어낸 한 그릇은 아닙니다.\n1++ 한우와 엄선한 식재료, 방짜유기 그릇, 정갈한 공간 - 부담 없이 자주 드시되\n경험은 가격 그 이상이 되도록 만들었습니다.':
+    'Gomtang starts at 10,000 KRW. That does not mean we cut corners to hit the price.\n1++ Hanwoo beef, carefully chosen ingredients, forged bronze bowls, a calm room - meant to be eaten often without hesitation,\nyet to feel like more than what you paid.',
   '복만당의 3가지 원칙재료는 제대로, 조리는 간편하게, 운영은 효율적으로.':
     'Three principlesRight ingredients. Simple cooking. Efficient operation.',
-  '01 – 재료': '01 – Ingredients',
+  '01 - 재료': '01 - Ingredients',
   '재료는\n제대로': 'Right\ningredients',
   '1++ 한우와 엄선한 식재료로 맑고 깊은 한우곰탕을 냅니다.\n좋은 재료에서 시작해야 조리를 단순하게 해도 맛이 남습니다.':
     'We make a clear, deep Hanwoo gomtang from 1++ Hanwoo beef and carefully chosen ingredients.\nStart with good ingredients and the flavour holds, even when the cooking is kept simple.',
-  '02 – 조리': '02 – Cooking',
+  '02 - 조리': '02 - Cooking',
   '조리는\n간편하게': 'Simple\ncooking',
   '약탕기에서 저온으로 14시간. 복잡한 불 조절이나 조리 중 관리 부담을 덜어낸\n표준화된 방식으로, 매장마다 같은 맛을 냅니다.':
     'Fourteen hours at low heat in a herbal extractor. A standardised method that removes fiddly flame control and constant tending,\nso every location tastes the same.',
-  '03 – 운영': '03 – Operation',
+  '03 - 운영': '03 - Operation',
   '운영은\n효율적으로': 'Efficient\noperation',
   '작은 매장, 최소한의 인력, 상권과 점주에 맞춘 유연한 영업.\n매장 규모와 운영 방식을 하나로 정해 두지 않았습니다.':
     'A small room, a minimal team, hours shaped to the neighbourhood and the owner.\nWe have not fixed one store size or one way of running it.',
@@ -67,8 +67,8 @@ window.I18N.en = {
     'In-storeNot a matter of reheating finished broth shipped from a plant',
   '매일영업일마다 새로 끓입니다': 'DailySimmered fresh on every trading day',
   '당일 소비그날 생산한 만큼 그날 씁니다': 'Same dayWhat is made that day is used that day',
-  '매장 주방의 약탕기 – 한우 육수를 저온으로 우려내는 설비':
-    'The herbal extractor in a store kitchen – where Hanwoo broth is drawn out at low heat',
+  '매장 주방의 약탕기 - 한우 육수를 저온으로 우려내는 설비':
+    'The herbal extractor in a store kitchen - where Hanwoo broth is drawn out at low heat',
   '약탕기에 오래 우려낸 1++ 한우.\n조리는 어렵지 않습니다.\n매일, 매장에서 직접 끓입니다.':
     '1++ Hanwoo, drawn out slowly.\nThe cooking is not difficult.\nEvery day, in our own kitchens.',
 
@@ -85,8 +85,8 @@ window.I18N.en = {
   '닫기': 'Close',
   '이전 사진': 'Previous photo',
   '다음 사진': 'Next photo',
-  '한우만 사용합니다.\n원산지 – 소고기(국내산), 쌀(국내산), 돼지고기(국내산), 무(국내산), 고춧가루(국내산·중국산)':
-    'We use Hanwoo beef only.\nOrigin – beef (Korea), rice (Korea), pork (Korea), radish (Korea), chilli powder (Korea / China)',
+  '한우만 사용합니다.\n원산지 - 소고기(국내산), 쌀(국내산), 돼지고기(국내산), 무(국내산), 고춧가루(국내산·중국산)':
+    'We use Hanwoo beef only.\nOrigin - beef (Korea), rice (Korea), pork (Korea), radish (Korea), chilli powder (Korea / China)',
   '밀키트는 온라인에서도 구매하실 수 있습니다': 'The meal kit is also available online',
   '스마트스토어에서 구매하기': 'Buy on Naver Smart Store',
 
@@ -100,8 +100,8 @@ window.I18N.en = {
   '식재료 활용도를 높이는 운영 방식': 'A way of getting more from the same ingredients',
   '가맹점은 매장 판매, 온라인 채널은 본사가 운영':
     'Franchisees sell in-store; online channels are run by head office',
-  '제조원 – 서울 강남구 언주로 563, 401동 123호 (본점·법인 본사와 같은 건물의 다른 호수입니다)':
-    'Manufacturer – 563 Eonju-ro, Gangnam-gu, Seoul, Bldg 401 Unit 123 (same building as the flagship store and head office, different unit)',
+  '제조원 - 서울 강남구 언주로 563, 401동 123호 (본점·법인 본사와 같은 건물의 다른 호수입니다)':
+    'Manufacturer - 563 Eonju-ro, Gangnam-gu, Seoul, Bldg 401 Unit 123 (same building as the flagship store and head office, different unit)',
   '유통 · 입점 문의': 'Wholesale & retail enquiries',
   '밀키트 구매하기': 'Buy the meal kit',
   '복만당 맑은 한우 곰탕 밀키트 패키지': 'Bokmandang clear Hanwoo gomtang meal kit package',
@@ -111,7 +111,7 @@ window.I18N.en = {
   '본점': 'Flagship store',
   '대표문의02-565-5288': 'Phone02-565-5288',
   '영업15:40 라스트오더\n지점별 영업시간 상이 · 아래 목록 참조':
-    'Hours15:40 last order\nHours vary by location – see the list below',
+    'Hours15:40 last order\nHours vary by location - see the list below',
   '주차지하주차장 이용': 'ParkingUnderground car park',
   '서울·경기를 넘어 전국으로 매장을 확대하고 있습니다.\n전체 매장은 아래 목록에서 확인하세요.':
     'We are expanding beyond Seoul and Gyeonggi to the rest of the country.\nSee the full list below.',
@@ -141,7 +141,7 @@ window.I18N.en = {
 
   /* ── 왜 복만당 ── */
   '25년 외식업의 경험,\n더하는 대신 덜어냈습니다':
-    '25 years in restaurants –\nwe took away instead of adding',
+    '25 years in restaurants -\nwe took away instead of adding',
   '복만당은 아이디어로 만든 브랜드가 아닙니다. 대표가 25년 넘게 직접 식당을 운영하며\n겪은 장점과 단점, 시행착오를 하나씩 덜어내며 만들어졌습니다.':
     'Bokmandang was not built from an idea. Our founder ran restaurants for more than 25 years,\nand the brand took shape by removing, one at a time, the problems he lived through.',
   '덜어낸 것': 'What we removed',
@@ -154,9 +154,9 @@ window.I18N.en = {
   '음식의 품질': 'The quality of the food',
   '한 그릇의 가치': 'The worth of a single bowl',
   '점주가 쓸 수 있는 시간': 'The time an owner gets back',
-  '최대 매출이 아닌, 최적의 매출': 'Not maximum revenue – optimal revenue',
+  '최대 매출이 아닌, 최적의 매출': 'Not maximum revenue - optimal revenue',
   '매출을 키우려고 사람과 시간을 더 넣으면 외형은 커지지만 인건비와 운영비도 함께 커집니다.\n매출이 크다고 반드시 많이 남는 것은 아닙니다.\n복만당은 얼마나 파느냐보다, 얼마의 인력과 비용으로 운영하고 점주에게 무엇이 남는지를 먼저 봅니다.':
-    'Add more people and more hours to grow revenue and the headline number rises – but so do wages and running costs.\nBig revenue does not always mean much is left over.\nWe look first at how many people and how much cost it takes to run, and what actually remains for the owner.',
+    'Add more people and more hours to grow revenue and the headline number rises - but so do wages and running costs.\nBig revenue does not always mean much is left over.\nWe look first at how many people and how much cost it takes to run, and what actually remains for the owner.',
   '좋은 사업은 그 사람의 삶도 함께 지켜줄 수 있어야 한다고 생각합니다.':
     'A good business should protect the life of the person running it.',
   '어린 시절부터 장사를 시작해, 결혼한 뒤에도 아침 일찍 나가 밤늦게 들어오는 생활이 오래 이어졌습니다.\n아이들이 자라는 모습을 가까이에서 보지 못한 시간이 있었습니다. 복만당을 만들면서\n매출과 수익만큼이나 외식업을 하면서도 점주의 삶을 지킬 수 있는 구조를 중요하게 생각한 이유입니다.\n식당을 위해 삶을 포기하지 않아도 되는 외식업.':
@@ -164,16 +164,16 @@ window.I18N.en = {
 
   /* ── 창업안내 ── */
   '내가 가게를 운영해야지,\n가게가 나를 운영하지 않습니다':
-    'You should run the shop –\nnot the other way round',
+    'You should run the shop -\nnot the other way round',
   '복만당의 운영 시스템은 점주가 매장에 끌려가지 않도록 만들어졌습니다.\n사람·시간·공간·비용 네 가지를 각각 어떻게 덜어냈는지 정리했습니다.':
     'Our operating system is built so the shop does not drag the owner along.\nHere is how we lightened each of four things: people, time, space and cost.',
-  '01 – 사람': '01 – People',
+  '01 - 사람': '01 - People',
   '사람의 기술이 아닌,\n시스템으로 운영합니다': 'Run by a system,\nnot by one person\'s skill',
   '특정 주방장이나 숙련 조리사의 기술에 기대는 매장이 아닙니다. 약탕기를 쓰는 표준화된 조리와\n단순한 주방 동선 덕분에, 조리 경험이 많지 않은 직원도 비교적 짧은 기간에 업무를 익힐 수 있습니다.\n직원이 바뀌어도 매장은 흔들리지 않도록 설계했습니다.':
     'The shop does not lean on a particular chef or a seasoned cook. Standardised cooking with the herbal extractor and\na simple kitchen layout mean staff without much cooking experience can learn the work in a relatively short time.\nIt is designed so the shop holds steady when staff change.',
   '그만큼 필요한 인원도 최소화됩니다. 대표 부부가 별도의 정규직 직원 없이 둘이서 오랜 기간\n매장을 운영한 경험도 있습니다. 단순한 인건비 절감이 아니라\n사람에 대한 고정비와 의존도를 낮춘 매장이라는 뜻입니다.':
-    'That also keeps the headcount low. Our founder and his wife ran a store between the two of them for a long stretch,\nwith no full-time employees. This is not simply cutting wages – it means\na shop with lower fixed costs and less dependence on any one person.',
-  '02 – 시간': '02 – Time',
+    'That also keeps the headcount low. Our founder and his wife ran a store between the two of them for a long stretch,\nwith no full-time employees. This is not simply cutting wages - it means\na shop with lower fixed costs and less dependence on any one person.',
+  '02 - 시간': '02 - Time',
   '매장에 삶을 맞추는 것이 아니라,\n내 삶에 맞춰 매장을 운영합니다':
     'Fit the shop to your life,\nnot your life to the shop',
   '모든 매장에 똑같은 장시간 영업을 요구하지 않습니다. 상권과 점주의 목표에 따라 운영 시간을 고릅니다.\n더 많은 매출을 원하는 점주는 영업시간을 늘리고, 자신의 시간이 중요한 점주는 필요한 시간대에 집중합니다.\n핵심은 운영시간의 선택권이 점주에게 있다는 것입니다.':
@@ -183,19 +183,19 @@ window.I18N.en = {
   '점심 + 저녁': 'Lunch + dinner',
   '장시간 영업': 'Extended hours',
   '상권에 따라 24시간 검토': '24 hours, where the area supports it',
-  '03 – 규모': '03 – Size',
+  '03 - 규모': '03 - Size',
   '모든 점주에게\n같은 성공을 강요하지 않습니다': 'We do not press the same\nversion of success on everyone',
   '실제 복만당 매장은 8평 남짓한 곳부터 25평까지\n규모가 제각각이고, 임대료 조건도 매장마다 크게 다릅니다. 하나의 매장 크기나 하나의 매출 모델을\n모든 가맹점에 그대로 적용하는 브랜드가 아닙니다.':
     'Our locations range from roughly 26 m² to about 83 m²,\nand rent varies widely between them. We are not a brand that applies one store size\nor one revenue model to every franchisee.',
   '매장 크기 · 임대료 · 상권 · 점주의 목표 수익 · 투자 규모 · 영업시간을 함께 놓고\n점주에게 맞는 운영 모델을 설계합니다.\n매출에 매장을 맞추는 것이 아니라, 점주의 목표에 매장을 맞춥니다.':
     'We look at store size, rent, the neighbourhood, the owner\'s target income, the investment and the hours together,\nand design an operating model that fits that owner.\nThe shop is shaped to the owner\'s goals, not to a revenue figure.',
-  '04 – 비용': '04 – Cost',
+  '04 - 비용': '04 - Cost',
   '상황이 바뀌어도\n조정할 수 있는 비용 구조': 'A cost structure you can adjust\nwhen conditions change',
   '외식업 매출은 경기와 계절, 상권 변화에 따라 움직입니다. 정규직과 전문인력이 많이 필요한 매장은\n매출이 떨어져도 인건비를 곧바로 줄이기 어렵습니다.':
     'Restaurant revenue moves with the economy, the season and the neighbourhood. A shop that needs many full-time and skilled staff\ncannot cut its wage bill quickly when takings fall.',
   '복만당은 전문인력에 대한 의존도가 낮고 인력 구성을 유연하게 짤 수 있어, 매장 상황에 따라\n인력과 영업시간을 조정하며 운영비를 관리하기가 상대적으로 수월한 구조입니다.\n고정비 부담을 낮춰 실패 가능성을 줄이는 방향입니다.':
     'Because we depend less on skilled staff and the team can be composed flexibly, hours and headcount can be adjusted\nto the situation, which makes running costs comparatively easier to manage.\nThe aim is to lower fixed costs and so reduce the chance of failure.',
-  '05 – 공간': '05 – Space',
+  '05 - 공간': '05 - Space',
   '주방이라는 공간부터\n다시 생각했습니다': 'We rethought the kitchen\nas a space',
   '복만당은 주방을 무겁고 복잡한 별도의 공간으로 만들기보다, 홀과 자연스럽게 연결되는 간결한 주방을 지향합니다.\n현장 여건에 따라 홀과 같은 바닥 높이로 주방을 구성할 수 있고, 홀과 주방의 경계를 최소화한\n오픈키친 형태로 운영하는 매장도 있습니다. 약탕기와 인덕션 중심의 간결한 조리 시스템으로\n가스화구·대형 후드와 덕트 같은 고정식 설비에 대한 의존도를 낮춘 덕분입니다.':
     'Rather than building the kitchen as a heavy, complicated room of its own, we aim for a spare kitchen that connects naturally to the dining room.\nWhere the site allows, the kitchen can sit at the same floor level as the dining room, and some locations run\nwith an open kitchen and almost no boundary between the two. That is possible because a spare cooking system built around\nthe herbal extractor and induction reduces dependence on fixed equipment such as gas burners and large hoods and ducting.',
@@ -211,10 +211,10 @@ window.I18N.en = {
   '8평부터 다양한 공간 구성': 'Layouts from about 26 m² upward',
   '이전·철거까지 고려한 설계': 'Designed with relocation and strip-out in mind',
   '들어갈 때만 생각하지 않고, 나올 때까지 생각했습니다.\n주요 구조를 시스템각 등을 활용한 모듈형으로 설계해 분해와 이동이 가능하도록 했습니다.\n매장 이전이나 임대차 종료 시 철거와 원상복구 부담을 줄이고, 활용 가능한 시설과 집기는\n다음 매장에서도 최대한 다시 쓸 수 있도록 했습니다.\n※ 습식주방 공사·덕트 등 필요한 범위와 재사용 가능한 항목은 건축물과 현장 여건에 따라 달라집니다.':
-    'We thought not only about moving in, but about moving out.\nThe main structure is modular – built with system framing and the like – so it can be taken apart and moved.\nThat reduces the burden of strip-out and reinstatement when relocating or ending a lease, and lets usable fittings and equipment\nbe reused at the next location as far as possible.\n※ How much wet-kitchen work or ducting is required, and what can be reused, depends on the building and site conditions.',
-  '06 – 판매': '06 – Channels',
+    'We thought not only about moving in, but about moving out.\nThe main structure is modular - built with system framing and the like - so it can be taken apart and moved.\nThat reduces the burden of strip-out and reinstatement when relocating or ending a lease, and lets usable fittings and equipment\nbe reused at the next location as far as possible.\n※ How much wet-kitchen work or ducting is required, and what can be reused, depends on the building and site conditions.',
+  '06 - 판매': '06 - Channels',
   '하나의 주방에서 세 가지 판매 채널을 함께 운영할 수 있는 구조입니다.\n별도의 배달 전용 주방을 두는 개념이 아니라, 기존 주방과 인력을 그대로 쓰면서 채널을 하나씩 더하는 방식입니다.':
-    'One kitchen can run three sales channels at once.\nThis is not a separate delivery-only kitchen – it adds channels while using the same kitchen and the same people.',
+    'One kitchen can run three sales channels at once.\nThis is not a separate delivery-only kitchen - it adds channels while using the same kitchen and the same people.',
   '홀': 'Dine-in',
   '매장에서 방짜유기 그릇에 담아냅니다.': 'Served in forged bronze bowls in the dining room.',
   '배달': 'Delivery',
@@ -238,7 +238,7 @@ window.I18N.en = {
     'Regular check-ins and online marketing support, and we work through operating problems with you.',
   '상담 신청': 'Enquiry',
   '온라인 폼 또는 전화로 희망 지역과 예산, 원하는 운영 형태를 알려주세요.':
-    'Tell us your preferred area, budget and the way you want to run the shop – by form or by phone.',
+    'Tell us your preferred area, budget and the way you want to run the shop - by form or by phone.',
   '상권 분석': 'Area study',
   '후보 입지의 유동인구·경쟁도를 조사해 리포트로 전달합니다.':
     'We survey footfall and competition at candidate sites and send you a report.',
@@ -279,15 +279,15 @@ window.I18N.en = {
   '가맹 상담\n신청하기': 'Franchise\nenquiry',
   '희망 지역과 예산만 남겨주시면, 담당자가 영업일 기준 1일 이내에 연락드립니다. 상담은 무료이며 계약 의무가 없습니다.':
     'Leave your preferred area and budget and we will be in touch within one business day. The consultation is free and carries no obligation.',
-  '가맹 문의 전용02-565-5288평일 10:00 – 18:00':
-    'Franchise line02-565-5288Weekdays 10:00 – 18:00',
+  '가맹 문의 전용02-565-5288평일 10:00 - 18:00':
+    'Franchise line02-565-5288Weekdays 10:00 - 18:00',
   '성함 필수': 'Name Required',
   '연락처 필수': 'Phone Required',
   '희망 지역': 'Preferred area',
   '창업 예산': 'Budget',
   '1억 원 미만': 'Under 100 M KRW',
-  '1억 – 1.5억 원': '100 – 150 M KRW',
-  '1.5억 – 2억 원': '150 – 200 M KRW',
+  '1억 - 1.5억 원': '100 - 150 M KRW',
+  '1.5억 - 2억 원': '150 - 200 M KRW',
   '2억 원 이상': 'Over 200 M KRW',
   '문의 내용': 'Message',
   '이 칸은 비워 두세요': 'Leave this field empty',
@@ -341,14 +341,14 @@ window.I18N.en = {
     '250 g. With gomtang or on its own. Serve with salted dipping sauce.',
   '국내산 쌀로 매일 새로 짓습니다.': 'Cooked fresh each day with Korean rice.',
   '매장 육수 그대로. 600g 냉동 포장, 데우기만 하면 완성.':
-    'The same broth we serve in-store. 600 g frozen – just heat it through.',
+    'The same broth we serve in-store. 600 g frozen - just heat it through.',
   '매장에서 매일 끓이는 그 곰탕. 600g 냉동 포장, 데우기만 하면 완성.':
-    'The gomtang we simmer in-store each day. 600 g frozen – just heat it through.',
+    'The gomtang we simmer in-store each day. 600 g frozen - just heat it through.',
 
   /* ── 본점 정보 라벨 (주소 값 자체는 번역하지 않습니다) ── */
   '주소': 'Address',
   '복만당 맑은 한우곰탕': 'Bokmandang Clear Hanwoo Gomtang',
-  '이북식 손만두': 'North Korean–style dumplings',
+  '이북식 손만두': 'North Korean-style dumplings',
   '곳': ' locations',
 
   /* ── 화면에 안 보이는 것 – 탭 제목, 검색 설명, JS 가 만드는 라벨 ── */
@@ -363,8 +363,8 @@ window.I18N.en = {
   /* ── 관리자 문구 관리가 넣는 조각 (주소·전화번호는 일부러 뺐습니다) ── */
   '15:40 라스트오더': '15:40 last order',
   '지하주차장 이용': 'Underground parking available',
-  '원산지 – 소고기(국내산), 쌀(국내산), 돼지고기(국내산), 무(국내산), 고춧가루(국내산·중국산)':
-    'Origin – beef (Korea), rice (Korea), pork (Korea), radish (Korea), chilli powder (Korea · China)',
+  '원산지 - 소고기(국내산), 쌀(국내산), 돼지고기(국내산), 무(국내산), 고춧가루(국내산·중국산)':
+    'Origin - beef (Korea), rice (Korea), pork (Korea), radish (Korea), chilli powder (Korea · China)',
 
   /* ── 매장 목록 안의 UI 문구 (지점명·주소는 한국어로 둡니다) ── */
   '지도 보기': 'View on map',
@@ -372,10 +372,10 @@ window.I18N.en = {
   '휴무': 'closed',
   '지도에서 영업시간 확인': 'See hours on map',
   '※ 영업시간과 휴무일은 지점마다 다르고 바뀔 수 있습니다. 방문 전 ‘지도 보기’에서 확인해 주세요.':
-    'Note – opening hours and closing days vary by store and may change. Please check ‘View on map’ before visiting.',
+    'Note - opening hours and closing days vary by store and may change. Please check ‘View on map’ before visiting.',
 
   /* 히어로 라벨 – {n} 자리에 운영 중인 매장 수가 들어갑니다 */
-  'SINCE 2024 – 전국 {n}개 매장': 'SINCE 2024 – {n} LOCATIONS',
+  'SINCE 2024 - 전국 {n}개 매장': 'SINCE 2024 - {n} LOCATIONS',
   /* ── 영업시간 값에 쓰이는 낱말 ── */
   '매일': 'Daily',
   '라스트오더': 'last order',
