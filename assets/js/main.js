@@ -204,7 +204,7 @@ const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate'
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260904d';
+const IMGVER='20260904f';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 
@@ -857,10 +857,10 @@ function heroStoreLabel(list){
      깨져 백스페이스 문자가 박혔고, 아무 말 없이 항상 12 개로 보였습니다.
      자리표시자를 쓰고, 그마저 없으면 한국어 틀로 직접 만듭니다 —
      숫자만은 반드시 맞게 둡니다. */
-  var tpl='SINCE 2024 — 전국 {n}개 매장';
+  var tpl='SINCE 2024 – 전국 {n}개 매장';
   var tr=(window.BM_I18N && window.BM_I18N.t && window.BM_I18N.t(tpl)) || tpl;
   const txt = tr.indexOf('{n}') >= 0 ? tr.replace('{n}', open)
-                                     : 'SINCE 2024 — 전국 ' + open + '개 매장';
+                                     : 'SINCE 2024 – 전국 ' + open + '개 매장';
   if(el.querySelector('.mo-ch'))
     el.innerHTML=[...txt].map(c=>'<span class="mo-ch">'+(c===' '?'&nbsp;':c)+'</span>').join('');
   else el.textContent=txt;
