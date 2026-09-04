@@ -2,22 +2,26 @@
 --
 -- 왜
 --   화면 문구의 대시를 모두 일반 하이픈(-)으로 통일했습니다.
---   부산시청점 영업시간만 DB 에 en 대시(–)로 들어가 있어, 코드를 고쳐도
---   화면에는 계속 '매일 10:30 – 20:00' 으로 나옵니다.
+--   부산시청점 영업시간만 DB 에 en 대시로 들어가 있어, 코드를 고쳐도
+--   화면에는 계속 '매일 10:30 (en대시) 20:00' 으로 나옵니다.
 --   매장 정보는 /api/stores(DB) 가 먼저이고 assets/data/stores.js 는 폴백입니다.
+--
+-- 대시를 글자 그대로 적지 않고 U&'\2013' (en 대시) · U&'\2014' (em 대시) 로
+-- 적었습니다. 편집기나 클립보드를 거치며 특수문자가 바뀌면 조건이 아무것도
+-- 맞지 않아 조용히 0 행만 바뀝니다 — 실제로 한 번 그렇게 넘어갔습니다.
 --
 -- 안 돌려도 사이트는 정상입니다 — 그 한 줄의 대시 모양만 다릅니다.
 --
--- 되돌리려면
---   update public.stores set hours = replace(hours, '-', '–') where name = '부산시청점';
+-- 되돌릴 필요는 없습니다. 하이픈이 기본 표기입니다.
 
 begin;
 
 update public.stores
-   set hours = replace(hours, '–', '-')
- where hours like '%–%';
+   set hours = translate(hours, U&'\2013\2014', '--')
+ where hours <> translate(hours, U&'\2013\2014', '--');
 
 commit;
 
--- 확인
---   select name, hours from public.stores where hours <> '' order by sort, id;
+-- 확인 — 결과가 0 행이어야 합니다
+--   select name, hours from public.stores
+--    where hours <> translate(hours, U&'\2013\2014', '--');
