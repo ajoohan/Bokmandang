@@ -375,7 +375,10 @@ window.I18N.en = {
   '※ 영업시간과 휴무일은 지점마다 다르고 바뀔 수 있습니다. 방문 전 ‘지도 보기’에서 확인해 주세요.':
     'Note — opening hours and closing days vary by store and may change. Please check ‘View on map’ before visiting.',
 
+  /* 히어로 라벨 — {n} 자리에 운영 중인 매장 수가 들어갑니다 */
+  'SINCE 2024 — 전국 {n}개 매장': 'SINCE 2024 — {n} LOCATIONS',
   /* ── 영업시간 값에 쓰이는 낱말 ── */
+  '매일': 'Daily',
   '라스트오더': 'last order',
   '브레이크타임': 'break time',
   '영업 종료': 'closing',

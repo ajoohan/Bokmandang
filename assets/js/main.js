@@ -204,7 +204,7 @@ const IMG={g:'menu-gomtang',s:'menu-sugyuk',m:'menu-mandu',t:'menu-sugyuk-plate'
 const IMGDIR='assets/img/';
 /* 이미지는 1년 immutable 로 캐시합니다. 사진을 바꾸면 이 값을 올려야
    이미 방문한 사람도 새 사진을 받습니다 — tools/bump-image-version.py */
-const IMGVER='20260904a';
+const IMGVER='20260904c';
 const iv = u => u + (IMGVER ? '?v=' + IMGVER : '');
 const MENU_SIZES='(max-width:760px) 78vw, (max-width:1080px) 44vw, 22vw';
 
@@ -851,10 +851,16 @@ function heroStoreLabel(list){
   if(!open || el.dataset.n===String(open)) return;
   el.dataset.n=String(open);
   /* i18n 이 이미 이 라벨을 번역해 두었는데 여기서 한국어 틀로 덮어쓰면 되돌아갑니다.
-     사전에서 같은 문장을 찾아 숫자만 갈아 끼웁니다. */
-  var tpl='SINCE 2024 — 전국 12개 매장';
+     사전에서 같은 문장을 찾아 숫자만 갈아 끼웁니다.
+
+     예전에는 번역문에서 리터럴 12 를 찾아 바꿨습니다. 그 정규식이 편집 도중
+     깨져 백스페이스 문자가 박혔고, 아무 말 없이 항상 12 개로 보였습니다.
+     자리표시자를 쓰고, 그마저 없으면 한국어 틀로 직접 만듭니다 —
+     숫자만은 반드시 맞게 둡니다. */
+  var tpl='SINCE 2024 — 전국 {n}개 매장';
   var tr=(window.BM_I18N && window.BM_I18N.t && window.BM_I18N.t(tpl)) || tpl;
-  const txt=tr.replace(/12/, open);
+  const txt = tr.indexOf('{n}') >= 0 ? tr.replace('{n}', open)
+                                     : 'SINCE 2024 — 전국 ' + open + '개 매장';
   if(el.querySelector('.mo-ch'))
     el.innerHTML=[...txt].map(c=>'<span class="mo-ch">'+(c===' '?'&nbsp;':c)+'</span>').join('');
   else el.textContent=txt;
@@ -1069,7 +1075,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
          없으니 낱말만 갈아 끼웁니다 — 시간은 어느 나라 말이든 그대로입니다. */
       const hrs = (!s.t || /확인\s*중/.test(s.t))
         ? `<span class="h-none">${esc(T('지도에서 영업시간 확인'))}</span>`
-        : esc(String(s.t).replace(/라스트오더|브레이크타임|영업 종료|오픈 준비 중/g, m => T(m)));
+        : esc(String(s.t).replace(/라스트오더|브레이크타임|영업 종료|오픈 준비 중|매일/g, m => T(m)));
       el.innerHTML=`<div class="nm">${esc(s.n)}
           ${s.main?`<span class="badge">${esc(T('본점'))}</span>`:''}
           ${s.new?'<span class="badge">NEW</span>':''}
