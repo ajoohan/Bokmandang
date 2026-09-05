@@ -1048,52 +1048,20 @@ document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEa
   try{ seen=sessionStorage.getItem('bm.intro')==='1'; }catch(e){}
   if(RM||seen){ intro.remove(); document.body.classList.add('loaded'); return; }
   try{ sessionStorage.setItem('bm.intro','1'); }catch(e){}
-  /* 붓이 왼쪽에서 오른쪽으로 한 번에 지나가되, 글자 경계에서 잠깐 쉽니다.
-     한 글자씩 자른 조각을 쓰지 않는 이유는 붓글씨라 획이 서로 이어져 있어서입니다
-     — '복' 의 삐침이 '만' 아래로 길게 지나가 세로로 자를 자리가 없습니다.
-     STOPS 는 tools/make-logo-r.py 가 잉크 양이 가장 적은 열에서 찾아 줍니다. */
-  const wm=document.getElementById('wm'), seal=document.getElementById('seal');
-  const nibw=document.getElementById('nibw'), ring=document.getElementById('ring');
-  /* 두 벌이 필요합니다. clip-path 의 %는 '그 이미지' 폭 기준이고,
-     붓끝 껍데기는 마크 전체를 덮고 있어 마크 폭 기준입니다.
-     한 벌로 쓰면 마지막 획 끝이 1.7% 잘린 채 남습니다. */
-  const STOPS=[33.6, 63.2, 100];             // 워드마크 폭 대비 % (clip-path 용)
-  const NIBS =[33.02, 62.10, 98.261];        // 마크 폭 대비 % (붓끝 용)
-  const START=200, DRAW=560, PAUSE=210;      // 긋기 / 쉼
-  const WRITE=STOPS.length*DRAW+(STOPS.length-1)*PAUSE;
-  const SEAL=START+WRITE+140, SEALD=680, HOLD=640;
-  const BRUSH='cubic-bezier(.3,.85,.4,1)';   // 붓을 당기듯 빠르게 나갔다 잦아듭니다
+  /* 붓글씨 3글자는 획을 긋듯 순차로, ® 는 마지막에 도장처럼 박힙니다 */
+  const chars=[...intro.querySelectorAll('.ch')];
+  const seal=document.getElementById('seal'), ring=document.getElementById('ring');
+  const GAP=230, START=180, DRAW=340, HOLD=560;
+  const SEAL=START+(chars.length-1)*GAP+DRAW+120, SEALD=680;
   document.body.style.overflow='hidden';
 
-  /* 긋기와 쉼을 한 애니메이션의 keyframe 으로 적습니다.
-     anim() 은 같은 속성을 잡은 이전 것을 취소하므로, 세 번 나눠 부르면
-     두 번째가 첫 번째를 죽여 획이 사라집니다. */
-  const frames=[0], eases=[];
-  let t=0;
-  STOPS.forEach((s,i)=>{
-    t+=DRAW; frames.push(t); eases.push(BRUSH);
-    if(i<STOPS.length-1){ t+=PAUSE; frames.push(t); eases.push('linear'); }
-  });
-  const clips=['inset(0 100% 0 0)'];
-  STOPS.forEach((s,i)=>{
-    clips.push('inset(0 '+(100-s).toFixed(3)+'% 0 0)');
-    if(i<STOPS.length-1) clips.push('inset(0 '+(100-s).toFixed(3)+'% 0 0)');
-  });
-  const offs=frames.map(v=>v/WRITE);
-
   const run=()=>{
-    anim(wm,{clipPath:clips,offset:offs,easing:eases},{d:WRITE,delay:START,ease:'linear'});
-    /* 붓끝이 획의 끝을 따라갑니다 — 쉬는 동안에는 같이 멈춥니다.
-       껍데기(.nib-w)가 마크와 같은 폭이라 translateX 의 %가 곧 마크 폭의 %입니다. */
-    if(nibw){
-      const xs=['translateX(0%)'];
-      NIBS.forEach((s,i)=>{
-        xs.push('translateX('+s.toFixed(3)+'%)');
-        if(i<NIBS.length-1) xs.push('translateX('+s.toFixed(3)+'%)');
-      });
-      anim(nibw,{transform:xs,offset:offs,easing:eases},{d:WRITE,delay:START,ease:'linear'});
-      anim(nibw,{opacity:[0,1,1,0],offset:[0,.05,.9,1]},{d:WRITE,delay:START,ease:'linear'});
-    }
+    chars.forEach((c,i)=>{
+      const d=START+i*GAP;
+      anim(c,{opacity:[0,1]},{d:70,delay:d});
+      anim(c,{clipPath:['inset(0 100% 0 0)','inset(0 0 0 0)']},{d:DRAW,delay:d,ease:'cubic-bezier(.22,.95,.3,1)'});
+      anim(c,{transform:['translateY(7px) scale(1.07)','none']},{d:DRAW+80,delay:d,ease:'cubic-bezier(.3,1.5,.55,1)'});
+    });
     if(seal){
       /* 위에서 크게 떨어져 부딪히며 눌렸다가 제자리를 찾습니다 */
       anim(seal,{
@@ -1117,15 +1085,15 @@ document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEa
         offset:[0,.18,.5,1]},{d:340,delay:SEAL+SEALD*.60,ease:'cubic-bezier(.3,0,.3,1)'});
     }
     setTimeout(()=>{
-      [wm,seal].filter(Boolean).forEach((c,i)=>
-        anim(c,{opacity:[1,0]},{d:320,delay:i*40,ease:E.soft}));
-      const a=anim(intro,{clipPath:['inset(0 0 0 0)','inset(0 0 100% 0)']},{d:780,delay:200,ease:E.inout});
+      [...chars,seal].filter(Boolean).forEach((c,i)=>
+        anim(c,{opacity:[1,0],transform:['none','translateY(-9px)']},{d:400,delay:i*45,ease:E.soft}));
+      const a=anim(intro,{clipPath:['inset(0 0 0 0)','inset(0 0 100% 0)']},{d:860,delay:260,ease:E.inout});
       done(a).then(()=>{ intro.remove(); document.body.style.overflow=''; document.body.classList.add('loaded'); });
     }, SEAL+SEALD+HOLD);
   };
   if(document.readyState==='complete') run(); else addEventListener('load',run);
   /* 안전망 — 애니메이션이 끝나지 않아도(백그라운드 탭 등) 반드시 걷어냅니다.
-     연출이 길어졌으니 이 값도 같이 늘려야 합니다. 짧으면 도장이 박히기도 전에 사라집니다. */
+     도장이 붙어 길어졌으니 이 값도 같이 늘려야 합니다. 짧으면 도장이 박히기도 전에 사라집니다. */
   setTimeout(()=>{ if(document.getElementById('intro')){intro.remove();document.body.style.overflow='';document.body.classList.add('loaded');} },
     SEAL+SEALD+HOLD+1600);
 })();
