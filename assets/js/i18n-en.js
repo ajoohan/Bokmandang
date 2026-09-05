@@ -101,7 +101,7 @@ window.I18N.en = {
   '가맹점은 매장 판매, 온라인 채널은 본사가 운영':
     'Franchisees sell in-store; online channels are run by head office',
   '제조원 - 서울 강남구 언주로 563, 401동 123호 (본점·법인 본사와 같은 건물의 다른 호수입니다)':
-    'Manufacturer - 563 Eonju-ro, Gangnam-gu, Seoul, Bldg 401 Unit 123 (same building as the flagship store and head office, different unit)',
+    'Manufacturer - 563 Eonju-ro, Gangnam-gu, Seoul, Bldg 401 Unit 123\n(same building as the flagship store and head office, different unit)',
   '유통 · 입점 문의': 'Wholesale & retail enquiries',
   '밀키트 구매하기': 'Buy the meal kit',
   '복만당 맑은 한우 곰탕 밀키트 패키지': 'Bokmandang clear Hanwoo gomtang meal kit package',

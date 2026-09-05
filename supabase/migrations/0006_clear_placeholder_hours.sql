@@ -5,24 +5,27 @@
 --   채워 넣을 계획이 없으면 손님에게 지키지 않을 약속이 됩니다.
 --   이제 영업시간이 비어 있으면 사이트가 '지도에서 영업시간 확인' 으로
 --   안내하고, 옆의 '지도 보기' 가 관리자에 넣은 네이버 지도 링크로 갑니다.
---   지도만 최신이면 되니 영업시간이 바뀌어도 손볼 게 없습니다.
 --
--- 안 돌려도 사이트는 정상입니다 — 화면을 그리는 쪽에서 이 문구를 이미
--- '아직 모름' 으로 취급합니다. 다만 관리자 편집창에 옛 문구가 남습니다.
+-- 안 돌려도 화면은 지금과 똑같습니다 — 그리는 쪽에서 이 문구를 이미
+-- '아직 모름' 으로 취급합니다. 관리자 편집창에 옛 문구가 남는 것만 다릅니다.
+--
+-- ⚠️ 조건에 정규식 이스케이프(\s)를 쓰지 않습니다.
+--   처음에는 where hours ~ '확인\s*중' 으로 적었는데, 오류 없이 0 행만
+--   바뀌고 끝났습니다. 백슬래시가 문자열 단계에서 먹히면 정규식이
+--   '확인s*중' 이 되어 공백이 있는 '확인 중' 과 맞지 않습니다.
+--   like 는 이스케이프가 없어 어디를 거쳐도 같게 동작합니다.
 --
 -- 되돌리려면 (필요할 일은 없습니다)
 --   update public.stores set hours = '영업시간 확인 중'
---    where coalesce(hours, '') = '' and name in ( ...해당 지점명... );
+--    where coalesce(hours,'') = '' and name in ( ...해당 지점명... );
 
 begin;
 
 update public.stores
    set hours = ''
- where hours ~ '확인\s*중';
+ where hours like '%확인%중%';
 
 commit;
 
--- 확인
---   select name, coalesce(nullif(hours, ''), '(비어 있음)') as hours,
---          coalesce(nullif(map_url, ''), '(비어 있음)') as map_url
---     from public.stores order by sort, id;
+-- 확인 — 결과가 0 행이어야 합니다
+--   select name, hours from public.stores where hours like '%확인%중%';

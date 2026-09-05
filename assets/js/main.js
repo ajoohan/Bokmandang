@@ -870,15 +870,54 @@ heroStoreLabel(window.STORES);
 /* 2) 라벨 글자 스태거 ------------------------------------- */
 /* 가격 카드의 라벨은 뺍니다 — 카드가 자기 모션을 갖고 있는데, 여기서
    innerHTML 을 글자 단위로 다시 쓰면 그 구조가 통째로 날아갑니다. */
+/* 줄바꿈은 그대로 둡니다. textContent 로 읽으면 <br> 이 사라져,
+   '05 Why / Bokmandang ?' 처럼 두 줄로 짜 둔 라벨이 한 줄로 붙습니다.
+   공백은 nbsp 로 바꿉니다 — 글자마다 inline-block 이라 그냥 두면
+   브라우저가 마음대로 줄을 끊습니다. */
+function splitChars(el){
+  const frag=document.createDocumentFragment();
+  [...el.childNodes].forEach(n=>{
+    if(n.nodeName==='BR'){ frag.appendChild(document.createElement('br')); return; }
+    [...(n.textContent||'')].forEach(c=>{
+      if(c==='\n') return;
+      const s=document.createElement('span');
+      s.className='mo-ch';
+      s.textContent = c===' ' ? String.fromCharCode(160) : c;
+      frag.appendChild(s);
+    });
+  });
+  el.textContent='';
+  el.appendChild(frag);
+}
 document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEach(el=>{
   if(RM) return;
-  const txt=el.textContent;
-  el.innerHTML=[...txt].map(c=>'<span class="mo-ch">'+(c===' '?'&nbsp;':c)+'</span>').join('');
+  splitChars(el);
   const chs=[...el.querySelectorAll('.mo-ch')];
   chs.forEach(c=>{c.style.opacity='0';c.style.transform='translateY(8px)';});
   inView(el,()=>chs.forEach((c,i)=>anim(c,{opacity:[0,1],transform:['translateY(8px)','none']},
     {d:520,delay:i*22,ease:E.out,clear:'opacity,transform'})),{amount:0.4});
 });
+
+/* 2-1) 비교 카드 — '복만당' 쪽만 항목이 하나씩 올라옵니다 --- */
+/* 왼쪽(일반 주방)은 가만히 두는 편이 낫습니다. 둘 다 움직이면 비교가 아니라
+   그냥 화면이 분주해지고, 어느 쪽을 보라는 것인지 알 수 없게 됩니다.
+   빛이 훑는 연출(.sheen)도 화면에 들어온 뒤에 시작합니다 — 안 보이는 동안
+   무한 애니메이션을 돌리면 배터리만 씁니다. */
+(function(){
+  const on=document.querySelector('.cmp .cm.on');
+  if(!on || RM) return;
+  const items=[...on.querySelectorAll('li')];
+  items.forEach(li=>{ li.style.opacity='0'; li.style.transform='translateY(12px)'; });
+  inView(on,()=>{
+    items.forEach((li,i)=>anim(li,{opacity:[0,1],transform:['translateY(12px)','none']},
+      {d:600,delay:140+i*95,ease:E.out,clear:'opacity,transform'}));
+  },{amount:0.3});
+  /* 빛은 보이는 동안에만 돕니다. 한 번 켜고 끝내면 카드가 화면 밖으로
+     나간 뒤에도 6.5초마다 계속 다시 그려집니다. */
+  const io=new IntersectionObserver(es=>es.forEach(e=>
+    on.classList.toggle('sheen', e.isIntersecting)),{threshold:.25});
+  io.observe(on); OBS.push(io);
+})();
 
 /* 3) 인트로 커튼 ------------------------------------------ */
 (function(){
