@@ -12,7 +12,7 @@ window.I18N.en = {
   '메뉴': 'Menu',
   '밀키트': 'Meal Kit',
   '매장안내': 'Locations',
-  '왜 복만당': 'Why Bokmandang',
+  '복만당?': 'Why Bokmandang?',
   '창업안내': 'Franchise',
   '가맹 상담 신청': 'Franchise Inquiry',
   '복만당 홈': 'Bokmandang home',

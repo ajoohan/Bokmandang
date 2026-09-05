@@ -774,7 +774,7 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
       sending=false;
       btn.disabled=false; fm.removeAttribute('aria-busy');
       btnT.textContent='다시 보내기';
-      const TEL=' <a href="tel:0256555288">02-565-5288</a>로 연락 주세요.';
+      const TEL=' <a href="tel:+8225655288">02-565-5288</a>로 연락 주세요.';
       err.textContent='';   // 서버 문구는 HTML 로 해석하지 않습니다
       if(ex&&ex.name==='AbortError')
         err.innerHTML='전송이 지연되고 있습니다. 잠시 후 다시 시도하시거나'+TEL;

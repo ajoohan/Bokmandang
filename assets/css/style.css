@@ -657,6 +657,19 @@ footer .top-row{display:flex;justify-content:space-between;gap:40px;flex-wrap:wr
 footer img{height:56px;opacity:.92;margin-bottom:22px}
 .fnav .pp{color:var(--gold-l);opacity:.9}
 footer p{line-height:2;letter-spacing:-.01em}
+/* 푸터 전화번호 — 손님이 여기서 가장 많이 찾는 것입니다.
+   본문 크기로 두면 주소 한 줄에 묻힙니다. 크게 키우고 밝게 올렸습니다.
+   손가락으로 눌러야 하므로 세로 44px 을 확보합니다(권장 최소 크기). */
+.ft-tel{display:inline-flex;align-items:center;gap:10px;margin-top:16px;
+  min-height:44px;padding:4px 2px;
+  font-size:clamp(25px,2.5vw,33px);line-height:1.1;font-weight:500;
+  color:#FAF8F4;text-decoration:none;
+  border-bottom:1px solid rgba(250,248,244,.3);
+  transition:color .3s,border-color .3s,transform .3s cubic-bezier(.16,1,.3,1)}
+.ft-tel .num{font-weight:500;letter-spacing:.005em}
+.ft-tel svg{flex:none;width:.72em;height:.72em;fill:currentColor;opacity:.85}
+.ft-tel:hover,.ft-tel:focus-visible{color:var(--gold-l);border-color:var(--gold-l)}
+.ft-tel:active{transform:translateY(1px)}
 .fnav{display:flex;gap:4px 14px;margin:-13px -10px;font-size:13.5px;color:rgba(250,248,244,.72);flex-wrap:wrap}
 .fnav a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 10px;transition:color .3s}.fnav a:hover{color:var(--gold-l)}
 /* 사업자 정보 — 법정 표시 항목. 작지만 읽히는 크기·대비를 유지합니다 */
