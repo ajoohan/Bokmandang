@@ -666,7 +666,8 @@ footer p{line-height:2;letter-spacing:-.01em}
   color:#FAF8F4;text-decoration:none;
   border-bottom:1px solid rgba(250,248,244,.3);
   transition:color .3s,border-color .3s,transform .3s cubic-bezier(.16,1,.3,1)}
-.ft-tel .num{font-weight:500;letter-spacing:.005em}
+/* 번호는 어떤 폭에서도 끊기면 안 됩니다 — 끊긴 번호는 읽다 말게 됩니다 */
+.ft-tel .num{font-weight:500;letter-spacing:.005em;white-space:nowrap}
 .ft-tel svg{flex:none;width:.72em;height:.72em;fill:currentColor;opacity:.85}
 .ft-tel:hover,.ft-tel:focus-visible{color:var(--gold-l);border-color:var(--gold-l)}
 .ft-tel:active{transform:translateY(1px)}
