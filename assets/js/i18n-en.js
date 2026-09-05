@@ -159,8 +159,12 @@ window.I18N.en = {
     'Add more people and more hours to grow revenue and the headline number rises - but so do wages and running costs.\nBig revenue does not always mean much is left over.\nWe look first at how many people and how much cost it takes to run, and what actually remains for the owner.',
   '좋은 사업은 그 사람의 삶도 함께 지켜줄 수 있어야 한다고 생각합니다.':
     'A good business should protect the life of the person running it.',
-  '어린 시절부터 장사를 시작해, 결혼한 뒤에도 아침 일찍 나가 밤늦게 들어오는 생활이 오래 이어졌습니다.\n아이들이 자라는 모습을 가까이에서 보지 못한 시간이 있었습니다. 복만당을 만들면서\n매출과 수익만큼이나 외식업을 하면서도 점주의 삶을 지킬 수 있는 구조를 중요하게 생각한 이유입니다.\n식당을 위해 삶을 포기하지 않아도 되는 외식업.':
-    'Our founder began trading as a boy, and even after marrying kept leaving early and coming home late.\nThere were years when he did not see his children grow up close at hand. That is why, in building Bokmandang,\na structure that protects the owner\'s life mattered as much as revenue and profit.\nA restaurant business you do not have to give up your life for.',
+  '어린 시절부터 장사를 시작해, 결혼한 뒤에도 아침 일찍 나가 밤늦게 들어오는 생활이 오래 이어졌습니다.\n아이들이 자라는 모습을 가까이에서 보지 못한 시간이 있었습니다. 복만당을 만들면서\n매출과 수익만큼이나 외식업을 하면서도 점주의 삶을 지킬 수 있는 구조를 중요하게 생각한 이유입니다.':
+    'Our founder began trading as a boy, and even after marrying kept leaving early and coming home late.\nThere were years when he did not see his children grow up close at hand. That is why, in building Bokmandang,\na structure that protects the owner\'s life mattered as much as revenue and profit.',
+
+  /* 문단과 따로 놡니다 — 화면에서도 따로 떨어져 큰 글씨로 나옵니다 */
+  '“식당을 위해 삶을 포기하지 않아도 되는 외식업”':
+    '“A restaurant business you do not have to give up your life for”',
 
   /* ── 창업안내 ── */
   '내가 가게를 운영해야지,\n가게가 나를 운영하지 않습니다':

@@ -459,10 +459,32 @@ body.nav-open .drawer{opacity:1;visibility:visible}
   border-radius:11px;border:1px solid var(--line-d);background:rgba(250,248,244,.035)}
 .voice blockquote{font-family:var(--serif);font-size:clamp(21px,2.4vw,31px);line-height:1.42;
   color:var(--gold-l);letter-spacing:-.01em;margin-bottom:20px;text-wrap:balance}
-.voice figcaption{font-size:14.5px;line-height:1.95;color:rgba(250,248,244,.68);max-width:64ch;text-wrap:pretty}
+/* 상자 폭을 그대로 씁니다. 64ch 로 묶어 두었더니 넓은 화면에서 오른쪽이
+   절반쯤 비어, 글이 상자 왼쪽에 몰린 것처럼 보였습니다.
+   줄이 길어진 만큼 줄 간격을 조금 더 벌립니다 — 긴 줄은 눈이 다음 줄
+   첫 글자를 찾기 어려워집니다. */
+.voice figcaption{font-size:14.5px;line-height:2.05;color:rgba(250,248,244,.68);text-wrap:pretty}
 .voice strong{color:#FAF8F4;font-weight:600}
-.voice .line{display:block;margin-top:16px;padding-top:16px;border-top:1px solid var(--line-d);
-  color:rgba(250,248,244,.86);font-weight:600;letter-spacing:-.02em}
+/* 이 한 줄이 이 문단의 결론입니다. 본문과 같은 크기로 두면 그냥 흘러갑니다.
+   세리프로 키우고, 잉크가 번지듯 왼쪽에서 금색이 차오르게 했습니다. */
+.voice .line{display:block;margin-top:30px;padding-top:26px;border-top:1px solid var(--line-d);
+  font-family:var(--serif);font-size:clamp(20px,2.15vw,30px);font-weight:400;line-height:1.5;
+  letter-spacing:-.015em;color:var(--gold-l);text-wrap:balance}
+/* 색이 차오르는 연출.
+   글자 모양으로 배경을 오려내고(background-clip:text) 배경을 옆으로 밀어
+   금색 구간이 왼쪽부터 글자를 채우게 합니다. 경계는 12% 구간에서 섞여
+   붓이 지나간 자리처럼 부드럽습니다. .ink 는 스크립트가 붙입니다 —
+   스크립트가 안 돌면 처음부터 금색 그대로입니다. */
+.voice .line.ink{
+  background:linear-gradient(100deg,
+    var(--gold-l) 0 44%, rgba(250,248,244,.22) 56%, rgba(250,248,244,.22) 100%);
+  background-size:220% 100%;background-position:100% 0;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  transition:background-position 1.9s cubic-bezier(.32,.86,.35,1)}
+.voice .line.ink.on{background-position:0 0}
+@media (prefers-reduced-motion:reduce){
+  .voice .line.ink{background:none;color:var(--gold-l);transition:none}
+}
 
 /* ══════ 창업 운영 시스템 블록 (#franchise) ══════ */
 .fblock{margin-top:clamp(44px,5.5vw,80px);padding-top:clamp(30px,3.6vw,44px);border-top:1px solid var(--line)}
@@ -547,13 +569,17 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);margin-top:clamp(50px,6vw,90px);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .step{padding:30px 24px 34px;background:var(--bg);transition:background .4s}
 .step:hover{background:var(--card)}
-.step b{display:block;font-family:var(--serif);font-size:38px;font-weight:300;color:var(--num-l);line-height:1;margin-bottom:20px;transition:color .55s}
+.step b{display:block;font-family:var(--serif);font-size:38px;font-weight:300;color:var(--num-l);line-height:1;margin-bottom:20px;
+  transition:color .7s ease,opacity .7s ease}
 /* 화면에 들어오면 01 부터 05 까지 차례로 색이 들어옵니다.
-   .lit 는 스크립트가 붙입니다 — 스크립트가 안 돌면 흐린 번호 그대로 남고,
-   읽는 데는 지장이 없습니다. */
-.step:hover b,.step.lit b{color:var(--gold-t)}
-.step.lit b{animation:step-lit .6s cubic-bezier(.34,1.4,.64,1)}
-@keyframes step-lit{from{transform:translateY(5px);opacity:.5}to{transform:none;opacity:1}}
+   .dim 과 .lit 은 스크립트가 붙입니다 — 스크립트가 안 돌면 둘 다 없어
+   번호가 처음부터 제 색으로 보입니다.
+   흐린 상태를 확실히 흐리게 둬야 색이 '들어온다' 로 읽힙니다.
+   예전에는 회갈색에서 금색으로 가는 정도라 바뀐 줄도 모르고 지나갔습니다. */
+.step.dim b{color:var(--num-l);opacity:.26}
+.step:hover b,.step.lit b{color:var(--gold-t);opacity:1}
+.step.lit b{animation:step-lit .72s cubic-bezier(.34,1.5,.6,1)}
+@keyframes step-lit{0%{transform:scale(.88)}58%{transform:scale(1.07)}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){
   .step b{transition:none}
   .step.lit b{animation:none}

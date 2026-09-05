@@ -315,7 +315,7 @@ const MENU=[
    받으면 메뉴 구역의 사진값이 그대로 두 배가 됩니다. 화면 밖으로 나가면
    전환을 멈추고, 다시 들어오면 이어서 돕니다.
    두 번째 컷은 같은 음식의 다른 각도라 읽어 줄 필요가 없습니다(aria-hidden). */
-const PH_HOLD=3800;   // 한 컷이 머무는 시간(넘어가는 1.2초 포함)
+const PH_HOLD=5000;   // 한 컷이 머무는 시간(넘어가는 1.2초 포함)
 function photoLoop(el, base, i){
   if(RM || !base) return;
   /* 데이터 절약 모드에서는 두 번째 컷을 받지 않습니다 */
@@ -1006,13 +1006,35 @@ document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEa
 
 /* 2-2) 창업 절차 — 01 부터 05 까지 차례로 색이 들어옵니다 --- */
 /* 다섯 칸을 한꺼번에 물들이면 그냥 색이 바뀐 것이지, 순서가 있는 절차로는
-   안 읽힙니다. 190ms 씩 늦춰 01 → 05 로 번지게 했습니다. */
+   안 읽힙니다. 280ms 씩 늦춰 01 → 05 로 번지게 합니다(다 도는 데 1.6초).
+
+   시작을 늦추는 이유
+     칸이 나타나는 연출(.rv upS)이 1초쯤 걸립니다. 그 위에 색을 겹치면
+     칸이 흐릿한 동안 색이 다 들어와 버려, 실제로는 아무 일도 안 일어난
+     것처럼 보입니다. 나타나기가 끝난 뒤에 시작합니다.
+
+   보는 자리를 늦추는 이유
+     예전에는 0.3(30%만 보이면)이라 화면 맨 아래 끝에서 이미 시작했고,
+     눈이 그 자리에 닿았을 때는 벌써 끝나 있었습니다. */
 (function(){
   const box=document.querySelector('.steps');
   if(!box) return;
   const steps=[...box.querySelectorAll('.step')];
-  if(RM){ steps.forEach(s=>s.classList.add('lit')); return; }
-  inView(box,()=>steps.forEach((s,i)=>setTimeout(()=>s.classList.add('lit'),260+i*190)),{amount:.3});
+  if(RM){ return; }                       // 줄여 달라고 했으면 처음부터 제 색으로
+  steps.forEach(s=>s.classList.add('dim'));
+  inView(box,()=>steps.forEach((s,i)=>setTimeout(()=>{
+    s.classList.add('lit');
+  },560+i*280)),{amount:.55});
+})();
+
+/* 2-3) 창업자 문단의 마지막 한 줄 — 잉크가 번지듯 색이 찹니다 --- */
+/* 이 문장이 이 문단의 결론입니다. 문단이 다 나타난 뒤에 시작해야
+   '한 줄만 따로 살아난다' 로 읽힙니다 — 같이 나타나면 그냥 문단의 일부입니다. */
+(function(){
+  const line=document.querySelector('.voice .line');
+  if(!line || RM) return;
+  line.classList.add('ink');
+  inView(line,()=>setTimeout(()=>line.classList.add('on'),520),{amount:0.9});
 })();
 
 /* 3) 인트로 커튼 ------------------------------------------ */
