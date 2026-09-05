@@ -17,6 +17,9 @@ export const ALLOWED = {
   'store.hours':   { label: '본점 영업 정보',     max: 80 },
   'store.parking': { label: '본점 주차 안내',     max: 60 },
   'menu.origin':   { label: '원산지 표기',        max: 300, multiline: true },
+  /* 흐르는 띠 배너 — 한 줄에 한 문구씩 적습니다. 사이트가 사이에 마름모를
+     넣고 두 벌 이어 붙여 끊김 없이 흐르게 만듭니다. */
+  'marquee.items': { label: '띠 배너 문구 (한 줄에 하나)', max: 300, multiline: true },
   'links.naverPlace':  { label: '네이버 플레이스', max: 500, url: true },
   'links.reserve':     { label: '네이버 예약',     max: 500, url: true },
   'links.baemin':      { label: '배달의민족',      max: 500, url: true },

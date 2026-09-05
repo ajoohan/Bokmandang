@@ -138,7 +138,7 @@ async function loadInq() {
       box.innerHTML = (q || filter)
         ? empty('0', '조건에 맞는 상담이 없습니다',
                 '검색어를 지우거나 다른 상태를 눌러 보세요.')
-        : empty('—', '아직 접수된 상담이 없습니다',
+        : empty('-', '아직 접수된 상담이 없습니다',
                 '사이트의 가맹 상담 신청이 들어오면 이 자리에 쌓입니다. ' +
                 '접수되면 상태를 바꿔가며 진행 상황을 관리하세요.');
       return;
@@ -310,14 +310,14 @@ function viewRow(s, i, last) {
         </span>
       </div>
       <div class="nm">${esc(s.name)}</div>
-      <div class="rg">${esc(s.region) || '<span class="dim">—</span>'}</div>
+      <div class="rg">${esc(s.region) || '<span class="dim">-</span>'}</div>
       <div class="ad">${esc(s.address) || '<span class="dim">주소 미입력</span>'}</div>
-      <div class="hr">${esc(s.hours) || '<span class="dim">—</span>'}
+      <div class="hr">${esc(s.hours) || '<span class="dim">-</span>'}
         ${s.phone ? `<span class="sub">${esc(s.phone)}</span>` : ''}
         ${s.closed ? `<span class="sub">${esc(s.closed)} 휴무</span>` : ''}</div>
       <div class="bdgs">${badge(s.is_main, 'main', '본점') + badge(s.is_new, 'new', 'NEW') +
         badge(s.is_soon, '', '예정') + badge(!s.published, 'off', '비공개')
-        || '<span class="dim">—</span>'}</div>
+        || '<span class="dim">-</span>'}</div>
       <div class="adm-act">
         <button class="adm-btn" data-edit>수정</button>
         <button class="adm-btn danger" data-del>삭제</button>
@@ -345,7 +345,7 @@ function editRow(s) {
                      placeholder="주소 검색을 눌러 찾은 뒤 동·호수를 이어서 적으세요" maxlength="200">
               <button type="button" class="adm-btn lg" data-find>주소 검색</button>
             </div>
-            <p class="ehint"><b data-region>${esc(s.region) || '—'}</b>지역은 주소에서 자동으로 정해집니다.
+            <p class="ehint"><b data-region>${esc(s.region) || '-'}</b>지역은 주소에서 자동으로 정해집니다.
               사이트의 지역 필터 버튼과 연결됩니다.</p>
           </div>
           <label class="f"><span>전화번호</span>
@@ -378,7 +378,7 @@ function editRow(s) {
 function render() {
   const box = $('#strList');
   if (!stores.length) {
-    box.innerHTML = empty('—', '등록된 매장이 없습니다',
+    box.innerHTML = empty('-', '등록된 매장이 없습니다',
       '오른쪽 위 “+ 매장 추가”로 지점을 만들고 주소와 영업 정보를 채우세요.');
     return;
   }
@@ -599,7 +599,7 @@ function menuView(m, i, last) {
         <span class="ds">${esc(m.description) || '<span class="dim">설명 없음</span>'}</span></div>
       <div class="rg">${CATS[m.category] || m.category}</div>
       <div class="pr">${won(m.price)}<small>${esc(m.unit)}</small></div>
-      <div class="bdgs">${m.published ? '<span class="dim">—</span>' : '<span class="bdg off">비공개</span>'}</div>
+      <div class="bdgs">${m.published ? '<span class="dim">-</span>' : '<span class="bdg off">비공개</span>'}</div>
       <div class="adm-act">
         <button class="adm-btn" data-medit>수정</button>
         <button class="adm-btn danger" data-mdel>삭제</button>
@@ -662,7 +662,7 @@ function menuEdit(m) {
 function renderMenus() {
   const box = $('#menList');
   if (!menus.length) {
-    box.innerHTML = empty('—', '등록된 메뉴가 없습니다',
+    box.innerHTML = empty('-', '등록된 메뉴가 없습니다',
       '오른쪽 위 “+ 메뉴 추가”로 메뉴를 만드세요. 만들기 전까지는 사이트에 기본 메뉴가 그대로 보입니다.');
     return;
   }
@@ -939,7 +939,7 @@ function popEdit(p) {
 function renderPopups() {
   const box = $('#popList');
   if (!popups.length) {
-    box.innerHTML = empty('—', '만들어 둔 팝업이 없습니다',
+    box.innerHTML = empty('-', '만들어 둔 팝업이 없습니다',
       '오른쪽 위 “+ 팝업 추가”로 공지나 이벤트를 올리세요. 게시를 켜야 사이트에 나타납니다.');
     return;
   }

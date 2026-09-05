@@ -95,7 +95,7 @@ window.I18N.en = {
   '매장에서 매일 직접 끓이는 그 곰탕을 그대로 담았습니다. 데우기만 하면 완성되는 복만당 한우곰탕 밀키트로, 집에서도 같은 한 그릇을 드실 수 있습니다.':
     'The very gomtang we simmer in-store each day, packed as it is. Just heat the Bokmandang Hanwoo Gomtang meal kit and the same bowl arrives at your table.',
   '1++ 한우를 약탕기에 우려낸 맑고 깊은 맛': 'Clear, deep flavour drawn from 1++ Hanwoo beef',
-  '600g · 162kcal · 냉동 보관 (−18℃ 이하)': '600 g · 162 kcal · Keep frozen (−18 ℃ or below)',
+  '600g · 162kcal · 냉동 보관 (-18℃ 이하)': '600 g · 162 kcal · Keep frozen (-18 ℃ or below)',
   '소고기육수 88%, 소고기(국내산) 12%': 'Beef broth 88 %, beef (Korea) 12 %',
   '식재료 활용도를 높이는 운영 방식': 'A way of getting more from the same ingredients',
   '가맹점은 매장 판매, 온라인 채널은 본사가 운영':

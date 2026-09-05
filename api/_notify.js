@@ -72,7 +72,7 @@ export async function notifyInquiry({ name, phone, region, budget, message }) {
   </div>`;
 
   const text = [
-    `복만당 가맹 상담 — ${name} 님`, `접수: ${when}`, '',
+    `복만당 가맹 상담 - ${name} 님`, `접수: ${when}`, '',
     `연락처: ${tel}`,
     region  ? `희망 지역: ${region}` : '',
     budget  ? `예산: ${budget}` : '',

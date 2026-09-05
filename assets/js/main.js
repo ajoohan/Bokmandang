@@ -157,18 +157,43 @@ px('.band .bg',-70); px('.hero-img img',-26); px('.promise-img img',-34); px('.k
   }, {amount:0.12});
 })();
 
-/* 4) 숫자 카운트업 (안내 지표) ------------------------------- */
+/* 4) 안내 지표 — 숫자와 기호를 천천히 채웁니다 --------------- */
+/* 1++ 는 세 글자가 각각 뜻입니다(등급 1, 그 위 +, 또 그 위 +).
+   한꺼번에 띄우면 그냥 글자인데, 하나씩 얹으면 등급이 올라가는 것으로 읽힙니다.
+   자리는 처음부터 잡아 두고 투명도만 올립니다 — 글자가 붙을 때마다 폭이
+   늘면 옆 칸까지 흔들립니다.
+   14시간은 1 부터 셉니다. 0 에서 시작하면 잠깐 '0시간' 이 보입니다. */
 document.querySelectorAll('.stats-in b').forEach(b=>{
-  const raw=b.textContent.trim(), m=raw.match(/^(\d+)(.*)$/);
+  if(RM) return;
+  const raw=b.textContent.trim();
+
+  const plus=raw.match(/^(\d+)(\++)$/);
+  if(plus){
+    const parts=[];
+    b.textContent='';
+    [plus[1]].concat(plus[2].split('')).forEach(t=>{
+      const s=document.createElement('span');
+      s.className='st-c'; s.textContent=t;
+      s.style.opacity='0';           // CSS 가 아니라 인라인이라야 끝나고 지울 수 있습니다
+      b.appendChild(s); parts.push(s);
+    });
+    inView(b,()=>parts.forEach((s,i)=>anim(s,
+      {opacity:[0,1],transform:['translateY(9px) scale(.82)','none']},
+      {d:620,delay:i*620,ease:E.back,clear:'opacity,transform'})),{amount:0.6});
+    return;
+  }
+
+  const m=raw.match(/^(\d+)(.*)$/);
   if(!m) return;
   const end=+m[1], suf=m[2];
-  if(RM) return;
-  b.textContent='0'+suf;
+  if(end<2) return;                  // 셀 것이 없으면 그대로 둡니다
+  b.textContent='1'+suf;
   inView(b,()=>{
-    const t0=performance.now(), dur=1200;
+    /* 거의 일정한 속도로 셉니다 — 급히 감속하면 뒷자리가 한꺼번에 지나갑니다 */
+    const t0=performance.now(), dur=2600;
     (function tick(t){
-      const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
-      b.textContent=Math.round(end*e)+suf;
+      const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,1.5);
+      b.textContent=(1+Math.round((end-1)*e))+suf;
       if(p<1) requestAnimationFrame(tick);
     })(t0);
   },{amount:0.6});
@@ -267,6 +292,47 @@ const MENU=[
  {c:'side',n:'공깃밥',d:'국내산 쌀로 매일 새로 짓습니다.',p:'1,000',u:'원',img:'r'},
  {c:'kit',n:'곰탕 밀키트',d:'매장 육수 그대로. 600g 냉동 포장, 데우기만 하면 완성.',p:'9,000',u:'원',img:'k'}
 ];
+/* 메뉴 사진 두 컷을 번갈아 보여 줍니다.
+   두 번째 컷(-2)은 카드가 화면에 들어온 뒤에 만듭니다 — 처음부터 두 장씩
+   받으면 메뉴 구역의 사진값이 그대로 두 배가 됩니다. 화면 밖으로 나가면
+   전환을 멈추고, 다시 들어오면 이어서 돕니다.
+   두 번째 컷은 같은 음식의 다른 각도라 읽어 줄 필요가 없습니다(aria-hidden). */
+const PH_HOLD=3800;   // 한 컷이 머무는 시간(넘어가는 1.2초 포함)
+function photoLoop(el, base, i){
+  if(RM || !base) return;
+  /* 데이터 절약 모드에서는 두 번째 컷을 받지 않습니다 */
+  try{ if(navigator.connection && navigator.connection.saveData) return; }catch(e){}
+  const ph=el.querySelector('.ph');
+  if(!ph || !ph.querySelector('img')) return;
+
+  let second=null, tid=0, dead=false, on=false;
+  const stop=()=>{ if(tid){ clearInterval(tid); tid=0; } };
+  const run =()=>{ if(!tid && !dead && second)
+    tid=setInterval(()=>{ on=!on; second.classList.toggle('on', on); }, PH_HOLD); };
+
+  function build(){
+    second=document.createElement('div');
+    second.className='ph-2';
+    second.setAttribute('aria-hidden','true');
+    second.innerHTML=picHTML(base+'-2','',MENU_SIZES,true);
+    ph.insertBefore(second, ph.querySelector('.zoom'));
+    const im=second.querySelector('img');
+    im.loading='eager';
+    /* -2 사진이 없는 메뉴도 있습니다 — 그런 카드는 조용히 한 컷으로 둡니다 */
+    im.addEventListener('error',()=>{ dead=true; stop(); if(second) second.remove(); second=null; },{once:true});
+    /* 카드마다 시작을 늦춥니다. 여덟 장이 동시에 넘어가면 기계처럼 보입니다 */
+    const go=()=>setTimeout(run, 700+i*450);
+    if(im.complete) go(); else im.addEventListener('load', go, {once:true});
+  }
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    if(dead) return;
+    if(!e.isIntersecting){ stop(); return; }
+    if(second) run(); else build();
+  }),{threshold:.35});
+  io.observe(el); OBS.push(io);
+}
+
 const grid=document.getElementById('mgrid');
 function render(f, first){
   const olds=[...grid.children];
@@ -307,6 +373,7 @@ function render(f, first){
       grid.appendChild(el);
       anim(el,{opacity:[0,1],transform:['translateY(22px) scale(.97)','none']},{d:620,delay:i*65,ease:E.back,clear:'opacity,transform'});
       const pb=el.querySelector('.price b'); if(pb) setTimeout(()=>countUp(pb), 260+i*65);
+      photoLoop(el, base, i);
       /* 카드는 JS 가 그리므로 i18n 이 지나간 뒤입니다 — 여기서 한 번 더 통과시킵니다 */
       if(window.BM_I18N) BM_I18N.apply(el);
     });
@@ -919,6 +986,17 @@ document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEa
   io.observe(on); OBS.push(io);
 })();
 
+/* 2-2) 창업 절차 — 01 부터 05 까지 차례로 색이 들어옵니다 --- */
+/* 다섯 칸을 한꺼번에 물들이면 그냥 색이 바뀐 것이지, 순서가 있는 절차로는
+   안 읽힙니다. 190ms 씩 늦춰 01 → 05 로 번지게 했습니다. */
+(function(){
+  const box=document.querySelector('.steps');
+  if(!box) return;
+  const steps=[...box.querySelectorAll('.step')];
+  if(RM){ steps.forEach(s=>s.classList.add('lit')); return; }
+  inView(box,()=>steps.forEach((s,i)=>setTimeout(()=>s.classList.add('lit'),260+i*190)),{amount:.3});
+})();
+
 /* 3) 인트로 커튼 ------------------------------------------ */
 (function(){
   const intro=document.getElementById('intro');
@@ -1365,6 +1443,26 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
         const v = st[el.dataset.t];
         if (typeof v === 'string' && v.trim()) setText(el, T(v));
       });
+      /* 흐르는 띠 배너 — 한 줄에 한 문구씩 받아 사이에 마름모를 넣습니다.
+         data-t 로는 안 됩니다. 칸막이가 <i> 라 글자만 갈아 끼울 수 없고,
+         끊김 없이 흐르려면 같은 내용이 두 벌 있어야 합니다. */
+      const mqv = st['marquee.items'];
+      const track = document.getElementById('mq');
+      if (track && typeof mqv === 'string' && mqv.trim()) {
+        const items = mqv.split('\n').map(s => s.trim()).filter(Boolean);
+        if (items.length) {
+          let html = items.map(s => esc(T(s)) + '<i></i>').join('');
+          const fill = () => [...track.children].forEach(sp => { sp.innerHTML = html; });
+          fill();
+          /* 한 벌이 화면보다 좁으면 돌다가 빈자리가 보입니다 — 넘칠 때까지 되풀이 */
+          let guard = 0;
+          while (track.firstElementChild.getBoundingClientRect().width < innerWidth && guard++ < 6){
+            html += html; fill();
+          }
+          dispatchEvent(new Event('resize'));   // 마퀴가 폭을 다시 재게 합니다
+        }
+      }
+
       /* 외부 채널 주소도 같은 곳에서 관리합니다 — config.js 값보다 우선합니다 */
       const L = (window.BOKMANDANG && window.BOKMANDANG.links) || {};
       let changed = false;
