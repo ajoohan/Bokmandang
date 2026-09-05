@@ -202,9 +202,18 @@ document.querySelectorAll('.stats-in b').forEach(b=>{
   b.appendChild(document.createTextNode(suf));
   /* 마지막 값을 한 번 그려 필요한 폭을 재 둡니다 — 세리프 숫자는 폭이 제각각이라
      ch 단위로 어림하면 어긋납니다. */
-  nEl.textContent=String(end);
-  nEl.style.minWidth=Math.ceil(nEl.getBoundingClientRect().width)+'px';
+  const reserve=()=>{
+    const keep=nEl.textContent;
+    nEl.style.minWidth='0';
+    nEl.textContent=String(end);
+    nEl.style.minWidth=Math.ceil(nEl.getBoundingClientRect().width)+'px';
+    nEl.textContent=keep;
+  };
   nEl.textContent='1';
+  reserve();
+  /* 글꼴이 아직 안 왔으면 대체 글꼴로 재게 됩니다. 세리프 숫자는 폭이
+     제법 달라서, 진짜 글꼴이 온 뒤 한 번 더 재야 '시간' 이 안 밀립니다. */
+  try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(reserve); }catch(e){}
 
   inView(b,()=>{
     /* 거의 일정한 속도로 셉니다 — 급히 감속하면 뒷자리가 한꺼번에 지나갑니다 */
@@ -348,13 +357,23 @@ function photoLoop(el, base, i){
     if(!e.isIntersecting){ stop(); return; }
     if(second) run(); else build();
   }),{threshold:.35});
-  io.observe(el); OBS.push(io);
+  io.observe(el);
+  /* 카드를 다시 그릴 때 부를 뒷정리. OBS 에 넣지 않는 이유는 그쪽은
+     '평생 살아 있어야 하는' 관찰자를 붙잡아 두는 자리이기 때문입니다. */
+  PHOTO.push(()=>{ stop(); io.disconnect(); });
 }
 
 const grid=document.getElementById('mgrid');
+/* 지금 화면에 있는 카드가 걸어 둔 사진 전환들.
+   분류를 누를 때마다 카드를 다시 그리는데, 예전 카드가 걸어 둔 관찰자와
+   타이머를 그대로 두면 화면에서 사라진 카드가 계속 사진을 바꿉니다.
+   눌러 볼수록 쌓입니다 — 다시 그리기 전에 반드시 걷어냅니다. */
+const PHOTO=[];
+function clearPhotos(){ while(PHOTO.length) PHOTO.pop()(); }
 function render(f, first){
   const olds=[...grid.children];
   const draw=()=>{
+    clearPhotos();
     grid.innerHTML='';
     MENU.filter(m=>f==='all'||m.c===f).forEach((m,i)=>{
       const el=document.createElement('div');
