@@ -36,20 +36,20 @@ window.I18N.en = {
   '1++한우': '1++Hanwoo beef',
   '14시간약탕기 저온 추출': '14 hrsLow-heat extraction',
   '매일매장에서 직접 조리': 'DailyCooked in-store',
-  '1++ 한우약탕기 14시간 저온 추출매장에서 매일 직접이북식 손만두오픈키친 조리맑은 곰탕\n1++ 한우약탕기 14시간 저온 추출매장에서 매일 직접이북식 손만두오픈키친 조리맑은 곰탕':
+  '1++한우약탕기 14시간 저온 추출매장에서 매일 직접이북식 손만두오픈키친 조리맑은 곰탕\n1++한우약탕기 14시간 저온 추출매장에서 매일 직접이북식 손만두오픈키친 조리맑은 곰탕':
     '1++ Hanwoo14-hour low-heat extractionCooked in-store, every dayHand-folded dumplingsOpen kitchenClear gomtang\n1++ Hanwoo14-hour low-heat extractionCooked in-store, every dayHand-folded dumplingsOpen kitchenClear gomtang',
   '방짜유기 그릇에 담긴 복만당 한우곰탕': 'Bokmandang Hanwoo gomtang served in a forged bronze bowl',
 
   /* ── 브랜드 ── */
   '매일 먹을 수 있는 가격에서,\n특별하게 즐기는 한 그릇까지':
     'From an everyday price\nto a bowl worth savouring',
-  '곰탕은 10,000원에서 시작합니다. 그렇다고 가격에 맞춰 덜어낸 한 그릇은 아닙니다.\n1++ 한우와 엄선한 식재료, 방짜유기 그릇, 정갈한 공간 - 부담 없이 자주 드시되\n경험은 가격 그 이상이 되도록 만들었습니다.':
+  '곰탕은 10,000원에서 시작합니다. 그렇다고 가격에 맞춰 덜어낸 한 그릇은 아닙니다.\n1++한우와 엄선한 식재료, 방짜유기 그릇, 정갈한 공간 - 부담 없이 자주 드시되\n경험은 가격 그 이상이 되도록 만들었습니다.':
     'Gomtang starts at 10,000 KRW. That does not mean we cut corners to hit the price.\n1++ Hanwoo beef, carefully chosen ingredients, forged bronze bowls, a calm room - meant to be eaten often without hesitation,\nyet to feel like more than what you paid.',
   '복만당의 3가지 원칙재료는 제대로, 조리는 간편하게, 운영은 효율적으로.':
     'Three principlesRight ingredients. Simple cooking. Efficient operation.',
   '01 - 재료': '01 - Ingredients',
   '재료는\n제대로': 'Right\ningredients',
-  '1++ 한우와 엄선한 식재료로 맑고 깊은 한우곰탕을 냅니다.\n좋은 재료에서 시작해야 조리를 단순하게 해도 맛이 남습니다.':
+  '1++한우와 엄선한 식재료로 맑고 깊은 한우곰탕을 냅니다.\n좋은 재료에서 시작해야 조리를 단순하게 해도 맛이 남습니다.':
     'We make a clear, deep Hanwoo gomtang from 1++ Hanwoo beef and carefully chosen ingredients.\nStart with good ingredients and the flavour holds, even when the cooking is kept simple.',
   '02 - 조리': '02 - Cooking',
   '조리는\n간편하게': 'Simple\ncooking',
@@ -69,7 +69,7 @@ window.I18N.en = {
   '당일 소비그날 생산한 만큼 그날 씁니다': 'Same dayWhat is made that day is used that day',
   '매장 주방의 약탕기 - 한우 육수를 저온으로 우려내는 설비':
     'The herbal extractor in a store kitchen - where Hanwoo broth is drawn out at low heat',
-  '약탕기에 오래 우려낸 1++ 한우.\n조리는 어렵지 않습니다.\n매일, 매장에서 직접 끓입니다.':
+  '약탕기에 오래 우려낸 1++한우.\n조리는 어렵지 않습니다.\n매일, 매장에서 직접 끓입니다.':
     '1++ Hanwoo, drawn out slowly.\nThe cooking is not difficult.\nEvery day, in our own kitchens.',
 
   /* ── 메뉴 ── */
@@ -94,7 +94,7 @@ window.I18N.en = {
   '맑은 한우 곰탕,\n집에서도 그대로': 'The same clear gomtang,\nat home',
   '매장에서 매일 직접 끓이는 그 곰탕을 그대로 담았습니다. 데우기만 하면 완성되는 복만당 한우곰탕 밀키트로, 집에서도 같은 한 그릇을 드실 수 있습니다.':
     'The very gomtang we simmer in-store each day, packed as it is. Just heat the Bokmandang Hanwoo Gomtang meal kit and the same bowl arrives at your table.',
-  '1++ 한우를 약탕기에 우려낸 맑고 깊은 맛': 'Clear, deep flavour drawn from 1++ Hanwoo beef',
+  '1++한우를 약탕기에 우려낸 맑고 깊은 맛': 'Clear, deep flavour drawn from 1++ Hanwoo beef',
   '600g · 162kcal · 냉동 보관 (-18℃ 이하)': '600 g · 162 kcal · Keep frozen (-18 ℃ or below)',
   '소고기육수 88%, 소고기(국내산) 12%': 'Beef broth 88 %, beef (Korea) 12 %',
   '식재료 활용도를 높이는 운영 방식': 'A way of getting more from the same ingredients',
@@ -229,7 +229,7 @@ window.I18N.en = {
 
   /* ── 본사 지원 · 절차 ── */
   '약탕기 조리 시스템': 'Herbal-extractor cooking system',
-  '약탕기로 1++ 한우를 저온에서 오래 우려내는 표준 조리법과 계량 도구를 제공합니다.':
+  '약탕기로 1++한우를 저온에서 오래 우려내는 표준 조리법과 계량 도구를 제공합니다.':
     'We provide the standard recipe and measuring tools for drawing 1++ Hanwoo beef slowly at low heat.',
   '인력 구성 설계': 'Staffing design',
   '상권과 영업시간에 맞춰 필요한 인원과 시간대를 함께 설계합니다.':
@@ -361,7 +361,7 @@ window.I18N.en = {
   '복만당 본점': 'Bokmandang Flagship Store',
   '복만당 · 한우곰탕 | 브랜드 · 메뉴 · 매장 · 가맹점 모집':
     'Bokmandang · Hanwoo Gomtang | Brand · Menu · Stores · Franchise',
-  '1++ 한우를 약탕기에 14시간 저온으로 우려내, 매장에서 매일 직접 끓이는 맑은 한우곰탕. 브랜드 이야기와 메뉴, 전국 매장 안내, 가맹점 창업 상담을 안내합니다.':
+  '1++한우를 약탕기에 14시간 저온으로 우려내, 매장에서 매일 직접 끓이는 맑은 한우곰탕. 브랜드 이야기와 메뉴, 전국 매장 안내, 가맹점 창업 상담을 안내합니다.':
     'Clear hanwoo gomtang drawn from 1++ Korean beef for 14 hours at low temperature, cooked fresh in every store each day. Brand story, menu, nationwide store guide and franchise enquiries.',
 
   /* ── 관리자 문구 관리가 넣는 조각 (주소·전화번호는 일부러 뺐습니다) ── */

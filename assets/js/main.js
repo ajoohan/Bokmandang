@@ -1006,7 +1006,8 @@ document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEa
 
 /* 2-2) 창업 절차 — 01 부터 05 까지 차례로 색이 들어옵니다 --- */
 /* 다섯 칸을 한꺼번에 물들이면 그냥 색이 바뀐 것이지, 순서가 있는 절차로는
-   안 읽힙니다. 280ms 씩 늦춰 01 → 05 로 번지게 합니다(다 도는 데 1.6초).
+   안 읽힙니다. 620ms 씩 늦춰 01 → 05 로 번지게 합니다(다 도는 데 4.3초).
+   한 칸이 물드는 데만 1.15초 걸립니다 — 눈이 따라갈 수 있는 속도입니다.
 
    시작을 늦추는 이유
      칸이 나타나는 연출(.rv upS)이 1초쯤 걸립니다. 그 위에 색을 겹치면
@@ -1024,7 +1025,7 @@ document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEa
   steps.forEach(s=>s.classList.add('dim'));
   inView(box,()=>steps.forEach((s,i)=>setTimeout(()=>{
     s.classList.add('lit');
-  },560+i*280)),{amount:.55});
+  },700+i*620)),{amount:.55});
 })();
 
 /* 2-3) 창업자 문단의 마지막 한 줄 — 잉크가 번지듯 색이 찹니다 --- */

@@ -570,7 +570,7 @@ body.nav-open .drawer{opacity:1;visibility:visible}
 .step{padding:30px 24px 34px;background:var(--bg);transition:background .4s}
 .step:hover{background:var(--card)}
 .step b{display:block;font-family:var(--serif);font-size:38px;font-weight:300;color:var(--num-l);line-height:1;margin-bottom:20px;
-  transition:color .7s ease,opacity .7s ease}
+  transition:color 1.15s ease,opacity 1.15s ease}
 /* 화면에 들어오면 01 부터 05 까지 차례로 색이 들어옵니다.
    .dim 과 .lit 은 스크립트가 붙입니다 — 스크립트가 안 돌면 둘 다 없어
    번호가 처음부터 제 색으로 보입니다.
@@ -578,7 +578,7 @@ body.nav-open .drawer{opacity:1;visibility:visible}
    예전에는 회갈색에서 금색으로 가는 정도라 바뀐 줄도 모르고 지나갔습니다. */
 .step.dim b{color:var(--num-l);opacity:.26}
 .step:hover b,.step.lit b{color:var(--gold-t);opacity:1}
-.step.lit b{animation:step-lit .72s cubic-bezier(.34,1.5,.6,1)}
+.step.lit b{animation:step-lit 1.05s cubic-bezier(.34,1.5,.6,1)}
 @keyframes step-lit{0%{transform:scale(.88)}58%{transform:scale(1.07)}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){
   .step b{transition:none}
