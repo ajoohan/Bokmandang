@@ -1036,6 +1036,53 @@ document.querySelectorAll('.hero .lbl:not(.pc-t), .rail .lbl, .band .sig').forEa
   io.observe(on); OBS.push(io);
 })();
 
+/* 2-0) 메뉴 위 영상 띠 — 흑백에서 하나씩 색이 들며 재생 ---- */
+/* 조리 순서(만두 · 육수 · 고기 · 완성)를 그대로 따라갑니다. 넷을 한꺼번에
+   틀면 어디를 볼지 알 수 없고, 순서대로 가면 만드는 과정으로 읽힙니다.
+   다 돌고 나면 넷 다 색이 든 채로 마지막 화면에서 멈춥니다(loop 안 함).
+
+   영상은 이 자리가 화면에 가까워질 때 받습니다 — 네 개 합쳐 1.1MB 라
+   메뉴까지 안 내려오는 사람에게 미리 받게 할 이유가 없습니다.
+   데이터 절약 모드와 '움직임 줄이기' 에서는 아예 받지 않고 포스터만 둡니다. */
+(function(){
+  const strip=document.getElementById('vstrip');
+  if(!strip) return;
+  const tiles=[...strip.querySelectorAll('.vs')];
+  if(!tiles.length) return;
+  let saver=false;
+  try{ saver=!!(navigator.connection && navigator.connection.saveData); }catch(e){}
+  if(RM || saver){ tiles.forEach(t=>t.classList.add('on')); return; }
+
+  /* 화면 한참 전에 미리 받아 둡니다 — 눈에 들어왔을 때 바로 돌게 */
+  const pre=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    pre.disconnect();
+    tiles.forEach(t=>{ const v=t.querySelector('video');
+      if(v && v.dataset.src){ v.src=v.dataset.src; delete v.dataset.src; v.load(); } });
+  }),{rootMargin:'600px 0px'});
+  pre.observe(strip); OBS.push(pre);
+
+  let started=false;
+  const play=i=>{
+    if(i>=tiles.length) return;
+    const t=tiles[i], v=t.querySelector('video');
+    t.classList.add('on');
+    const next=()=>play(i+1);
+    if(!v){ setTimeout(next,900); return; }
+    /* 끝나면 다음으로. 안전망을 함께 둡니다 — 백그라운드 탭이나 재생이
+       막힌 환경에서는 ended 가 오지 않아 여기서 멈춰 버립니다. */
+    let moved=false;
+    const once=()=>{ if(moved) return; moved=true; setTimeout(next,260); };
+    v.addEventListener('ended',once,{once:true});
+    setTimeout(once, 6500);
+    /* 자동재생이 막히면(절전 · 브라우저 설정) 색만 띄우고 넘어갑니다.
+       바로 넘기면 넷이 한꺼번에 켜진 것처럼 보여, 순서가 읽히게 잠깐 둡니다. */
+    const p=v.play();
+    if(p && p.catch) p.catch(()=>setTimeout(once,1100));
+  };
+  inView(strip,()=>{ if(started) return; started=true; setTimeout(()=>play(0),320); },{amount:0.35});
+})();
+
 /* 2-2) 창업 절차 — 01 부터 05 까지 차례로 색이 들어옵니다 --- */
 /* 다섯 칸을 한꺼번에 물들이면 그냥 색이 바뀐 것이지, 순서가 있는 절차로는
    안 읽힙니다. 620ms 씩 늦춰 01 → 05 로 번지게 합니다(다 도는 데 4.3초).
