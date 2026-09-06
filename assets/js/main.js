@@ -168,8 +168,10 @@ px('.band .bg',-70); px('.hero-img img',-26); px('.promise-img img',-34); px('.k
    자리는 처음부터 잡아 두고 투명도만 올립니다 — 글자가 붙을 때마다 폭이
    늘면 옆 칸까지 흔들립니다.
    14시간은 1 부터 셉니다. 0 에서 시작하면 잠깐 '0시간' 이 보입니다. */
+/* 감싸기(span)는 움직임을 줄여 달라고 한 사람에게도 해 줍니다.
+   숫자를 한글 눈높이에 맞춰 키우는 것이 그 span 에 걸려 있어서,
+   여기서 빠져나가면 그 사람만 '1++' 이 작게 보입니다. 끄는 것은 움직임뿐입니다. */
 document.querySelectorAll('.stats-in b').forEach(b=>{
-  if(RM) return;
   const raw=b.textContent.trim();
 
   const plus=raw.match(/^(\d+)(\++)$/);
@@ -179,9 +181,10 @@ document.querySelectorAll('.stats-in b').forEach(b=>{
     [plus[1]].concat(plus[2].split('')).forEach(t=>{
       const s=document.createElement('span');
       s.className='st-c'; s.textContent=t;
-      s.style.opacity='0';           // CSS 가 아니라 인라인이라야 끝나고 지울 수 있습니다
+      if(!RM) s.style.opacity='0';   // CSS 가 아니라 인라인이라야 끝나고 지울 수 있습니다
       b.appendChild(s); parts.push(s);
     });
+    if(RM) return;
     inView(b,()=>parts.forEach((s,i)=>anim(s,
       {opacity:[0,1],transform:['translateY(9px) scale(.82)','none']},
       {d:620,delay:i*620,ease:E.back,clear:'opacity,transform'})),{amount:0.6});
@@ -209,11 +212,12 @@ document.querySelectorAll('.stats-in b').forEach(b=>{
     nEl.style.minWidth=Math.ceil(nEl.getBoundingClientRect().width)+'px';
     nEl.textContent=keep;
   };
-  nEl.textContent='1';
+  nEl.textContent=RM ? String(end) : '1';   // 안 셀 거면 처음부터 끝값을 둡니다
   reserve();
   /* 글꼴이 아직 안 왔으면 대체 글꼴로 재게 됩니다. 세리프 숫자는 폭이
      제법 달라서, 진짜 글꼴이 온 뒤 한 번 더 재야 '시간' 이 안 밀립니다. */
   try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(reserve); }catch(e){}
+  if(RM) return;
 
   inView(b,()=>{
     /* 거의 일정한 속도로 셉니다 — 급히 감속하면 뒷자리가 한꺼번에 지나갑니다 */
