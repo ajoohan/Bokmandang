@@ -116,6 +116,8 @@ window.I18N.en = {
   '서울·경기를 넘어 전국으로 매장을 확대하고 있습니다.\n전체 매장은 아래 목록에서 확인하세요.':
     'We are expanding beyond Seoul and Gyeonggi to the rest of the country.\nSee the full list below.',
   '길찾기': 'Directions',
+  '복만당 본점으로 전화하기 02-565-5288':
+    'Call the Bokmandang flagship store, 02-565-5288',
   '주소 복사': 'Copy address',
   '전체 매장 찾기': 'Find a location',
   '서울': 'Seoul',

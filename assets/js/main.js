@@ -374,9 +374,12 @@ const grid=document.getElementById('mgrid');
    눌러 볼수록 쌓입니다 — 다시 그리기 전에 반드시 걷어냅니다. */
 const PHOTO=[];
 function clearPhotos(){ while(PHOTO.length) PHOTO.pop()(); }
+let renderSeq=0;
 function render(f, first){
+  const my=++renderSeq;
   const olds=[...grid.children];
   const draw=()=>{
+    if(my!==renderSeq) return;        // 그 사이 다른 분류를 눌렀으면 이건 버립니다
     clearPhotos();
     grid.innerHTML='';
     MENU.filter(m=>f==='all'||m.c===f).forEach((m,i)=>{
@@ -420,11 +423,17 @@ function render(f, first){
     });
   };
   if(first||RM||!olds.length){ draw(); return; }
-  let fin=0;
-  olds.forEach((el,i)=>{
-    const a=anim(el,{opacity:[1,0],transform:['none','translateY(-12px) scale(.97)']},{d:260,delay:i*30,ease:E.soft});
-    done(a).then(()=>{ if(++fin===olds.length) draw(); });
-  });
+  /* 나가는 연출이 끝나면 새로 그립니다.
+     예전에는 사라지는 애니메이션이 '전부 끝났다' 는 약속(promise)을 세어
+     그렸는데, 분류를 빠르게 두 번 누르면 그리드가 엉뚱한 분류를 보여 준 채
+     영영 멈췄습니다. anim() 은 같은 속성을 잡은 이전 애니메이션을 취소하므로,
+     두 번째 누름이 첫 번째의 약속을 깨뜨려 세는 값이 어긋납니다.
+     시간으로 재면 취소가 나든 말든 반드시 한 번은 그립니다.
+     그리는 순번(seq)을 두어, 늦게 도착한 옛 그리기는 버립니다. */
+  olds.forEach((el,i)=>anim(el,
+    {opacity:[1,0],transform:['none','translateY(-12px) scale(.97)']},
+    {d:260,delay:i*30,ease:E.soft}));
+  setTimeout(draw, 260 + (olds.length-1)*30 + 40);
 }
 render('all',true);
 
