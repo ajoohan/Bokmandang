@@ -293,12 +293,22 @@ body.nav-open .drawer{opacity:1;visibility:visible}
    영상은 자르지 않습니다 — 원본 세로 비율(9:16)을 그대로 두고 칸에 담습니다
    (object-fit:contain). 칸이 더 넓어 좌우에 여백이 생기는데, 03 구역과 같은
    바탕색으로 채워 한 덩어리의 어두운 띠로 읽히게 했습니다. */
-.vstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+.vstrip{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:0;
   background:var(--dark);margin-bottom:clamp(46px,6vw,86px)}
+/* 네 영상 위에 워드마크를 옅게 한 장. 칸마다 넣지 않고 띠 전체에 하나만
+   얹습니다 — 넷이 붙어 한 장면으로 읽히는데 네 번 반복하면 무늬가 됩니다.
+   어두운 화면 위라 크림색 판을 쓰고, 보일 듯 말 듯한 세기로 둡니다. */
+.vs-mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:clamp(170px,20vw,400px);height:auto;opacity:.13;
+  pointer-events:none;z-index:2}
 /* 바로 위 band 도 같은 어두운 바탕입니다. 사이를 띄우면 한 덩어리가
    둘로 갈라져 보이므로, 메뉴 구역의 윗 여백을 없애 붙입니다. */
 #menu{padding-top:0}
-.vs{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--dark)}
+/* 칸을 영상과 같은 9:16 로 둡니다. 3:4 로 두면 영상이 칸보다 좁아
+   사이사이에 어두운 띠가 끼어 넷이 떨어져 보입니다. 비율을 맞추면
+   자르지 않고도 서로 붙습니다. 바탕색은 그대로 둡니다 — 영상 비율이
+   조금이라도 어긋날 때 그 자리를 메웁니다. */
+.vs{position:relative;aspect-ratio:9/16;overflow:hidden;background:var(--dark)}
 .vs video{display:block;width:100%;height:100%;object-fit:contain;
   filter:grayscale(1) contrast(.94) brightness(1.02);
   transition:filter 1.1s cubic-bezier(.3,.85,.4,1)}
