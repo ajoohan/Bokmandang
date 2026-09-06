@@ -299,7 +299,7 @@ body.nav-open .drawer{opacity:1;visibility:visible}
    얹습니다 — 넷이 붙어 한 장면으로 읽히는데 네 번 반복하면 무늬가 됩니다.
    어두운 화면 위라 크림색 판을 쓰고, 보일 듯 말 듯한 세기로 둡니다. */
 .vs-mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:clamp(170px,20vw,400px);height:auto;opacity:.13;
+  width:clamp(170px,20vw,400px);height:auto;opacity:.26;
   pointer-events:none;z-index:2}
 /* 바로 위 band 도 같은 어두운 바탕입니다. 사이를 띄우면 한 덩어리가
    둘로 갈라져 보이므로, 메뉴 구역의 윗 여백을 없애 붙입니다. */
