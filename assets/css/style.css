@@ -223,7 +223,11 @@ body.nav-open .drawer{opacity:1;visibility:visible}
   font-variant-numeric:lining-nums;font-size:1.2em}
 .stats b .st-c{display:inline-block;will-change:opacity,transform}
 /* 세는 동안 자릿수가 늘어도 뒤의 '시간' 이 밀리지 않게 자리를 미리 잡습니다 */
-.stats b .st-n{display:inline-block;text-align:right}
+/* 왼쪽 정렬이어야 합니다. 오른쪽으로 붙이면 세는 동안 한 자리 숫자가
+   두 자리 폭의 오른쪽 끝에 서서, 그 칸만 안으로 밀려 보입니다 —
+   위아래 칸과 왼쪽 선이 어긋납니다. 왼쪽에 두면 선은 맞고,
+   숫자와 '시간' 사이 틈이 세면서 좁아집니다. */
+.stats b .st-n{display:inline-block;text-align:left}
 
 /* ── 브랜드 약속 ──────────────────────────────── */
 .promise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,56px);margin-top:clamp(46px,6vw,80px)}
