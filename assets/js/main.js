@@ -771,6 +771,10 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
       items.forEach((li,n)=>li.setAttribute('aria-selected', n===i?'true':'false'));
       sel.dispatchEvent(new Event('change',{bubbles:true}));
       hide(true);
+      /* 마우스로 고르면 버튼이 먼저 blur 되어 목록이 이미 닫힌 뒤입니다.
+         그때 hide(true) 는 아무 일도 하지 않아 포커스가 본문으로 빠집니다 —
+         고르고 나서 Tab 을 누르면 문서 처음부터 다시 도는 셈입니다. */
+      btn.focus();
     };
 
     btn.addEventListener('click',()=>open?hide(true):show());
@@ -801,11 +805,14 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
     });
     btn.addEventListener('blur',()=>{ setTimeout(()=>{ if(!wrap.contains(document.activeElement)) hide(false); },0); });
 
-    ui={wrap,btn,val,sel};
+    ui={wrap,btn,val,sel,close:()=>hide(false)};
   }
 
   function drop(){
     if(!ui) return;
+    /* 열어 둔 채로 창을 좁히면 바깥 클릭 감시가 window 에 남습니다.
+       떼어내기 전에 반드시 닫습니다. */
+    ui.close();
     ui.wrap.remove();
     fld.classList.remove('has-sel');
     sel.removeAttribute('tabindex'); sel.removeAttribute('aria-hidden');
