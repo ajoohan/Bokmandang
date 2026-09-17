@@ -648,24 +648,36 @@ body.nav-open .drawer{opacity:1;visibility:visible}
   margin:10px 0 8px;letter-spacing:.01em}
 form{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 .fld{display:flex;flex-direction:column;gap:10px}.fld.full{grid-column:1/-1}
-.fld label{font-size:11px;letter-spacing:.2em;color:rgba(250,248,244,.5);font-weight:600;text-transform:uppercase}
+/* 상담 신청은 이 사이트에서 손님이 실제로 '쓰는' 유일한 화면입니다.
+   라벨 11px 에 자간 .2em, 밝기 .5 는 어두운 바탕에서 읽기 어려웠습니다.
+   자리글씨(.24)는 거의 안 보였습니다. 전체를 한 단계씩 키우고 밝혔습니다. */
+.fld label{font-size:12.5px;letter-spacing:.13em;color:rgba(250,248,244,.66);font-weight:600;text-transform:uppercase}
 .fld input,.fld select,.fld textarea{background:transparent;border:0;border-bottom:1px solid var(--line-d);border-radius:0;
-  color:#FAF8F4;padding:13px 2px;font-family:var(--f);font-size:15px;outline:none;transition:border-color .35s;border-radius:0;letter-spacing:-.01em}
-.fld textarea{resize:vertical;min-height:88px}
+  color:#FAF8F4;padding:14px 2px;font-family:var(--f);font-size:16.5px;outline:none;transition:border-color .35s;border-radius:0;letter-spacing:-.01em}
+.fld textarea{resize:vertical;min-height:96px}
 .fld input:focus,.fld select:focus,.fld textarea:focus{border-bottom-color:var(--gold-l)}
-.fld input::placeholder,.fld textarea::placeholder{color:rgba(250,248,244,.24)}
-.fld select option{background:var(--dark)}
-.agree{grid-column:1/-1;display:flex;align-items:center;gap:11px;min-height:44px;font-size:13px;color:rgba(250,248,244,.5);margin-top:8px;cursor:pointer}
+.fld input::placeholder,.fld textarea::placeholder{color:rgba(250,248,244,.38)}
+
+/* 드롭다운 — 기본 상태로 두면 운영체제가 자기 방식대로 그려서, 밑줄만 있는
+   다른 칸들과 따로 놉니다(테두리 상자 · 회색 화살표). 그리기를 넘겨받아
+   같은 모양으로 맞추고, 화살표만 금색으로 직접 그립니다. */
+.fld select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:30px;
+  background-repeat:no-repeat;background-position:right 2px center;background-size:12px 12px;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6.2L8 10.6l4.5-4.4' fill='none' stroke='%23C6A667' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")}
+.fld select:hover{background-color:rgba(250,248,244,.03)}
+/* 펼쳐진 목록은 브라우저가 그립니다 — 색만 맞출 수 있어 여기까지 합니다 */
+.fld select option{background:var(--dark-2);color:#FAF8F4}
+.agree{grid-column:1/-1;display:flex;align-items:center;gap:11px;min-height:44px;font-size:14.5px;color:rgba(250,248,244,.7);margin-top:8px;cursor:pointer}
 .agree input{accent-color:var(--gold);width:18px;height:18px;flex:none}
 .agree-row{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:10px 18px;margin-top:8px}
 .agree{margin-top:0}
-.agree .req,.fld .req{font-family:var(--f);font-size:10px;font-weight:600;letter-spacing:.12em;
+.agree .req,.fld .req{font-family:var(--f);font-size:11.5px;font-weight:600;letter-spacing:.08em;
   color:var(--gold-l);vertical-align:1px}
 .fld .req{margin-left:4px}
-.agree-link{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-size:12.5px;
-  letter-spacing:-.01em;color:rgba(250,248,244,.62);border-bottom:1px solid transparent;transition:color .3s,border-color .3s}
-.agree-link svg{width:11px;height:11px;stroke:currentColor;fill:none;opacity:.8}
+.agree-link{display:inline-flex;align-items:center;gap:6px;min-height:44px;font-size:13.5px;
+  letter-spacing:-.01em;color:rgba(250,248,244,.72);border-bottom:1px solid transparent;transition:color .3s,border-color .3s}
+.agree-link svg{width:12px;height:12px;stroke:currentColor;fill:none;opacity:.85}
 .agree-link:hover{color:var(--gold-l);border-bottom-color:var(--gold-l)}
 
 /* 허니팟 — 사람 눈에는 안 보이지만 display:none 이 아니어서 봇은 채웁니다 */
@@ -923,7 +935,9 @@ header.hide{transform:translateY(-104%)}
   .store-info{border-radius:10px}
   .qa button{padding:22px 2px;font-size:15.5px;min-height:56px}
   .step{padding:26px 20px}
-  .fld input,.fld select,.fld textarea{font-size:16px;padding:14px 2px}
+  /* 16px 아래로 내리면 iOS 가 칸을 누를 때 화면을 확대합니다 */
+  .fld input,.fld select,.fld textarea{font-size:16.5px;padding:15px 2px}
+  .fld select{padding-right:30px}
   form .btn{padding:20px}
   .top{right:16px;bottom:90px;width:44px;height:44px}
   footer{padding-bottom:calc(44px + 78px)}
