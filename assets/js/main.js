@@ -691,6 +691,133 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
   f.addEventListener('focus',()=>anim(f.previousElementSibling,{transform:['none','translateX(4px)'],color:['rgba(246,241,231,.55)','#C9A76A']},{d:300,fill:'forwards'}));
   f.addEventListener('blur',()=>anim(f.previousElementSibling,{transform:['translateX(4px)','none'],color:['#C9A76A','rgba(246,241,231,.55)']},{d:300,clear:'transform,color'}));
 });
+/* ══════ 직접 만든 드롭다운 (PC 전용) ══════
+   왜 만드나 — 펼쳐지는 목록은 페이지가 아니라 브라우저가 그리는 창이라
+   CSS 로 모양을 짤 수 없습니다. 어두운 폼 위로 제 색의 목록이 떠서
+   여기만 다른 사이트처럼 보였습니다.
+
+   왜 PC 만 — 휴대폰은 화면 아래에서 올라오는 고유의 선택 창을 씁니다.
+   손가락으로는 그쪽이 낫고, 직접 만들면 그걸 잃습니다.
+
+   원래 <select> 는 지우지 않고 화면에서만 숨깁니다. 값을 담아 보내는 것도,
+   자바스크립트가 멈췄을 때 쓰이는 것도 그대로 그 칸입니다.
+   글자는 i18n 이 지나간 뒤에 읽으므로 네 나라 말이 그대로 따라옵니다. */
+(function(){
+  const sel=document.getElementById('f4');
+  if(!sel) return;
+  const fld=sel.closest('.fld'), label=fld && fld.querySelector('label');
+  if(!fld) return;
+
+  const MOBILE=matchMedia('(max-width:760px)');
+  let ui=null;
+
+  function build(){
+    if(ui) return;
+    const wrap=document.createElement('div');
+    wrap.className='sel';
+    const btn=document.createElement('button');
+    btn.type='button'; btn.className='sel-btn'; btn.id='f4-btn';
+    btn.setAttribute('role','combobox');
+    btn.setAttribute('aria-haspopup','listbox');
+    btn.setAttribute('aria-expanded','false');
+    btn.setAttribute('aria-label', label ? label.textContent.replace(/\s+/g,' ').trim() : '창업 예산');
+    const val=document.createElement('span');
+    val.className='sel-val'; val.textContent=sel.options[sel.selectedIndex].text;
+    btn.appendChild(val);
+
+    const list=document.createElement('ul');
+    list.className='sel-list'; list.id='f4-list';
+    list.setAttribute('role','listbox'); list.hidden=true;
+    [...sel.options].forEach((o,i)=>{
+      const li=document.createElement('li');
+      li.setAttribute('role','option'); li.id='f4-o'+i;
+      li.setAttribute('aria-selected', i===sel.selectedIndex ? 'true' : 'false');
+      li.textContent=o.text; li.dataset.i=i;
+      list.appendChild(li);
+    });
+    btn.setAttribute('aria-controls','f4-list');
+    wrap.appendChild(btn); wrap.appendChild(list);
+    sel.after(wrap);
+    fld.classList.add('has-sel');
+    sel.tabIndex=-1; sel.setAttribute('aria-hidden','true');
+    if(label) label.htmlFor='f4-btn';
+
+    const items=[...list.children];
+    let open=false, active=sel.selectedIndex;
+
+    const mark=i=>{
+      items.forEach((li,n)=>li.classList.toggle('on', n===i));
+      if(items[i]){ btn.setAttribute('aria-activedescendant', items[i].id);
+        items[i].scrollIntoView({block:'nearest'}); }
+    };
+    const show=()=>{
+      if(open) return; open=true;
+      list.hidden=false; btn.setAttribute('aria-expanded','true');
+      active=sel.selectedIndex; mark(active);
+      addEventListener('pointerdown', away, true);
+    };
+    const hide=(focus)=>{
+      if(!open) return; open=false;
+      list.hidden=true; btn.setAttribute('aria-expanded','false');
+      btn.removeAttribute('aria-activedescendant');
+      removeEventListener('pointerdown', away, true);
+      if(focus) btn.focus();
+    };
+    const away=e=>{ if(!wrap.contains(e.target)) hide(false); };
+    const choose=i=>{
+      if(i<0||i>=items.length) return;
+      sel.selectedIndex=i;
+      val.textContent=sel.options[i].text;
+      items.forEach((li,n)=>li.setAttribute('aria-selected', n===i?'true':'false'));
+      sel.dispatchEvent(new Event('change',{bubbles:true}));
+      hide(true);
+    };
+
+    btn.addEventListener('click',()=>open?hide(true):show());
+    btn.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'||e.key==='Enter'||e.key===' '){
+        e.preventDefault(); show();
+      }
+    });
+    list.addEventListener('click',e=>{
+      const li=e.target.closest('[role=option]');
+      if(li) choose(+li.dataset.i);
+    });
+    list.addEventListener('pointermove',e=>{
+      const li=e.target.closest('[role=option]');
+      if(li) { active=+li.dataset.i; mark(active); }
+    });
+    /* 목록이 열려 있는 동안 키는 버튼이 받습니다 — 포커스를 목록으로 옮기지
+       않아야 Tab 한 번에 다음 칸으로 넘어갑니다. */
+    btn.addEventListener('keydown',e=>{
+      if(!open) return;
+      if(e.key==='Escape'){ e.preventDefault(); hide(true); }
+      else if(e.key==='ArrowDown'){ e.preventDefault(); active=Math.min(items.length-1,active+1); mark(active); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); active=Math.max(0,active-1); mark(active); }
+      else if(e.key==='Home'){ e.preventDefault(); active=0; mark(active); }
+      else if(e.key==='End'){ e.preventDefault(); active=items.length-1; mark(active); }
+      else if(e.key==='Enter'||e.key===' '){ e.preventDefault(); choose(active); }
+      else if(e.key==='Tab'){ hide(false); }
+    });
+    btn.addEventListener('blur',()=>{ setTimeout(()=>{ if(!wrap.contains(document.activeElement)) hide(false); },0); });
+
+    ui={wrap,btn,val,sel};
+  }
+
+  function drop(){
+    if(!ui) return;
+    ui.wrap.remove();
+    fld.classList.remove('has-sel');
+    sel.removeAttribute('tabindex'); sel.removeAttribute('aria-hidden');
+    if(label) label.htmlFor='f4';
+    ui=null;
+  }
+
+  const apply=()=>{ if(MOBILE.matches) drop(); else build(); };
+  apply();
+  MOBILE.addEventListener('change', apply);
+})();
+
 /* ══════ 가맹 상담 폼 ══════
    전송 대상은 assets/js/config.js 의 BOKMANDANG.form 에서 설정합니다.
    endpoint 가 비어 있으면 전송하지 않고 완료 화면만 보여줍니다(데모 모드). */

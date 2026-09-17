@@ -670,6 +670,36 @@ form{display:grid;grid-template-columns:1fr 1fr;gap:22px}
   color-scheme:dark}
 .fld select:hover{background-color:rgba(250,248,244,.03)}
 .fld select option{background-color:var(--dark-2);color:#FAF8F4}
+
+/* ── 직접 만든 드롭다운 (PC) ──────────────────────────────
+   스크립트가 이 덩어리를 넣고 .fld 에 has-sel 을 붙입니다. 원래 <select> 는
+   지우지 않고 숨기기만 합니다 — 값을 담아 보내는 것은 여전히 그 칸입니다.
+   휴대폰에서는 만들지 않으므로 여기 규칙도 쓰이지 않습니다. */
+.fld.has-sel > select{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.sel{position:relative}
+.sel-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;
+  background:transparent;border:0;border-bottom:1px solid var(--line-d);border-radius:0;
+  color:#FAF8F4;padding:14px 2px;font-family:var(--f);font-size:16.5px;letter-spacing:-.01em;
+  text-align:left;cursor:pointer;transition:border-color .35s}
+.sel-btn::after{content:'';flex:none;width:14px;height:14px;
+  background:no-repeat center/14px 14px
+    url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6.2L8 10.6l4.5-4.4' fill='none' stroke='%23C6A667' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  transition:transform .3s cubic-bezier(.3,.85,.4,1)}
+.sel-btn[aria-expanded=true]::after{transform:rotate(180deg)}
+.sel-btn:hover{background:rgba(250,248,244,.03)}
+.sel-btn:focus-visible,.sel-btn[aria-expanded=true]{outline:none;border-bottom-color:var(--gold-l)}
+
+.sel-list{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;
+  margin:0;padding:6px;list-style:none;max-height:260px;overflow:auto;
+  background:var(--dark-2);border:1px solid rgba(198,166,103,.32);border-radius:8px;
+  box-shadow:0 22px 44px -18px rgba(0,0,0,.6)}
+.sel-list li{padding:12px 12px;border-radius:5px;font-size:15.5px;letter-spacing:-.01em;
+  color:rgba(250,248,244,.76);cursor:pointer;transition:background .18s,color .18s}
+.sel-list li.on{background:rgba(198,166,103,.14);color:#FAF8F4}
+.sel-list li[aria-selected=true]{color:var(--gold-l)}
+.sel-list li[aria-selected=true]::after{content:'';float:right;width:14px;height:14px;margin-top:2px;
+  background:no-repeat center/13px 13px
+    url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.4l3.4 3.3L13 5' fill='none' stroke='%23C6A667' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
 .agree{grid-column:1/-1;display:flex;align-items:center;gap:11px;min-height:44px;font-size:14.5px;color:rgba(250,248,244,.7);margin-top:8px;cursor:pointer}
 .agree input{accent-color:var(--gold);width:18px;height:18px;flex:none}
 .agree-row{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;
