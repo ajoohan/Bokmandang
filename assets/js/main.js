@@ -1093,30 +1093,6 @@ document.querySelectorAll('.d1, .head .d2, .band h2, .cta-in .d2').forEach(h=>{
   },{amount:0.05});
 });
 
-/* 히어로의 '전국 N개 매장' — 매장을 늘려도 문구가 어긋나지 않게 데이터에서 채웁니다.
-   바로 아래 라벨 스태거가 글자를 하나씩 span 으로 쪼개 버리므로,
-   그 전에 한 번 채우고, 나중에 값이 바뀌면 쪼개진 형태로 다시 씁니다. */
-function heroStoreLabel(list){
-  const el=document.getElementById('hlbl'); if(!el) return;
-  const open=(list||[]).filter(s=>!s.soon).length;
-  if(!open || el.dataset.n===String(open)) return;
-  el.dataset.n=String(open);
-  /* i18n 이 이미 이 라벨을 번역해 두었는데 여기서 한국어 틀로 덮어쓰면 되돌아갑니다.
-     사전에서 같은 문장을 찾아 숫자만 갈아 끼웁니다.
-
-     예전에는 번역문에서 리터럴 12 를 찾아 바꿨습니다. 그 정규식이 편집 도중
-     깨져 백스페이스 문자가 박혔고, 아무 말 없이 항상 12 개로 보였습니다.
-     자리표시자를 쓰고, 그마저 없으면 한국어 틀로 직접 만듭니다 —
-     숫자만은 반드시 맞게 둡니다. */
-  var tpl='SINCE 2024 - 전국 {n}개 매장';
-  var tr=(window.BM_I18N && window.BM_I18N.t && window.BM_I18N.t(tpl)) || tpl;
-  const txt = tr.indexOf('{n}') >= 0 ? tr.replace('{n}', open)
-                                     : 'SINCE 2024 - 전국 ' + open + '개 매장';
-  if(el.querySelector('.mo-ch'))
-    el.innerHTML=[...txt].map(c=>'<span class="mo-ch">'+(c===' '?'&nbsp;':c)+'</span>').join('');
-  else el.textContent=txt;
-}
-heroStoreLabel(window.STORES);
 
 /* 2) 라벨 글자 스태거 ------------------------------------- */
 /* 가격 카드의 라벨은 뺍니다 — 카드가 자기 모션을 갖고 있는데, 여기서
@@ -1529,7 +1505,6 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
   draw(false);
   { const st=document.getElementById('sstatus'); if(st) st.textContent=''; }
 
-  heroStoreLabel(STORES);
 
   /* 관리자 화면에서 고친 매장 목록을 받아옵니다.
      assets/data/stores.js 로 먼저 그린 뒤라, API 가 없거나 실패해도 화면은 정상입니다.
@@ -1543,7 +1518,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
                             &&s.tel===STORES[i].tel&&s.off===STORES[i].off&&s.map===STORES[i].map);
       if(same) return;                       // 바뀐 게 없으면 다시 그리지 않습니다
       STORES.length=0; STORES.push(...j.rows);
-      draw(false); heroStoreLabel(STORES);
+      draw(false);
     })
     .catch(()=>{});                          // 오프라인·차단 등 — 정적 목록 유지
   inView(list,()=>{ [...list.children].forEach((el,i)=>{

@@ -24,7 +24,6 @@ window.I18N.en = {
   '전화 문의': 'Call us',
 
   /* ── 히어로 ── */
-  'SINCE 2024 - 전국 12개 매장': 'SINCE 2024 - 12 LOCATIONS',
   '맑은 국물에\n깊은 맛을 담다': 'Clear broth,\ndeep flavour',
   '복만당 한우곰탕': 'Bokmandang Hanwoo Gomtang',
   '한우를 정성껏 우려, 맑고 깊은 맛을 담았습니다. 따뜻한 마음과 정성으로 완성한 곰탕에 복만당의 또 하나의 시그니처, 이북식 손만두를 곁들이면 담백하고 깊은 맛을 한층 더 풍성하게 즐기실 수 있습니다.':
@@ -380,8 +379,6 @@ window.I18N.en = {
   '※ 영업시간과 휴무일은 지점마다 다르고 바뀔 수 있습니다. 방문 전 ‘지도 보기’에서 확인해 주세요.':
     'Note - opening hours and closing days vary by store and may change. Please check ‘View on map’ before visiting.',
 
-  /* 히어로 라벨 – {n} 자리에 운영 중인 매장 수가 들어갑니다 */
-  'SINCE 2024 - 전국 {n}개 매장': 'SINCE 2024 - {n} LOCATIONS',
   /* ── 영업시간 값에 쓰이는 낱말 ── */
   '매일': 'Daily',
   '라스트오더': 'last order',
