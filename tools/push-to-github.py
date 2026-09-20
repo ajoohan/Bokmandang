@@ -13,14 +13,28 @@
 
   force push 를 쓰지 않으므로 원격 이력이 사라지지 않습니다.
 
+밀고 나서 사이트까지 확인합니다
+  Vercel 의 GitHub 연결이 여러 번 조용히 풀렸습니다(2026-09-03 · 09-06 ·
+  09-17 · 09-20). 그럴 때 푸시는 성공하고 GitHub 에도 올라가는데 배포만
+  'Blocked' 로 막힙니다. 아무 신호가 없어서, 09-17 것은 사흘 동안 묻힌 채
+  개인정보처리방침이 3주 전 화면을 내보내고 있었습니다.
+  그래서 푸시 뒤 사이트의 캐시 버전이 실제로 바뀌는지 지켜보고,
+  안 바뀌면 무엇을 해야 하는지 함께 알립니다.
+
   python tools/push-to-github.py
+  python tools/push-to-github.py --no-verify    # 확인 없이 밀기만
 """
-import subprocess, sys, os
+import subprocess, sys, os, re, time, urllib.request, urllib.error
 try: sys.stdout.reconfigure(encoding='utf-8')
 except Exception: pass
 
 PREFIX = 'bokmandang-web'
 REMOTE, BRANCH = 'origin', 'main'
+
+SITE = 'https://bokmandang.co.kr/'
+WAIT_SEC = 150          # 평소 20초 안에 올라옵니다. 넉넉히 2분 반.
+POLL_SEC = 10
+VERIFY = '--no-verify' not in sys.argv
 
 def git(*a, **kw):
     r = subprocess.run(['git', *a], capture_output=True, text=True,
@@ -69,4 +83,80 @@ r = subprocess.run(['git', 'push', REMOTE, f'{merged}:{BRANCH}'],
                    capture_output=True, text=True, encoding='utf-8',
                    errors='replace', cwd=TOP)
 print((r.stdout + r.stderr).strip())
-sys.exit(r.returncode)
+if r.returncode:
+    sys.exit(r.returncode)
+
+
+# ── 5) 사이트에 실제로 올라갔는지 확인 ──────────────────────────────
+VER = re.compile(r'\?v=(\d{8}[a-z])')
+
+def live_version():
+    """사이트가 지금 내주는 캐시 버전. 못 읽으면 None."""
+    try:
+        req = urllib.request.Request(
+            SITE + '?deploycheck=' + str(int(time.time())),
+            headers={'Cache-Control': 'no-cache', 'User-Agent': 'bokmandang-deploy-check'})
+        with urllib.request.urlopen(req, timeout=15) as f:
+            m = VER.search(f.read(60000).decode('utf-8', 'replace'))
+            return m.group(1) if m else None
+    except Exception:
+        return None
+
+def warn_blocked():
+    print('')
+    print('  ' + '!' * 58)
+    print('  배포가 사이트에 반영되지 않았습니다.')
+    print('')
+    print('  푸시는 됐고 GitHub 에도 올라갔습니다 — 막힌 곳은 Vercel 입니다.')
+    print('  지금까지 네 번 모두 같은 원인이었습니다: Vercel 계정의 GitHub')
+    print('  연결이 풀려, 커밋 작성자를 못 알아보고 배포를 Blocked 처리합니다.')
+    print('')
+    print('  1. vercel.com/bokmandang/bokmandang/deployments')
+    print('     맨 위 항목이 Blocked 인지 봅니다.')
+    print('  2. 맞으면 vercel.com/account/settings/authentication 에서')
+    print('     GitHub 를 ajoohan 으로 다시 잇습니다.')
+    print('     ("Upgrade to Pro" 는 누를 필요 없습니다)')
+    print('  3. 막힌 배포를 열어 오른쪽 위 Redeploy.')
+    print('  ' + '!' * 58)
+
+if not VERIFY:
+    print('\n5) 배포 확인은 건너뜁니다 (--no-verify)')
+    sys.exit(0)
+
+local_path = os.path.join(TOP, PREFIX, 'index.html')
+want = None
+try:
+    with open(local_path, encoding='utf-8') as f:
+        m = VER.search(f.read())
+        want = m.group(1) if m else None
+except OSError:
+    pass
+
+if not want:
+    print('\n5) index.html 에서 캐시 버전을 못 찾아 확인을 건너뜁니다.')
+    sys.exit(0)
+
+print(f'\n5) 사이트 반영 확인 — {want} 가 나올 때까지 최대 {WAIT_SEC}초')
+first = live_version()
+if first is None:
+    print('   사이트를 읽지 못했습니다(네트워크?). 확인을 건너뜁니다 —')
+    print('   배포가 실패했다는 뜻은 아닙니다. 잠시 뒤 직접 열어 보세요.')
+    sys.exit(0)
+if first == want:
+    print(f'   이미 {want} 입니다. 캐시 버전을 안 올렸다면 이번 변경이')
+    print('   올라갔는지는 이 방법으로 알 수 없습니다 —')
+    print('   tools/bump-cache.py 로 버전을 올리고 미는 습관을 권합니다.')
+    sys.exit(0)
+
+deadline = time.time() + WAIT_SEC
+while time.time() < deadline:
+    time.sleep(POLL_SEC)
+    now = live_version()
+    left = int(deadline - time.time())
+    print(f'   {now or "읽기 실패"}   (남은 {max(left,0)}초)')
+    if now == want:
+        print(f'\n   ✅ 반영됐습니다 — {want}')
+        sys.exit(0)
+
+warn_blocked()
+sys.exit(1)
