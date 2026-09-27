@@ -218,6 +218,14 @@
       link.href = urlFor(l.code);
       document.head.appendChild(link);
     });
+    /* 네 언어 어디에도 안 맞는 방문자는 영어로 보냅니다.
+       sitemap.xml 의 x-default 와 같은 주소여야 합니다 - 둘이 어긋나면
+       검색엔진이 묶음 전체를 버립니다. */
+    var xd = document.createElement('link');
+    xd.rel = 'alternate';
+    xd.hreflang = 'x-default';
+    xd.href = urlFor('en');
+    document.head.appendChild(xd);
   }
 
   walk(document.body);

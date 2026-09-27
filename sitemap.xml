@@ -3,7 +3,20 @@
      두 도메인이 같은 파일을 내려주므로 xhtml:link 로 서로가 번역본임을 알립니다.
      이게 없으면 검색엔진이 중복으로 보고 한쪽만 남깁니다.
      도메인이 바뀌면 tools/set-site-url.py 로 한 번에 바꾸세요.
-     (XML 주석 안에는 붙임표 두 개를 못 넣어서 명령을 그대로 적지 못합니다) -->
+     (XML 주석 안에는 붙임표 두 개를 못 넣어서 명령을 그대로 적지 못합니다)
+
+     hreflang 은 서로를 가리켜야 인정됩니다. 한국어 주소에만 적어 두면
+     구글이 통째로 무시합니다. 그래서 외국어 주소 세 개도 각자 <url> 로
+     넣고 같은 묶음을 그대로 반복합니다.
+
+     페이지 안의 hreflang 은 i18n.js 가 그려 넣지만, 구글은 스크립트로
+     넣은 hreflang 을 잘 인정하지 않습니다. 실제로 일하는 것은 이 파일입니다.
+
+     x-default 는 언어가 맞지 않는 방문자에게 보낼 주소입니다. 영어 주소를
+     그대로 씁니다 - 한 주소가 en 과 x-default 를 겸할 수 있습니다.
+     ?lang= 없는 https://bokmandang.com/ 을 쓰면 안 됩니다. i18n.js 가
+     그 페이지의 canonical 을 ?lang=en 으로 다시 쓰기 때문에, 대표가 아닌
+     주소를 hreflang 대상으로 적는 꼴이 되어 구글이 무시합니다. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
@@ -12,9 +25,43 @@
     <xhtml:link rel="alternate" hreflang="en"    href="https://bokmandang.com/?lang=en"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bokmandang.com/?lang=cn"/>
     <xhtml:link rel="alternate" hreflang="ja"    href="https://bokmandang.com/?lang=jp"/>
-    <lastmod>2026-09-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bokmandang.com/?lang=en"/>
+    <lastmod>2026-09-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://bokmandang.com/?lang=en</loc>
+    <xhtml:link rel="alternate" hreflang="ko-KR" href="https://bokmandang.co.kr/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://bokmandang.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bokmandang.com/?lang=cn"/>
+    <xhtml:link rel="alternate" hreflang="ja"    href="https://bokmandang.com/?lang=jp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bokmandang.com/?lang=en"/>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bokmandang.com/?lang=cn</loc>
+    <xhtml:link rel="alternate" hreflang="ko-KR" href="https://bokmandang.co.kr/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://bokmandang.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bokmandang.com/?lang=cn"/>
+    <xhtml:link rel="alternate" hreflang="ja"    href="https://bokmandang.com/?lang=jp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bokmandang.com/?lang=en"/>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bokmandang.com/?lang=jp</loc>
+    <xhtml:link rel="alternate" hreflang="ko-KR" href="https://bokmandang.co.kr/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://bokmandang.com/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://bokmandang.com/?lang=cn"/>
+    <xhtml:link rel="alternate" hreflang="ja"    href="https://bokmandang.com/?lang=jp"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bokmandang.com/?lang=en"/>
+    <lastmod>2026-09-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://bokmandang.co.kr/privacy</loc>
