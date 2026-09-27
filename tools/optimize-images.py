@@ -24,6 +24,12 @@ THUMB_W   = 240    # 썸네일용 초소형본
 THUMB_OF  = 'store-'   # 이 접두사로 시작하는 파일만 썸네일본 생성 (매장 갤러리)
 Q_AVIF, Q_WEBP = 55, 78
 
+# <picture> 로 고를 수 없는 자리 — 사본을 만들어 봐야 쓰이지 않고 배포 용량만 늡니다.
+#   og-cover      : og:image 는 주소 하나뿐이고, 스크래퍼가 JPEG 를 기대합니다
+#   menu-v*-poster: <video poster> 는 주소 하나만 받습니다
+JPEG_ONLY = ('og-cover', 'menu-v1-poster', 'menu-v2-poster',
+             'menu-v3-poster', 'menu-v4-poster')
+
 force = '--force' in sys.argv
 total_before = total_after = 0
 
@@ -39,6 +45,9 @@ def save(im, path, fmt):
 for src in sorted(glob.glob(os.path.join(SRC_DIR, '*.jpg'))):
     base, _ = os.path.splitext(src)
     name = os.path.basename(base)
+    if name in JPEG_ONLY:
+        print(f'{name:24} JPEG 만 씁니다 — 건너뜁니다')
+        continue
     with Image.open(src) as im:
         im = im.convert('RGB')
         w, h = im.size
