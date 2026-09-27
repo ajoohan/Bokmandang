@@ -158,7 +158,7 @@ Supabase 대시보드에서 pg_cron 으로 매일 돌리거나, 담당자가 주
 | 링크 미리보기 | OG 이미지 실주소 반영 — 카카오·슬랙·페북 스크래퍼 응답 확인 완료 |
 | 등급 표기 | `1++` 전면 삭제 (2026-08-30 발주처 확인 — 사실 아님). 경위는 `CONTENT.md` |
 | 검색 | **허용** (미리보기 우선). 되돌리려면 `python tools/set-indexing.py block` |
-| GitHub | `ajoohan/Bokmandang` (private) · 푸시는 `python tools/push-to-github.py` |
+| GitHub | `ajoohan/Bokmandang` (public) · 푸시는 `python tools/push-to-github.py` |
 
 ---
 

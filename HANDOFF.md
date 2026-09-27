@@ -140,7 +140,8 @@
 
 | | |
 |---|---|
-| GitHub | `ajoohan/Bokmandang` · **private** · 기본 브랜치 `main` |
+| GitHub | `ajoohan/Bokmandang` · **public** · 기본 브랜치 `main` |
+| GitHub (사본) | `bokmandang/homepage` · public · 같은 내용을 담아 둔 공개 사본 |
 | Vercel | `bokmandang/bokmandang` (복만당 계정 `bokmandangmkt-2267`) · 함수 리전 서울(icn1) |
 | Supabase | `yxhuyreepsulvxzsldca` (PLUSTONIC 조직과 **다른 계정** — 인수인계 시 소유자 확인) |
 
