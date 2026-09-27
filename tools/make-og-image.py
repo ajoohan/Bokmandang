@@ -35,11 +35,15 @@ for y in range(H):
 bg = Image.composite(Image.new('RGB', (W, H), (16, 15, 12)), bg,
                      grad.resize((W, H)))
 
-# 워드마크 — 정식 로고(® 포함). tools/make-logo-r.py 로 생성
-logo = Image.open(os.path.join(IMG, 'logo-white-r.png')).convert('RGBA')
-lw = 372
+# 워드마크 — 사이트 헤더·푸터와 같은 정식 로고 파일(® 가 이미 들어 있습니다).
+# 예전에는 옛 워드마크에 ® 를 합성한 logo-white-r.png 를 썼는데, 2026-09-05 에
+# 로고를 정식본으로 갈아 끼운 뒤로도 공유 카드만 옛 로고를 내보내고 있었습니다.
+# 정식 로고는 ® 가 글자에 붙어 있어 옛 파일보다 세로가 깁니다. 위에서 150 으로
+# 두면 아래 카피와 붙어 버려서, 카피와의 간격이 예전과 같아지도록 위로 올립니다.
+logo = Image.open(os.path.join(IMG, 'logo-white.png')).convert('RGBA')
+lw, ltop = 372, 134
 logo = logo.resize((lw, round(logo.height * lw / logo.width)), Image.LANCZOS)
-bg.paste(logo, ((W - lw) // 2, 150), logo)
+bg.paste(logo, ((W - lw) // 2, ltop), logo)
 
 d = ImageDraw.Draw(bg)
 # 카피는 사이트와 같은 Pretendard 를 씁니다.
