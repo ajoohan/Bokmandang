@@ -35,8 +35,6 @@ window.I18N.en = {
   '1++한우': '1++Hanwoo beef',
   '14시간약탕기 저온 추출': '14 hrsLow-heat extraction',
   '매일매장에서 직접 조리': 'DailyCooked in-store',
-  '1++한우약탕기 14시간 저온 추출매장에서 매일 직접이북식 손만두오픈키친 조리맑은 곰탕\n1++한우약탕기 14시간 저온 추출매장에서 매일 직접이북식 손만두오픈키친 조리맑은 곰탕':
-    '1++ Hanwoo14-hour low-heat extractionCooked in-store, every dayHand-folded dumplingsOpen kitchenClear gomtang\n1++ Hanwoo14-hour low-heat extractionCooked in-store, every dayHand-folded dumplingsOpen kitchenClear gomtang',
   '방짜유기 그릇에 담긴 복만당 한우곰탕': 'Bokmandang Hanwoo gomtang served in a forged bronze bowl',
 
   /* ── 브랜드 ── */
@@ -84,8 +82,6 @@ window.I18N.en = {
   '닫기': 'Close',
   '이전 사진': 'Previous photo',
   '다음 사진': 'Next photo',
-  '한우만 사용합니다.\n원산지 - 소고기(국내산), 쌀(국내산), 돼지고기(국내산), 무(국내산), 고춧가루(국내산·중국산)':
-    'We use Hanwoo beef only.\nOrigin - beef (Korea), rice (Korea), pork (Korea), radish (Korea), chilli powder (Korea / China)',
   '밀키트는 온라인에서도 구매하실 수 있습니다': 'The meal kit is also available online',
   '스마트스토어에서 구매하기': 'Buy on Naver Smart Store',
 
@@ -108,10 +104,6 @@ window.I18N.en = {
   /* ── 매장 ── */
   '매장 안내': 'Locations',
   '본점': 'Flagship store',
-  '대표문의02-565-5288': 'Phone02-565-5288',
-  '영업15:40 라스트오더\n지점별 영업시간 상이 · 아래 목록 참조':
-    'Hours15:40 last order\nHours vary by location - see the list below',
-  '주차지하주차장 이용': 'ParkingUnderground car park',
   '서울·경기를 넘어 전국으로 매장을 확대하고 있습니다.\n전체 매장은 아래 목록에서 확인하세요.':
     'We are expanding beyond Seoul and Gyeonggi to the rest of the country.\nSee the full list below.',
   '길찾기': 'Directions',
@@ -364,6 +356,21 @@ window.I18N.en = {
     'Bokmandang · Hanwoo Gomtang | Brand · Menu · Stores · Franchise',
   '1++한우를 약탕기에 14시간 저온으로 우려내, 매장에서 매일 직접 끓이는 맑은 한우곰탕. 브랜드 이야기와 메뉴, 전국 매장 안내, 가맹점 창업 상담을 안내합니다.':
     'Clear hanwoo gomtang drawn from 1++ Korean beef for 14 hours at low temperature, cooked fresh in every store each day. Brand story, menu, nationwide store guide and franchise enquiries.',
+
+  /* ── 띠 배너 문구 — 하나씩 번역합니다(index.html 의 data-i18n-split).
+        관리자가 띠 배너를 원래 문구로 두면 이 사전으로 찾아 씁니다 ── */
+  '약탕기 14시간 저온 추출': '14-hour low-heat extraction',
+  '매장에서 매일 직접': 'Cooked in-store, every day',
+  '오픈키친 조리': 'Open kitchen',
+  '맑은 곰탕': 'Clear gomtang',
+
+  /* ── 본점 카드 라벨과 원산지 머리말 — 관리자 문구 자리(data-t)는 따로 번역되므로
+        그 앞뒤 조각도 하나씩 둡니다 ── */
+  '대표문의': 'Phone',
+  '영업': 'Hours',
+  '주차': 'Parking',
+  '지점별 영업시간 상이 · 아래 목록 참조': 'Hours vary by location - see the list below',
+  '한우만 사용합니다.': 'We use Hanwoo beef only.',
 
   /* ── 관리자 문구 관리가 넣는 조각 (주소·전화번호는 일부러 뺐습니다) ── */
   '15:40 라스트오더': '15:40 last order',

@@ -106,6 +106,13 @@
     for (var i = 0; i < el.children.length; i++) {
       if (!INLINE[el.children[i].nodeName]) return false;
     }
+    /* 관리자가 바꾸는 자리(data-t)를 품고 있으면 한 문장으로 묶지 않습니다.
+       묶어서 통째로 갈아 끼우면 그 자리가 사라져, 외국어 화면에서는 관리자
+       문구가 영영 반영되지 않습니다. 본점 카드의 '라벨 + 값' 줄도 함께
+       뭉개져 'Phone02-565-5288' 처럼 붙어 나왔습니다. */
+    if (el.querySelector('[data-t]')) return false;
+    /* data-i18n-split 안쪽은 글자 조각마다 따로 번역합니다(띠 배너의 문구 + 마름모) */
+    if (el.closest('[data-i18n-split]')) return false;
     return true;
   }
 

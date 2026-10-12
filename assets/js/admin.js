@@ -1094,24 +1094,56 @@ $('#addPop').onclick = () => {
 /* ── 홈페이지 문구 ──────────────────────────────────────────────────────
    어떤 문구를 열어 둘지는 서버(api/admin/settings.js 의 ALLOWED)가 정합니다.
    화면은 받은 목록을 그대로 그리므로, 항목을 늘려도 여기는 고칠 게 없습니다. */
+/* 외국어 칸 — 서버(settings.js 의 LANGS)와 사이트(i18n.js)의 언어 코드와 같아야 합니다 */
+const TXT_LANGS = [['en', 'English', '영어'], ['cn', '中文', '중국어'], ['jp', '日本語', '일본어']];
+
+function txtInput(key, f, value, placeholder, lang) {
+  const attr = `data-k="${esc(key)}" maxlength="${f.max}"${lang ? ` lang="${lang === 'cn' ? 'zh' : lang === 'jp' ? 'ja' : 'en'}"` : ''}`;
+  return f.multiline
+    ? `<textarea ${attr} rows="3" placeholder="${esc(placeholder)}">${esc(value)}</textarea>`
+    : `<input type="text" ${attr} value="${esc(value)}" placeholder="${esc(placeholder)}">`;
+}
+
 async function loadTexts() {
   const box = $('#txtList');
   box.innerHTML = skeleton(4);
   try {
     const { fields } = await api('/api/admin/settings');
-    box.innerHTML = `<div class="adm-txt">` + fields.map(f => `
-      <label class="tf">
-        <span>${esc(f.label)}${f.url ? '<i>주소</i>' : ''}</span>
-        ${f.multiline
-          ? `<textarea data-k="${esc(f.key)}" maxlength="${f.max}" rows="3"
-                       placeholder="비우면 사이트의 원래 문구가 나옵니다">${esc(f.value)}</textarea>`
-          : `<input type="text" data-k="${esc(f.key)}" maxlength="${f.max}" value="${esc(f.value)}"
-                    placeholder="${f.url ? 'https://…' : '비우면 사이트의 원래 문구가 나옵니다'}">`}
-      </label>`).join('') + `</div>`;
+    box.innerHTML = `<div class="adm-txt">` + fields.map(f => {
+      const ko = txtInput(f.key, f, f.value,
+        f.url ? 'https://…' : '비우면 사이트의 원래 문구가 나옵니다');
+      if (!f.tr) return `
+      <div class="tf">
+        <label><span>${esc(f.label)}${f.url ? '<i>주소</i>' : ''}</span>${ko}</label>
+      </div>`;
+      /* 외국어는 접어 둡니다 — 한 번 넣어 두면 자주 고칠 일이 없고, 펼쳐 두면 화면이 네 배로 깁니다.
+         하나라도 적혀 있으면 펼친 채로 엽니다. */
+      const filled = TXT_LANGS.filter(([l]) => (f.tr[l] || '').trim()).length;
+      return `
+      <div class="tf">
+        <label><span>${esc(f.label)}<i>한국어</i></span>${ko}</label>
+        <details class="tf-tr"${filled ? ' open' : ''}>
+          <summary>외국어 <b>${filled}/${TXT_LANGS.length}</b></summary>
+          ${TXT_LANGS.map(([l, name, kr]) => `
+          <label><span>${name}</span>${txtInput(`${f.key}@${l}`, f, f.tr[l] || '',
+            `비우면 한국어 문구를 번역 사전에서 찾아 씁니다 (${kr})`, l)}</label>`).join('')}
+        </details>
+      </div>`;
+    }).join('') + `</div>
+      <p class="adm-note adm-txt-note">외국어 칸을 비워 두면, 한국어 문구가 원래 문구 그대로일 때는 미리 번역해 둔
+        문장이 나옵니다. <strong>한국어를 새로 고쳤다면 외국어 칸도 함께 채워 주세요</strong> -
+        비어 있으면 영어·중국어·일본어 화면에 고친 한국어가 그대로 보입니다.</p>`;
   } catch (ex) {
     box.innerHTML = empty('!', '문구를 불러오지 못했습니다', esc(ex.message));
   }
 }
+
+$('#txtList').addEventListener('input', e => {
+  const d = e.target.closest('.tf-tr');
+  if (!d) return;
+  const n = [...d.querySelectorAll('[data-k]')].filter(el => el.value.trim()).length;
+  d.querySelector('summary b').textContent = `${n}/${TXT_LANGS.length}`;
+});
 
 $('#saveTxt').onclick = async () => {
   const btn = $('#saveTxt');

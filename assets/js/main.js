@@ -1688,20 +1688,31 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
       /* 문구 */
       const st = j.settings || {};
       /* 관리자 문구는 i18n 이 지나간 뒤에 도착합니다 — 그대로 쓰면 번역이 한국어로
-         되돌아갑니다. 사전에서 찾아 보고, 관리자가 새로 쓴 문장이면 원문 그대로 둡니다. */
+         되돌아갑니다. 순서는 이렇습니다.
+           1) 외국어 화면이고 관리자가 그 언어 칸('hero.title@en')을 채웠으면 그대로
+           2) 아니면 한국어 값을 사전에서 찾아 번역 (원래 문구 그대로면 찾아집니다)
+           3) 사전에도 없으면(관리자가 한국어를 새로 고친 경우) 한국어 그대로 */
+      const LANG = (window.BM_I18N && window.BM_I18N.lang) || 'ko';
+      const own = key => {
+        if (LANG === 'ko') return null;
+        const f = st[key + '@' + LANG];
+        return (typeof f === 'string' && f.trim()) ? f : null;
+      };
       document.querySelectorAll('[data-t]').forEach(el => {
-        const v = st[el.dataset.t];
-        if (typeof v === 'string' && v.trim()) setText(el, T(v));
+        const k = el.dataset.t, mine = own(k), v = st[k];
+        if (mine) setText(el, mine);                       // 직접 쓴 번역은 사전을 거치지 않습니다
+        else if (typeof v === 'string' && v.trim()) setText(el, T(v));
       });
       /* 흐르는 띠 배너 — 한 줄에 한 문구씩 받아 사이에 마름모를 넣습니다.
          data-t 로는 안 됩니다. 칸막이가 <i> 라 글자만 갈아 끼울 수 없고,
          끊김 없이 흐르려면 같은 내용이 두 벌 있어야 합니다. */
-      const mqv = st['marquee.items'];
+      const mqOwn = own('marquee.items');
+      const mqv = mqOwn || st['marquee.items'];
       const track = document.getElementById('mq');
       if (track && typeof mqv === 'string' && mqv.trim()) {
         const items = mqv.split('\n').map(s => s.trim()).filter(Boolean);
         if (items.length) {
-          let html = items.map(s => esc(T(s)) + '<i></i>').join('');
+          let html = items.map(s => esc(mqOwn ? s : T(s)) + '<i></i>').join('');
           const fill = () => [...track.children].forEach(sp => { sp.innerHTML = html; });
           fill();
           /* 한 벌이 화면보다 좁으면 돌다가 빈자리가 보입니다 — 넘칠 때까지 되풀이 */

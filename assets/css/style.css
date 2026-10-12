@@ -1377,10 +1377,25 @@ label.adm-btn{cursor:pointer}
 .adm-txt{display:grid;grid-template-columns:repeat(2,minmax(260px,1fr));
   gap:18px 20px;padding:24px 20px}
 .adm-txt .tf{display:block;min-width:0}
-.adm-txt .tf > span{display:block;font-size:var(--fs-lbl);letter-spacing:.14em;text-transform:uppercase;
+.adm-txt .tf label{display:block}
+.adm-txt .tf label > span{display:block;font-size:var(--fs-lbl);letter-spacing:.14em;text-transform:uppercase;
   font-weight:700;color:var(--mute-2);margin-bottom:7px}
-.adm-txt .tf > span i{font-style:normal;margin-left:6px;padding:1px 6px;border-radius:4px;
+.adm-txt .tf label > span i{font-style:normal;margin-left:6px;padding:1px 6px;border-radius:4px;
   background:var(--th);color:var(--ink-2);letter-spacing:.04em}
+/* 외국어 칸 — 한국어 칸 아래에 접어 둡니다 */
+.adm-txt .tf-tr{margin-top:8px;border-left:2px solid var(--line-2);padding-left:12px}
+.adm-txt .tf-tr[open]{border-left-color:var(--gold)}
+.adm-txt .tf-tr summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;
+  min-height:32px;font-size:var(--fs-sm);font-weight:600;color:var(--ink-2)}
+.adm-txt .tf-tr summary::-webkit-details-marker{display:none}
+.adm-txt .tf-tr summary::before{content:'';width:6px;height:6px;border-right:1.5px solid currentColor;
+  border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .2s}
+.adm-txt .tf-tr[open] summary::before{transform:rotate(45deg)}
+.adm-txt .tf-tr summary b{font-weight:600;color:var(--mute-2);font-variant-numeric:tabular-nums}
+.adm-txt .tf-tr summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+.adm-txt .tf-tr label{margin-top:10px}
+.adm-txt .tf-tr label > span{letter-spacing:.04em;text-transform:none}
+.adm-txt-note{padding:0 20px 20px;margin:0}
 .adm-txt input,.adm-txt textarea{width:100%;padding:11px 12px;border-radius:8px;
   border:1px solid var(--line-2);background:var(--card);
   font-family:inherit;font-size:var(--fs-md);letter-spacing:-.02em;color:var(--ink);line-height:1.7}
