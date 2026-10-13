@@ -385,6 +385,17 @@ window.I18N.en = {
   '오픈키친 조리': 'Open kitchen',
   '맑은 곰탕': 'Clear gomtang',
 
+  /* ── 본점 영업시간(2026-10-13 확정) · 매장 목록 휴무 요일 ── */
+  '11:00 - 16:00 · 15:40 라스트오더\n매주 일요일 정기휴무 · 재료 소진 시 조기 마감':
+    '11:00 - 16:00 · Last order 15:40\nClosed every Sunday · May close early if ingredients run out',
+  '월요일': 'Monday',
+  '화요일': 'Tuesday',
+  '수요일': 'Wednesday',
+  '목요일': 'Thursday',
+  '금요일': 'Friday',
+  '토요일': 'Saturday',
+  '일요일': 'Sunday',
+
   /* ── 본점 카드 라벨과 원산지 머리말 — 관리자 문구 자리(data-t)는 따로 번역되므로
         그 앞뒤 조각도 하나씩 둡니다 ── */
   '대표문의': 'Phone',
