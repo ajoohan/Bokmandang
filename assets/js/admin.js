@@ -34,6 +34,7 @@ function eulReul(word) {
 }
 
 let dlg = null;
+let dlgSettle = null;   // 지금 떠 있는 질문을 끝내는 함수 — 새 질문이 오면 앞 질문을 '취소'로 정리
 function ask({ title, body = '', ok = '확인', danger = false }) {
   if (typeof HTMLDialogElement !== 'function') return Promise.resolve(confirm(title + '\n\n' + body));
   if (!dlg) {
@@ -61,15 +62,30 @@ function ask({ title, body = '', ok = '확인', danger = false }) {
   yes.classList.toggle('primary', !danger);
   dlg.classList.toggle('is-danger', danger);
   dlg.querySelector('.adm-dlg-k').textContent = danger ? '삭제 확인' : '확인';
-  /* 결과는 누른 그 자리에서 돌려줍니다. 'close' 이벤트를 기다리는 방식은 브라우저가
-     화면을 그리지 않는 동안(창이 가려진 탭 등) 이벤트가 밀려 응답이 멈출 수 있습니다. */
+  // 되돌릴 수 없는 일은 화면낭독기가 '경고 창'으로 알리고 제목·설명을 바로 읽게 합니다
+  dlg.setAttribute('role', danger ? 'alertdialog' : 'dialog');
+  // 앞의 질문이 아직 떠 있으면 '취소'로 끝내고 새로 엽니다(showModal 은 열린 창에 예외를 던집니다)
+  if (dlgSettle) dlgSettle(false);
+  /* 결과는 누른 그 자리에서 돌려줍니다. 'close' 이벤트만 기다리는 방식은 브라우저가
+     화면을 그리지 않는 동안(창이 가려진 탭 등) 이벤트가 밀려 응답이 멈출 수 있습니다.
+     그래도 close 는 안전망으로 함께 듣습니다 — 브라우저가 cancel 없이 창을 닫는 경우
+     (Chrome 은 Esc 가 거듭되면 cancel 을 건너뜁니다)에도 반드시 '취소'로 끝나게. */
   return new Promise(resolve => {
+    let settled = false;
     const done = v => {
+      if (settled) return;
+      settled = true;
+      if (dlgSettle === done) dlgSettle = null;
       dlg.removeEventListener('click', onClick);
       dlg.removeEventListener('cancel', onCancel);
+      dlg.removeEventListener('close', onClose);
       if (dlg.open) dlg.close();
       resolve(v);
     };
+    /* close 알림은 조금 늦게 옵니다. 그사이 새 확인창이 이미 열렸다면(dlg.open) 그 알림은
+       앞 창의 것이므로 무시합니다 — 안 그러면 새 질문이 저절로 '취소'로 끝납니다. */
+    const onClose = () => { if (!dlg.open) done(false); };
+    dlgSettle = done;
     const onClick = e => {
       if (e.target === dlg) return done(false);          // 바깥(배경) — 창 안쪽은 form 이 받습니다
       const b = e.target.closest('button');
@@ -78,9 +94,10 @@ function ask({ title, body = '', ok = '확인', danger = false }) {
       done(b.hasAttribute('data-yes'));
     };
     const onCancel = e => { e.preventDefault(); done(false); };   // Esc
+    dlg.showModal();
     dlg.addEventListener('click', onClick);
     dlg.addEventListener('cancel', onCancel);
-    dlg.showModal();
+    dlg.addEventListener('close', onClose);
     dlg.querySelector('[data-no]').focus();
   });
 }
@@ -1192,6 +1209,7 @@ async function loadTexts() {
       return `
       <div class="tf">
         <label><span>${esc(f.label)}<i>한국어</i></span>${ko}</label>
+        ${f.hint ? `<p class="tf-hint">${esc(f.hint)}</p>` : ''}
         <details class="tf-tr"${filled ? ' open' : ''}>
           <summary>외국어 <b>${filled}/${TXT_LANGS.length}</b></summary>
           ${TXT_LANGS.map(([l, name, kr]) => `

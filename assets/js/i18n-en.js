@@ -388,6 +388,8 @@ window.I18N.en = {
   /* ── 본점 영업시간(2026-10-13 확정) · 매장 목록 휴무 요일 ── */
   '11:00 - 16:00 · 15:40 라스트오더\n매주 일요일 정기휴무 · 재료 소진 시 조기 마감':
     '11:00 - 16:00 · Last order 15:40\nClosed every Sunday · May close early if ingredients run out',
+  /* 매장 목록 휴무 — {d} 에 요일이 들어갑니다. 어순이 언어마다 달라 문장째 둡니다 */
+  '{d} 휴무': 'Closed on {d}',
   '월요일': 'Monday',
   '화요일': 'Tuesday',
   '수요일': 'Wednesday',

@@ -1452,7 +1452,7 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
           ${s.new?'<span class="badge">NEW</span>':''}
           ${s.soon?`<span class="badge soon">${esc(T('오픈예정'))}</span>`:''}</div>
         <div class="ad">${esc(s.a)}${tel?'<span class="sep-d">·</span>'+tel:''}</div>
-        <div class="tel">${hrs}${s.off?`<span class="off">${esc(T(s.off))} ${esc(T('휴무'))}</span>`:''}</div>
+        <div class="tel">${hrs}${s.off?`<span class="off">${esc(T('{d} 휴무').replace('{d}', T(s.off)))}</span>`:''}</div>
         <a class="go" href="${esc(s.map||nmap(s.n))}" target="_blank" rel="noopener">${esc(T('지도 보기'))}
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8h12M9 3l5 5-5 5"/></svg></a>`;
       list.appendChild(el);

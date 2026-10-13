@@ -24,7 +24,8 @@ export const ALLOWED = {
   'hero.desc':     { label: '히어로 설명',        max: 400, multiline: true, i18n: true },
   'store.address': { label: '본점 주소',          max: 160, multiline: true, i18n: true },
   'store.tel':     { label: '본점 대표문의',      max: 40 },
-  'store.hours':   { label: '본점 영업 정보 (두 줄까지)', max: 120, multiline: true, i18n: true },
+  'store.hours':   { label: '본점 영업 정보 (두 줄까지)', max: 120, multiline: true, i18n: true,
+                    hint: '영업시간을 바꾸면 [매장 목록]의 본점 행도 함께 고치세요. 검색결과에 뜨는 영업시간은 사이트 코드에 있어 개발자에게 요청해야 합니다.' },
   'store.parking': { label: '본점 주차 안내',     max: 60, i18n: true },
   'menu.origin':   { label: '원산지 표기',        max: 300, multiline: true, i18n: true },
   /* 흐르는 띠 배너 — 한 줄에 한 문구씩 적습니다. 사이트가 사이에 마름모를
