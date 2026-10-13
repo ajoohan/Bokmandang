@@ -31,6 +31,8 @@ bokmandang-web/
 ├── tools/                  일회성 스크립트 (사이트 구동에는 불필요)
 │   ├── optimize-images.py  JPEG → AVIF/WebP 변환
 │   ├── make-og-image.py    공유 카드 이미지 생성
+│   ├── make-favicon.py     탭 · 홈 화면 아이콘 생성
+│   ├── bump-cache.py       캐시 버전(?v=) 올리기 + sitemap 날짜
 │   └── set-site-url.py     배포 도메인 일괄 치환
 ├── LAUNCH_CHECKLIST.md     ★ 오픈 전 남은 일 — 발주처 확인 항목 포함
 ├── HANDOFF.md              ★ 개발 인수인계 — 먼저 읽으세요

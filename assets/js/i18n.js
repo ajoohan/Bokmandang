@@ -211,9 +211,16 @@
              (code === 'ko' ? '' : '?lang=' + code);
     }
 
+    /* canonical 은 원본 HTML 에 두지 않고 여기서 만듭니다(index.html 머리 주석 참고).
+       혹시 있으면 고쳐 쓰고, 없으면 새로 넣습니다. */
     if (live) {
       var can = document.head.querySelector('link[rel=canonical]');
-      if (can) can.href = urlFor(lang);
+      if (!can) {
+        can = document.createElement('link');
+        can.rel = 'canonical';
+        document.head.appendChild(can);
+      }
+      can.href = urlFor(lang);
     }
 
     [].forEach.call(document.head.querySelectorAll('link[rel=alternate][hreflang]'),

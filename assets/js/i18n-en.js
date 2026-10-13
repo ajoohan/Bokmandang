@@ -114,6 +114,7 @@ window.I18N.en = {
   '서울': 'Seoul',
   '경기': 'Gyeonggi',
   '그 외 지역': 'Elsewhere',
+  '매장 {n}곳이 검색되었습니다.': '{n} locations found.',
   '검색 결과가 없습니다.': 'No matching locations.',
   '매장 검색': 'Search locations',
   '지역 필터': 'Region filter',
@@ -356,6 +357,26 @@ window.I18N.en = {
     'Bokmandang · Hanwoo Gomtang | Brand · Menu · Stores · Franchise',
   '1++한우를 약탕기에 14시간 저온으로 우려내, 매장에서 매일 직접 끓이는 맑은 한우곰탕. 브랜드 이야기와 메뉴, 전국 매장 안내, 가맹점 창업 상담을 안내합니다.':
     'Clear hanwoo gomtang drawn from 1++ Korean beef for 14 hours at low temperature, cooked fresh in every store each day. Brand story, menu, nationwide store guide and franchise enquiries.',
+
+  /* ── 가맹 상담 폼이 그때그때 띄우는 문구 · 외부 채널 버튼 (main.js 가 T() 와 apply 로 번역) ── */
+  '성함을 2자 이상 입력해 주세요.': 'Please enter your name (at least 2 characters).',
+  '연락처를 숫자 9~11자리로 정확히 입력해 주세요.': 'Please enter a valid phone number (9-11 digits).',
+  '연락처를 숫자 9~11자리로 입력해 주세요.': 'Please enter a valid phone number (9-11 digits).',
+  '개인정보 수집 및 이용에 동의해 주세요.': 'Please agree to the collection and use of personal information.',
+  '개인정보 수집 및 이용 동의가 필요합니다.': 'Please agree to the collection and use of personal information.',
+  '접수 처리 중 문제가 발생했습니다.': 'Something went wrong while submitting your enquiry.',
+  '서버 설정이 완료되지 않았습니다.': 'The server is not fully set up yet.',
+  '보내는 중…': 'Sending…',
+  '다시 보내기': 'Send again',
+  '전송이 지연되고 있습니다. 잠시 후 다시 시도하시거나': 'Sending is taking longer than usual. Please try again shortly, or call',
+  '전송에 실패했습니다. 네트워크를 확인한 뒤 다시 시도하시거나': 'Sending failed. Please check your connection and try again, or call',
+  '로 연락 주세요.': '.',
+  '(새 창)': '(opens in a new window)',
+  '네이버 플레이스': 'Naver Place',
+  '네이버 예약': 'Naver Booking',
+  '배달의민족': 'Baemin',
+  '쿠팡이츠': 'Coupang Eats',
+  '요기요': 'Yogiyo',
 
   /* ── 띠 배너 문구 — 하나씩 번역합니다(index.html 의 data-i18n-split).
         관리자가 띠 배너를 원래 문구로 두면 이 사전으로 찾아 씁니다 ── */

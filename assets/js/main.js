@@ -852,6 +852,7 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
   function fail(el,msg){
     el.classList.add('bad'); el.setAttribute('aria-invalid','true');
     err.innerHTML=msg; err.hidden=false;
+    if(window.BM_I18N) BM_I18N.apply(err);   // 외국어 화면에서 검증 문구가 한국어로 뜨던 것
     el.focus({preventScroll:true});
     el.scrollIntoView({block:'center',behavior:RM?'auto':'smooth'});
     if(!RM) anim(err,{opacity:[0,1],transform:['translateY(-6px)','none']},{d:340,clear:'opacity,transform'});
@@ -935,19 +936,21 @@ document.querySelectorAll('.fld input,.fld select,.fld textarea').forEach(f=>{
 
     sending=true;
     btn.disabled=true; fm.setAttribute('aria-busy','true');
-    btnT.textContent='보내는 중…';
+    btnT.textContent=T('보내는 중…');
     send().then(showSent).catch(ex=>{
       sending=false;
       btn.disabled=false; fm.removeAttribute('aria-busy');
-      btnT.textContent='다시 보내기';
+      btnT.textContent=T('다시 보내기');
       const TEL=' <a href="tel:+8225655288">02-565-5288</a>로 연락 주세요.';
       err.textContent='';   // 서버 문구는 HTML 로 해석하지 않습니다
       if(ex&&ex.name==='AbortError')
         err.innerHTML='전송이 지연되고 있습니다. 잠시 후 다시 시도하시거나'+TEL;
       else if(ex&&ex.fromServer)
-        err.textContent=ex.message;
+        err.textContent=T(ex.message);     // 서버 문구도 사전에 넣어 두었습니다(api/inquiry.js)
       else
         err.innerHTML='전송에 실패했습니다. 네트워크를 확인한 뒤 다시 시도하시거나'+TEL;
+      /* 전화번호 링크(<a>) 앞뒤 글 조각을 하나씩 번역합니다 */
+      if(window.BM_I18N) BM_I18N.apply(err);
       err.hidden=false;
       if(!RM) anim(err,{opacity:[0,1],transform:['translateY(-6px)','none']},{d:340,clear:'opacity,transform'});
     });
@@ -974,7 +977,7 @@ function drawLinks(){
         const a=document.createElement('a');
         a.className='chip-link'; a.href=u; a.target='_blank'; a.rel='noopener';
         a.textContent=label;
-        a.setAttribute('aria-label', label+' (새 창)');
+        a.setAttribute('aria-label', T(label)+' '+T('(새 창)'));
         box.appendChild(a);
       });
     box.hidden=!box.children.length;
@@ -1462,9 +1465,11 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
     /* 필터·검색 결과를 스크린리더에 알립니다. 숫자는 카운트업 애니메이션과 별개로
        최종 값만 한 번 넣어야 읽는 도중에 계속 끊기지 않습니다. */
     const st=document.getElementById('sstatus');
+    /* 숫자가 문장 가운데 있어 통문장은 사전에 없습니다 — {n} 자리를 둔 열쇠로 번역한 뒤 숫자를 채웁니다.
+       (이걸 안 하면 외국어 화면에서도 화면낭독기가 한국어로 읽었습니다) */
     if(st) st.textContent = rows.length
-      ? `매장 ${rows.length}곳이 검색되었습니다.`
-      : '검색 결과가 없습니다.';
+      ? T('매장 {n}곳이 검색되었습니다.').replace('{n}', rows.length)
+      : T('검색 결과가 없습니다.');
     const target=rows.length;
     cnt.textContent=target;          // 애니메이션이 안 돌아도 숫자는 맞아야 합니다
     if(!RM){ const t0=performance.now();
@@ -1572,8 +1577,16 @@ const STORES = (window.STORES || []).slice();   // API 응답으로 내용이 �
      주의 — 히어로 제목은 이미 splitLines() 가 줄 단위 <span> 으로 쪼개 놓았습니다.
      그냥 textContent 를 바꾸면 그 구조가 날아가 애니메이션이 깨지므로,
      쪼개진 요소는 다시 쪼개고 곧바로 보이게 둡니다(응답이 늦게 오므로 등장 연출은 생략). */
+  /* 원문이 숫자를 <span class="num"> 으로 감싸 두었으면(본점 영업 15:40, 주소 563 …)
+     관리자 문구에서도 다시 감쌉니다. 안 그러면 숫자만 세리프가 빠져 사전 번역으로
+     나올 때와 모양이 달라집니다. 숫자는 이스케이프 '전'의 원문에서 찾습니다 —
+     이스케이프한 뒤에 찾으면 &#39; 같은 엔티티 안의 숫자까지 감싸 버립니다. */
+  const NUMS = /(\d[\d,]*(?:\.\d+)?)/;
+  const withNums = s => String(s).split(NUMS)
+    .map((p, i) => i % 2 ? `<span class="num">${p}</span>` : esc(p)).join('');
   function setText(el, text){
-    const html = esc(text).replace(/\n/g, '<br>');
+    const wrap = !el.classList.contains('num') && !!el.querySelector('.num');
+    const html = String(text).split('\n').map(l => wrap ? withNums(l) : esc(l)).join('<br>');
     if (el.dataset.split){
       el.innerHTML = html;
       delete el.dataset.split;

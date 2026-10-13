@@ -26,9 +26,9 @@ Q_AVIF, Q_WEBP = 55, 78
 
 # <picture> 로 고를 수 없는 자리 — 사본을 만들어 봐야 쓰이지 않고 배포 용량만 늡니다.
 #   og-cover      : og:image 는 주소 하나뿐이고, 스크래퍼가 JPEG 를 기대합니다
-#   menu-v*-poster: <video poster> 는 주소 하나만 받습니다
-JPEG_ONLY = ('og-cover', 'menu-v1-poster', 'menu-v2-poster',
-             'menu-v3-poster', 'menu-v4-poster')
+#   menu-v*-poster: <video poster> 는 주소 하나만 받습니다 — 영상이 늘어도 이름 꼴로 거릅니다
+import re
+JPEG_ONLY = re.compile(r'og-cover|menu-v\d+-poster')
 
 force = '--force' in sys.argv
 total_before = total_after = 0
@@ -45,7 +45,7 @@ def save(im, path, fmt):
 for src in sorted(glob.glob(os.path.join(SRC_DIR, '*.jpg'))):
     base, _ = os.path.splitext(src)
     name = os.path.basename(base)
-    if name in JPEG_ONLY:
+    if JPEG_ONLY.fullmatch(name):
         print(f'{name:24} JPEG 만 씁니다 — 건너뜁니다')
         continue
     with Image.open(src) as im:

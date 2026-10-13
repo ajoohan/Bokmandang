@@ -5,6 +5,8 @@
 한글은 로고 이미지로 표현하므로 별도 한글 폰트가 필요 없습니다.
 
   python tools/make-og-image.py
+
+이미지를 만든 뒤 index.html 의 og:image 주소 끝 ?r= 를 하나 올립니다(아래 참고).
 """
 import sys
 try: sys.stdout.reconfigure(encoding='utf-8')   # Windows 콘솔에서 한글 깨짐 방지
@@ -67,3 +69,19 @@ d.line([(W / 2 - 26, 476), (W / 2 + 26, 476)], fill=GOLD, width=1)
 out = os.path.join(IMG, 'og-cover.jpg')
 bg.save(out, 'JPEG', quality=86, optimize=True, progressive=True)
 print(f'{out}  {os.path.getsize(out)//1024}KB  {W}x{H}')
+
+# 공유 이미지 주소의 개정 번호(?r=)를 올립니다.
+# 페이스북·카카오는 이미지를 '주소'로 캐시합니다. 같은 주소로 그림만 바꾸면 디버거에서
+# 다시 긁어도 옛 그림이 나오고, /assets/img/ 는 1년 immutable 캐시라 스스로 낫지도 않습니다.
+# (2026-09-27 에 로고를 바꿔 다시 만들었을 때 실제로 이 상태였습니다.)
+import re, io
+html = os.path.join(os.path.dirname(__file__), '..', 'index.html')
+s = io.open(html, encoding='utf-8').read()
+m = re.search(r'(og-cover\.jpg)(?:\?r=(\d+))?(")', s)
+if not m:
+    print('⚠️ index.html 에서 og:image 주소를 못 찾았습니다 — 손으로 ?r= 를 올리세요.')
+else:
+    n = int(m.group(2) or 1) + 1
+    s = s[:m.start()] + f'og-cover.jpg?r={n}"' + s[m.end():]
+    io.open(html, 'w', encoding='utf-8', newline='').write(s)
+    print(f'index.html og:image -> og-cover.jpg?r={n}  (배포 뒤 페이스북·카카오 디버거에서 한 번 다시 긁으세요)')

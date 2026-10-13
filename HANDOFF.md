@@ -164,8 +164,17 @@ Vercel 의 Root Directory 를 비워 둔 채로 그대로 붙습니다.
 리다이렉트가 아니라 **같은 파일을 두 주소가 함께 서빙합니다.** 그래서
 `.com` 에서도 canonical 이 `.co.kr` 을 가리키면 검색엔진이 `.com` 을 중복으로
 묶어 **외국어 페이지를 통째로 색인에서 뺍니다.** `i18n.js` 의 `seo()` 가
-자기 도메인을 canonical 로 다시 쓰고, hreflang 은 한국어를 `.co.kr`,
-나머지를 `.com` 으로 보냅니다. 로컬·미리보기 주소에서는 손대지 않습니다.
+도메인·언어에 맞는 canonical 을 **만들어 넣고**, hreflang(+ x-default) 은 한국어를
+`.co.kr`, 나머지를 `.com` 으로 보냅니다. 로컬·미리보기 주소에서는 손대지 않습니다.
+
+⚠️ **`index.html` 원본에는 canonical 을 다시 넣지 마세요** (2026-10-13 에 뺐습니다).
+원본에 `.co.kr` 이 박혀 있으면 `.com` 에서는 원본과 스크립트 결과가 서로 다른
+대표 주소를 말하고, 구글은 원본 쪽을 골라 외국어 페이지를 중복으로 묶을 수 있습니다.
+`privacy.html` 은 한국어 문서 하나뿐이라 원본 canonical 을 그대로 둡니다.
+
+공유 이미지(`og:image`) 주소 끝의 `?r=` 은 개정 번호입니다. 페이스북·카카오가 이미지를
+주소로 캐시하므로, 그림을 바꾸면 주소도 바뀌어야 새 그림이 나옵니다.
+`tools/make-og-image.py` 가 다시 만들 때 자동으로 올립니다.
 
 도메인이 또 바뀌면 정적 파일 쪽은 한 줄로 바꿉니다.
 
@@ -334,7 +343,10 @@ CSS·JS 는 `?v=20260829` 쿼리를 달고 있습니다. 빌드 해시가 없는
 | 스크립트 | 역할 |
 |---|---|
 | `optimize-images.py` | JPEG → AVIF/WebP 사본 + 축소본 생성. 사진을 교체·추가하면 한 번 실행 |
-| `make-og-image.py` | 공유 카드 이미지(`og-cover.jpg`) 생성 |
+| `make-og-image.py` | 공유 카드 이미지(`og-cover.jpg`) 생성 + `og:image` 의 `?r=` 올림 |
+| `make-favicon.py` | 탭 아이콘(`favicon.ico` · `favicon-96.png`) · 홈 화면 아이콘 생성. 정식 로고에서 ® 만 지움 |
+| `make-profile-logo.py` | 네이버 플레이스·인스타용 정사각 프로필(`brand/`) 생성 |
+| `bump-cache.py` | 세 HTML 의 `?v=` 를 함께 올리고 sitemap 의 홈 `lastmod` 를 오늘로 |
 | `set-site-url.py` | placeholder 도메인을 실제 도메인으로 일괄 치환 |
 
 모두 Python 3 + Pillow 만 있으면 됩니다 — `pip install Pillow`
