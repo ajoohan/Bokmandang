@@ -1286,6 +1286,27 @@ body.has-band .prog{top:var(--band-h,46px)}
 .adm-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 .adm-toast.bad{background:var(--red)}
 
+/* ── 확인창 (삭제 등) — admin.js 의 ask() ─────────────── */
+/* margin:auto — 전체 초기화(* {margin:0})가 <dialog> 의 가운데 정렬을 지우므로 되돌립니다.
+   form 은 display:block — 가맹 상담 폼용 'form { display:grid; 두 칸 }' 이 전역이라 여기까지 번집니다. */
+.adm-dlg{margin:auto;width:min(440px,calc(100vw - 32px));padding:0;border:0;border-radius:14px;
+  background:var(--bg);color:var(--ink);font-family:inherit;
+  box-shadow:0 28px 80px rgba(20,18,15,.32),0 0 0 1px var(--line)}
+.adm-dlg::backdrop{background:rgba(20,18,15,.48);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.adm-dlg[open]{animation:dlg-in .26s cubic-bezier(.2,.8,.2,1)}
+.adm-dlg[open]::backdrop{animation:dlg-fade .26s ease}
+@keyframes dlg-in{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes dlg-fade{from{opacity:0}to{opacity:1}}
+.adm-dlg form{display:block;padding:26px 28px 22px;border-top:3px solid var(--gold);border-radius:14px}
+.adm-dlg.is-danger form{border-top-color:var(--red)}
+.adm-dlg-k{margin:0 0 10px;font-size:var(--fs-lbl);font-weight:700;letter-spacing:.16em;color:var(--gold)}
+.adm-dlg.is-danger .adm-dlg-k{color:var(--red)}
+.adm-dlg h2{margin:0;font-size:17px;font-weight:700;letter-spacing:-.03em;line-height:1.5;word-break:keep-all}
+.adm-dlg #dlgM{margin:8px 0 0;font-size:var(--fs-md);color:var(--mute);line-height:1.7}
+.adm-dlg-act{display:flex;justify-content:flex-end;gap:8px;margin-top:24px}
+.adm-dlg-act .adm-btn{min-width:84px}
+@media (prefers-reduced-motion:reduce){.adm-dlg[open],.adm-dlg[open]::backdrop{animation:none}}
+
 /* ── 매장 목록 ───────────────────────────────────────── */
 /* 평소에는 읽기 전용입니다. [수정]을 눌러야 입력칸이 열리고 [저장]으로 확정합니다 —
    칸을 벗어날 때마다 저장되던 예전 방식은 잘못 건드린 값도 그대로 반영됐습니다. */

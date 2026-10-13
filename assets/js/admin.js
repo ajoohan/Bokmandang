@@ -19,6 +19,72 @@ function toast(msg, bad) {
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2600);
 }
 
+/* 확인창 — 브라우저 기본 confirm() 은 'bokmandang.co.kr의 메시지' 라는 회색 창이라
+   관리자 화면과 따로 놀고, 삭제처럼 되돌릴 수 없는 일에서 눈에 잘 들어오지 않습니다.
+   <dialog> 로 같은 일을 하되 사이트 색과 버튼을 씁니다.
+   · 기본 초점은 [취소] — 엔터를 잘못 눌러도 지워지지 않게
+   · Esc · 바깥 클릭 · [취소] 는 모두 false
+   글은 textContent 로만 넣습니다(이름이 DB 에서 오므로 HTML 로 해석하지 않습니다). */
+/* '곰탕을' · '손만두를' — 마지막 글자의 받침으로 조사를 고릅니다.
+   한글로 끝나지 않으면(영문·숫자) 어느 쪽인지 알 수 없어 '을(를)' 로 둡니다. */
+function eulReul(word) {
+  const c = String(word).trim().slice(-1).charCodeAt(0) - 0xAC00;
+  if (!(c >= 0 && c <= 11171)) return '을(를)';
+  return c % 28 ? '을' : '를';
+}
+
+let dlg = null;
+function ask({ title, body = '', ok = '확인', danger = false }) {
+  if (typeof HTMLDialogElement !== 'function') return Promise.resolve(confirm(title + '\n\n' + body));
+  if (!dlg) {
+    dlg = document.createElement('dialog');
+    dlg.className = 'adm-dlg';
+    dlg.setAttribute('aria-labelledby', 'dlgT');
+    dlg.setAttribute('aria-describedby', 'dlgM');
+    dlg.innerHTML = `<form method="dialog">
+        <p class="adm-dlg-k" aria-hidden="true">확인</p>
+        <h2 id="dlgT"></h2>
+        <p id="dlgM"></p>
+        <div class="adm-dlg-act">
+          <button class="adm-btn lg" value="no" data-no>취소</button>
+          <button class="adm-btn lg" value="yes" data-yes></button>
+        </div>
+      </form>`;
+    document.body.appendChild(dlg);
+  }
+  dlg.querySelector('#dlgT').textContent = title;
+  dlg.querySelector('#dlgM').textContent = body;
+  dlg.querySelector('#dlgM').hidden = !body;
+  const yes = dlg.querySelector('[data-yes]');
+  yes.textContent = ok;
+  yes.classList.toggle('danger', danger);
+  yes.classList.toggle('primary', !danger);
+  dlg.classList.toggle('is-danger', danger);
+  dlg.querySelector('.adm-dlg-k').textContent = danger ? '삭제 확인' : '확인';
+  /* 결과는 누른 그 자리에서 돌려줍니다. 'close' 이벤트를 기다리는 방식은 브라우저가
+     화면을 그리지 않는 동안(창이 가려진 탭 등) 이벤트가 밀려 응답이 멈출 수 있습니다. */
+  return new Promise(resolve => {
+    const done = v => {
+      dlg.removeEventListener('click', onClick);
+      dlg.removeEventListener('cancel', onCancel);
+      if (dlg.open) dlg.close();
+      resolve(v);
+    };
+    const onClick = e => {
+      if (e.target === dlg) return done(false);          // 바깥(배경) — 창 안쪽은 form 이 받습니다
+      const b = e.target.closest('button');
+      if (!b) return;
+      e.preventDefault();                                // form 제출 대신 여기서 끝냅니다
+      done(b.hasAttribute('data-yes'));
+    };
+    const onCancel = e => { e.preventDefault(); done(false); };   // Esc
+    dlg.addEventListener('click', onClick);
+    dlg.addEventListener('cancel', onCancel);
+    dlg.showModal();
+    dlg.querySelector('[data-no]').focus();
+  });
+}
+
 async function api(path, opt = {}) {
   const r = await fetch(path, { credentials: 'same-origin', ...opt });
   if (r.status === 401) { show('login'); throw new Error('로그인이 필요합니다.'); }
@@ -269,7 +335,8 @@ $('#inqList').addEventListener('click', async e => {
   if (!e.target.matches('[data-del]')) return;
   const row = e.target.closest('.adm-row');
   const who = row.querySelector('.who b').textContent;
-  if (!confirm(`${who} 님의 상담 내역을 삭제합니다.\n\n되돌릴 수 없습니다. 계속할까요?`)) return;
+  if (!(await ask({ title: `${who} 님의 상담 내역을 삭제합니다.`,
+                    body: '되돌릴 수 없습니다. 계속할까요?', ok: '삭제', danger: true }))) return;
   try {
     await api('/api/admin/inquiries?id=' + encodeURIComponent(row.dataset.id), { method: 'DELETE' });
     toast('삭제했습니다.'); loadInq();
@@ -540,7 +607,8 @@ $('#strList').addEventListener('click', async e => {
   }
   if (btn.hasAttribute('data-del')) {
     const nm = stores[i] ? stores[i].name : '이 매장';
-    if (!confirm(`${nm} 을(를) 목록에서 삭제합니다.\n\n되돌릴 수 없습니다. 계속할까요?`)) return;
+    if (!(await ask({ title: `‘${nm}’${eulReul(nm)} 매장 목록에서 삭제합니다.`,
+                      body: '되돌릴 수 없습니다. 계속할까요?', ok: '삭제', danger: true }))) return;
     try {
       await api('/api/admin/stores?id=' + encodeURIComponent(id), { method: 'DELETE' });
       toast('삭제했습니다.'); loadStr();
@@ -823,7 +891,8 @@ $('#menList').addEventListener('click', async e => {
   }
   if (btn.hasAttribute('data-mdel')) {
     const nm = menus[i] ? menus[i].name : '이 메뉴';
-    if (!confirm(`${nm} 을(를) 메뉴에서 삭제합니다.\n\n되돌릴 수 없습니다. 계속할까요?`)) return;
+    if (!(await ask({ title: `‘${nm}’${eulReul(nm)} 메뉴에서 삭제합니다.`,
+                      body: '되돌릴 수 없습니다. 계속할까요?', ok: '삭제', danger: true }))) return;
     try {
       await api('/api/admin/menu?id=' + encodeURIComponent(id), { method: 'DELETE' });
       toast('삭제했습니다.'); loadMenus();
@@ -1072,7 +1141,8 @@ $('#popList').addEventListener('click', async e => {
   }
   if (btn.hasAttribute('data-pdel')) {
     const nm = popups[i] ? popups[i].title : '이 팝업';
-    if (!confirm(`${nm} 을(를) 삭제합니다.\n\n되돌릴 수 없습니다. 계속할까요?`)) return;
+    if (!(await ask({ title: `‘${nm}’ 팝업을 삭제합니다.`,
+                      body: '되돌릴 수 없습니다. 계속할까요?', ok: '삭제', danger: true }))) return;
     try {
       await api('/api/admin/popups?id=' + encodeURIComponent(id), { method: 'DELETE' });
       toast('삭제했습니다.'); loadPopups();
